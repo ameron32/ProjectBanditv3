@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp" >
+
+    <TextView
+        android:id="@+id/textview_equipment_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/textview_equipment_item_value"
+        android:text="Item Name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/button_value"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="$ 0" />
+
+    <TextView
+        android:id="@+id/textview_equipment_item_slot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/textview_equipment_item_name"
+        android:layout_below="@+id/textview_equipment_item_name"
+        android:text="Equipment Slot" />
+
+    <TextView
+        android:id="@+id/textview_equipment_item_value"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/button_value"
+        android:layout_below="@+id/progressBar1"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/button_value"
+        android:gravity="center"
+        android:text="STR"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_alignLeft="@+id/textview_equipment_item_value"
+        android:layout_alignTop="@+id/button_value"
+        android:layout_toLeftOf="@+id/button_value" />
+
+</RelativeLayout>

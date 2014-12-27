@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll_item_elements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ITEM"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/et_name"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Name" >
+
+            <requestFocus />
+        </com.ameron32.apps.projectbanditv3.view.FloatingHintEditText>
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/et_base_value"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Base Value" />
+
+        <Spinner
+            android:id="@+id/s_item_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_weapon_elements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_weapon_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WEAPON"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/et_weapon_damages"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Damage(s) [use proper codes]" />
+
+        <com.ameron32.apps.projectbanditv3.view.MultiSelectSpinner
+            android:id="@+id/mss_weapon_type"
+            style="@style/multiselectspinner_tall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.ameron32.apps.projectbanditv3.view.MultiSelectSpinner
+            android:id="@+id/mss_weapon_slots"
+            style="@style/multiselectspinner_tall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_ammo_elements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_ammo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AMMO"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/et_ammo_damages"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Damage(s) [use proper codes]" />
+
+        <com.ameron32.apps.projectbanditv3.view.MultiSelectSpinner
+            android:id="@+id/mss_ammo_weapons"
+            style="@style/multiselectspinner_tall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_armor_elements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_armor_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ARMOR"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/et_resistances"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Resistance(s) [use proper codes]" />
+
+        <com.ameron32.apps.projectbanditv3.view.MultiSelectSpinner
+            android:id="@+id/mss_armor_slots"
+            style="@style/multiselectspinner_tall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_ingredient_elements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_ingredient_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INGREDIENT"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_durability_elements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_durability_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DURABILITY"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/et_durability"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Number of Uses" />
+    </LinearLayout>
+
+</LinearLayout>

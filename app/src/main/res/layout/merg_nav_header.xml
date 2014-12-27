@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <RelativeLayout
+        android:background="#EEF2F2F2"
+        android:layout_width="320dp"
+        android:layout_height="160dp" >
+
+        <ImageView
+            android:id="@+id/imageview_character_image_full_size"
+            android:layout_width="320dp"
+            android:layout_height="160dp" />
+
+        <ImageButton
+            android:id="@+id/imagebutton_navigation_drawer_up_arrow"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/imagebutton_navigation_drawer_logout"
+            android:layout_alignTop="@+id/imagebutton_navigation_drawer_logout"
+            android:gravity="center"
+            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha" />
+
+        <ImageButton
+            android:id="@+id/imagebutton_navigation_drawer_logout"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_logout" />
+
+        <LinearLayout
+            android:id="@+id/layout_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/imageview_character_image_full_size"
+            android:layout_alignRight="@+id/imageview_character_image_full_size"
+            android:background="@color/background_transparent_overlay_navigation_drawer"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textview_character_navtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Character"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/textview_game_navtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GAME" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</merge>

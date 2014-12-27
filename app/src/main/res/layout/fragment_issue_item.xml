@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.ameron32.apps.projectbanditv3.fragment.IssueItemFragment" >
+
+    <CheckBox
+        android:id="@+id/cb_local_game_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Only show items from this game" />
+
+    <CheckBox
+        android:id="@+id/cb_local_game_character"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Only show characters from this game" />
+
+    <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+        android:id="@+id/edittext_item_type"
+        style="@style/Widget.FloatingHintEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Item Type to issue" >
+
+        <requestFocus />
+    </com.ameron32.apps.projectbanditv3.view.FloatingHintEditText>
+
+    <com.ameron32.apps.projectbanditv3.view.MultiSelectSpinner
+        android:id="@+id/mss_item_selector"
+        style="@style/multiselectspinner_tall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+        android:id="@+id/edittext_character"
+        style="@style/Widget.FloatingHintEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Character name begins with..." />
+
+    <com.ameron32.apps.projectbanditv3.view.MultiSelectSpinner
+        android:id="@+id/mss_character_selector"
+        style="@style/multiselectspinner_tall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button_issue_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Issue Item" />
+
+</LinearLayout>

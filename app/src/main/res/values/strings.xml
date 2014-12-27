@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Project: Bandit v3</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Action</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_logout">LogOut</string>
+    <string name="please_wait">Loading...</string>
+    <string name="new_message_notification_title_template">New: %1$s</string>
+    <string name="new_message_notification_placeholder_text_template">A %1$s has changed.</string>
+    <string name="section_container_text">Test Section Container</string>
+    
+    <string-array name="rules_armor_slots">
+        <item>None</item>
+        <item>Head</item>
+        <item>Neck</item>
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Shoulder</item>
+        <item>Arm</item>
+        <item>Wrist</item>
+        <item>Hand</item>
+        <item>Left Finger</item>
+        <item>Right Finger</item>
+        <item>Belt</item>
+        <item>Lower Torso</item>
+        <item>Shin</item>
+        <item>Feet</item>
+    </string-array>
+    <string-array name="rules_item_types">
+        <item>Item</item>
+        <item>Weapon</item>
+        <item>Armor</item>
+        <item>Ingredient</item>
+        <item>Ammo</item>
+        <item>Consumable</item>
+    </string-array>
+
+</resources>

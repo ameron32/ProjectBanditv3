@@ -1,0 +1,64 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/edittext_parse_objects_1"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:ems="10"
+            android:hint="ParseObject" >
+
+            <requestFocus />
+        </com.ameron32.apps.projectbanditv3.view.FloatingHintEditText>
+
+        <com.ameron32.apps.projectbanditv3.view.MultiSelectSpinner
+            android:id="@+id/mss_query_objects_1"
+            style="@style/multiselectspinner_tall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/edittext_relationship"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:ems="10"
+            android:hint="Relation" />
+
+        <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+            android:id="@+id/edittext_parse_objects_2"
+            style="@style/Widget.FloatingHintEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:ems="10"
+            android:hint="ObjectsToAttach" />
+
+        <com.ameron32.apps.projectbanditv3.view.MultiSelectSpinner
+            android:id="@+id/mss_query_objects_2"
+            style="@style/multiselectspinner_tall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_attach"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Relation" />
+    </LinearLayout>
+
+</ScrollView>

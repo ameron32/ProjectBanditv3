@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="game" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_username"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:hint="Username"
+                android:padding="8dp" />
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_game"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textcomboview_username"
+                android:hint="Game"
+                android:padding="8dp" />
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_game_gm"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textcomboview_game"
+                android:hint="Game Master(s)"
+                android:padding="8dp" />
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_game_players"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textcomboview_game_gm"
+                android:hint="Players"
+                android:padding="8dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

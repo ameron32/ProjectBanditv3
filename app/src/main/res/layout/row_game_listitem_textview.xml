@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp" >
+
+    <Button
+        android:id="@android:id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:minHeight="80dp"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:text="GAME"
+        android:textSize="@dimen/text_game_listitem_textsize" />
+
+    <TextView
+        android:id="@+id/textview_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@android:id/button1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="This is a brief description of the given game." />
+
+</RelativeLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_section_character_stats"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="stats" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_character"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:hint="Name"
+                android:padding="8dp" />
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_level"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textcomboview_character"
+                android:hint="Current Level"
+                android:padding="8dp" />
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_xp"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textcomboview_level"
+                android:layout_toRightOf="@+id/textcomboview_level"
+                android:hint="Current XP"
+                android:padding="8dp" />
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_current_health"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textcomboview_level"
+                android:hint="Current Health"
+                android:padding="8dp" />
+
+            <com.ameron32.apps.projectbanditv3.view.FloatingHintTextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/textcomboview_max_health"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textcomboview_current_health"
+                android:layout_toRightOf="@+id/textcomboview_current_health"
+                android:hint="Max Health"
+                android:padding="8dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

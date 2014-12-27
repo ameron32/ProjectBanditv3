@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="3dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/image_box" >
+
+        <TextView
+            android:id="@+id/textview_channel"
+            style="@style/text_debug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textview_created_time"
+            android:layout_alignBottom="@+id/textview_created_time"
+            android:layout_toLeftOf="@+id/textview_created_time"
+            android:text="#channel" />
+
+        <TextView
+            android:id="@+id/textview_created_time"
+            style="@style/text_debug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="#time" />
+
+        <TextView
+            android:id="@+id/textview_object_id"
+            style="@style/text_debug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textview_created_time"
+            android:text="#objectId"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/textview_username"
+            style="@style/text_debug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textview_character"
+            android:layout_alignBottom="@+id/textview_character"
+            android:layout_toRightOf="@+id/textview_character"
+            android:text="#_User" />
+
+        <TextView
+            android:id="@+id/textview_character"
+            style="@style/text_debug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="#Character" />
+
+        <TextView
+            android:id="@+id/textview_message"
+            style="@style/text_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview_created_time"
+            android:text="#............message............" />
+
+        <TextView
+            android:id="@+id/textview_action"
+            style="@style/text_debug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textview_message"
+            android:layout_toRightOf="@+id/textview_username"
+            android:text="#CAction" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/image_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" >
+
+        <FrameLayout
+            android:id="@+id/frame_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow_black"
+            android:paddingBottom="5px"
+            android:paddingLeft="6px"
+            android:paddingRight="5px"
+            android:paddingTop="5px" >
+
+            <com.parse.ParseImageView
+                android:id="@+id/imageview_character"
+                android:layout_width="@dimen/image_character_length_squared"
+                android:layout_height="@dimen/image_character_length_squared"
+                android:layout_margin="5px"
+                android:src="@drawable/ic_launcher" />
+        </FrameLayout>
+
+        <com.parse.ParseImageView
+            android:id="@+id/imageview_action"
+            android:layout_width="@dimen/image_action_length_squared"
+            android:layout_height="@dimen/image_action_length_squared"
+            android:layout_alignBottom="@+id/frame_image"
+            android:layout_alignLeft="@+id/frame_image"
+            android:src="@drawable/ic_launcher" />
+    </RelativeLayout>
+
+</RelativeLayout>

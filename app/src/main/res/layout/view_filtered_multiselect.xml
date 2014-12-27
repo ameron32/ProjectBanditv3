@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.ameron32.apps.projectbanditv3.view.MultiSelectObjectSpinner
+        android:id="@+id/mss_query_results"
+        style="@style/multiselectspinner_tall"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edittext_filter"
+        android:text="Save" />
+
+    <com.ameron32.apps.projectbanditv3.view.FloatingHintEditText
+        android:id="@+id/edittext_filter"
+        style="@style/Widget.FloatingHintEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/mss_query_results"
+        android:ems="10"
+        android:hint="Begins with:" />
+
+</RelativeLayout>

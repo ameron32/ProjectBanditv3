@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.ameron32.apps.projectbanditv3.activity.CoreActivity" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            
+            <!-- INFLATE TOOLBAR HERE -->
+            <FrameLayout
+                android:id="@+id/toolbar_actionbar_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <!-- /TOOLBAR -->
+
+            <fragment
+                android:id="@+id/navigation_quickbar"
+                android:name="com.ameron32.apps.projectbanditv3.fragment.MenuIconFragment"
+                android:layout_width="@dimen/navigation_quickbar_width"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/toolbar_actionbar_container" />
+            
+            <!-- INFLATE CONTENT HERE -->
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/toolbar_actionbar_container"
+                android:layout_toEndOf="@+id/navigation_quickbar"
+                android:layout_toRightOf="@+id/navigation_quickbar" />
+            <!-- /CONTENT -->
+
+            <!-- [start] EXPANDEDACTIVITY -->
+            <FrameLayout
+                android:id="@+id/chat_container"
+                android:layout_width="@dimen/chat_manager_width"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true" />
+
+            <ImageButton
+                android:id="@+id/button_toggle_show_hide"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_bandit_clear" />
+            <!-- [ end ] EXPANDEDACTIVITY -->
+            
+        </RelativeLayout>
+
+        <fragment
+            android:id="@+id/navigation_drawer"
+            android:name="com.ameron32.apps.projectbanditv3.fragment.NavigationDrawerFragment"
+            android:layout_width="@dimen/navigation_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            tools:layout="@layout/fragment_navigation_drawer_recycler" />
+    </android.support.v4.widget.DrawerLayout>
+
+</RelativeLayout>

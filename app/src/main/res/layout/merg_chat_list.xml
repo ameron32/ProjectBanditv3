@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- changed from ListView to RecyclerView -->
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/recyclerlistView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textview_chat_title" />
+
+	<!-- FILTERS MENU GOES HERE -->
+    <TextView
+        android:id="@+id/textview_chat_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_filter_menu_toggle"
+        android:layout_toRightOf="@+id/button_filter_menu_toggle"
+        android:background="#AAFFFFFF"
+        android:gravity="center"
+        android:text="TITLE"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textview_chat_filters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview_chat_title"
+        android:layout_alignLeft="@+id/textview_chat_title"
+        android:background="#AAFFFFFF"
+        android:gravity="center"
+        android:text="FILTERS"
+        android:textColor="@color/debug_text"
+        android:textSize="10sp" />
+    
+    <ImageButton
+        android:id="@+id/button_filter_menu_toggle"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_bandit_clear" />
+
+</merge>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ameron32.apps.projectbanditv3.view.ExpandableTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/expand_text_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    expandableTextView:animDuration="2000"
+    expandableTextView:maxCollapsedLines="4" >
+
+    <TextView
+        android:id="@id/expandable_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#666666"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@id/expand_collapse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent" />
+
+</com.ameron32.apps.projectbanditv3.view.ExpandableTextView>

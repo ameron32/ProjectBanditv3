@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ImageButton
+        android:id="@+id/imagebutton_inventory_item"
+        android:layout_width="@dimen/item_size_squared"
+        android:layout_height="@dimen/item_size_squared"
+        android:alpha="0.3"
+        android:gravity="center"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/textview_inventory_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imagebutton_inventory_item"
+        android:layout_toRightOf="@+id/imagebutton_inventory_item"
+        android:gravity="left"
+        android:padding="4dp"
+        android:text="Item Name"
+        android:textSize="@dimen/item_textsize_name" />
+
+    <TextView
+        android:id="@+id/textview_inventory_item_quantity"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imagebutton_inventory_item"
+        android:layout_alignRight="@+id/imagebutton_inventory_item"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="Qty"
+        android:textSize="@dimen/item_textsize_quantity" />
+
+    <TextView
+        android:id="@+id/textview_inventory_item_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imagebutton_inventory_item"
+        android:layout_toRightOf="@+id/imagebutton_inventory_item"
+        android:gravity="left"
+        android:padding="4dp"
+        android:text="$VALUE"
+        android:textSize="@dimen/item_textsize_value" />
+
+</RelativeLayout>
