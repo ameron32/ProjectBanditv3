@@ -29,3 +29,11 @@ proguard/
 strings_keys.xml
 com_crashlytics*.xml
 crashlytics.properties
+
+# Android Studio
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
