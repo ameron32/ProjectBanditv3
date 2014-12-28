@@ -11,7 +11,7 @@ import com.parse.ParseQueryAdapter.QueryFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ParseRecyclerQueryAdapter<T extends ParseObject, U extends RecyclerView.ViewHolder>
+public abstract class AbsParseRecyclerQueryAdapter<T extends ParseObject, U extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<U>
 {
 
@@ -20,7 +20,7 @@ public abstract class ParseRecyclerQueryAdapter<T extends ParseObject, U extends
   private List<T> items;
 
   // PRIMARY CONSTRUCTOR
-  public ParseRecyclerQueryAdapter(final QueryFactory<T> factory) {
+  public AbsParseRecyclerQueryAdapter(final QueryFactory<T> factory) {
     this.factory = factory;
     this.items = new ArrayList<T>();
     mListeners = new ArrayList<OnDataSetChangedListener>();
@@ -29,7 +29,7 @@ public abstract class ParseRecyclerQueryAdapter<T extends ParseObject, U extends
   }
   
   // ALTERNATE CONSTRUCTOR
-  public ParseRecyclerQueryAdapter(final String className) {
+  public AbsParseRecyclerQueryAdapter(final String className) {
     this(new QueryFactory<T>() {
       
       @Override public ParseQuery<T> create() {
@@ -39,7 +39,7 @@ public abstract class ParseRecyclerQueryAdapter<T extends ParseObject, U extends
   }
   
   // ALTERNATE CONSTRUCTOR
-  public ParseRecyclerQueryAdapter(final Class<T> c) {
+  public AbsParseRecyclerQueryAdapter(final Class<T> c) {
     this(new QueryFactory<T>() {
       
       @Override public ParseQuery<T> create() {
@@ -57,6 +57,8 @@ public abstract class ParseRecyclerQueryAdapter<T extends ParseObject, U extends
   }
   
   public T getItem(int position) { return items.get(position); }
+
+  public List<T> getItems() { return items; }
 
   protected void onFilterQuery(ParseQuery<T> query) { 
     // provide override for filtering query
@@ -140,6 +142,8 @@ public abstract class ParseRecyclerQueryAdapter<T extends ParseObject, U extends
       l.onLoaded(objects, e);
     }
   }
-  
+
+
+
   
 }

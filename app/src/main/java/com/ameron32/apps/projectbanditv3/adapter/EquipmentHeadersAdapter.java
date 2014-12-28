@@ -174,7 +174,7 @@ public class EquipmentHeadersAdapter
       ButterKnife.inject(this, v);
     }
   }
-  //
+
   // @Override public View getHeaderView(
   // int position, View convertView,
   // ViewGroup parent) {

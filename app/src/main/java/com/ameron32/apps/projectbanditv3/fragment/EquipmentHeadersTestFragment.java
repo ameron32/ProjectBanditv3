@@ -19,5 +19,6 @@ public class EquipmentHeadersTestFragment
     ButterKnife.inject(this, view);
     
 //    listView1.setAdapter(new EquipmentHeadersAdapter(getActivity(), R.layout.row_equipment));
+
   }
 }

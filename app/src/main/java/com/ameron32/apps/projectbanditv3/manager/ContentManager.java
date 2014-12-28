@@ -9,6 +9,7 @@ import com.ameron32.apps.projectbanditv3.adapter.ContentAdapter;
 import com.ameron32.apps.projectbanditv3.fragment.CreateItemFragment;
 import com.ameron32.apps.projectbanditv3.fragment.CreateSetItemsFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentHeadersTestFragment;
+import com.ameron32.apps.projectbanditv3.fragment.EquipmentRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.GameFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryHeadersTestFragment;
@@ -68,9 +69,11 @@ public class ContentManager extends AbsManager {
     
     items.add(new ContentItem("Test:Stats", R.drawable.ic_construction, 
         SectionContainerTestFragment.newInstance(StatsTestFragment.class, R.layout.section_character_stats)));
-    items.add(new ContentItem("Test:Equipment2", R.drawable.ic_construction, 
-        SectionContainerTestFragment.newInstance(EquipmentHeadersTestFragment.class, R.layout.section_character_equipment_headers)));
-    items.add(new ContentItem("Test:Inventory2", R.drawable.ic_construction, 
+//    items.add(new ContentItem("Test:Equipment2", R.drawable.ic_construction,
+//        SectionContainerTestFragment.newInstance(EquipmentHeadersTestFragment.class, R.layout.section_character_equipment_headers)));
+    items.add(new ContentItem("Test:Equipment3", R.drawable.ic_construction,
+        SectionContainerTestFragment.newInstance(EquipmentRecyclerTestFragment.class, R.layout.section_character_equipment_3)));
+    items.add(new ContentItem("Test:Inventory2", R.drawable.ic_construction,
         SectionContainerTestFragment.newInstance(InventoryHeadersTestFragment.class, R.layout.section_character_inventory_headers)));
     
     

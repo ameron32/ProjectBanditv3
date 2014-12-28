@@ -38,7 +38,7 @@ import butterknife.Optional;
 
 public abstract class AbsMessageAdapter
     extends
-      ParseRecyclerQueryAdapter<Message, AbsMessageAdapter.ViewHolder>
+    AbsParseRecyclerQueryAdapter<Message, AbsMessageAdapter.ViewHolder>
 //    RecyclerView.Adapter<AbsMessageAdapter.ViewHolder> 
 {
   

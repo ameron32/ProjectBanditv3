@@ -56,6 +56,8 @@ public class SectionContainerTestFragment
       return new EquipmentTestFragment();
     } else if (subClassStr.equals(EquipmentHeadersTestFragment.class.getSimpleName())) {
       return new EquipmentHeadersTestFragment();
+    } else if (subClassStr.equals(EquipmentRecyclerTestFragment.class.getSimpleName())) {
+      return new EquipmentRecyclerTestFragment();
     } else if (subClassStr.equals(InventoryTestFragment.class.getSimpleName())) {
       return new InventoryTestFragment();
     } else if (subClassStr.equals(InventoryHeadersTestFragment.class.getSimpleName())) {
