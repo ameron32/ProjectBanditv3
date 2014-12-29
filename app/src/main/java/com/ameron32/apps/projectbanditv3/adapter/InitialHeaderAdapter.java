@@ -16,14 +16,15 @@ import java.util.List;
 public class InitialHeaderAdapter implements StickyHeadersAdapter<InitialHeaderAdapter.ViewHolder> {
 
   private static final String[] HEADERS = Item.Type.nameValues();
-  private List<CInventory> items;
+
+  private List<CInventory> mItems;
 
   public InitialHeaderAdapter(List<CInventory> items) {
     replaceItems(items);
   }
 
   public void replaceItems(List<CInventory> items) {
-    this.items = items;
+    mItems = items;
   }
 
   @Override
@@ -50,16 +51,18 @@ public class InitialHeaderAdapter implements StickyHeadersAdapter<InitialHeaderA
     String type = item.getString("type");
 
     for (int i = 0; i < HEADERS.length; i++) {
-      String header = HEADERS[i];
-      if (header.equalsIgnoreCase(type)) { return i; }
+      final String header = HEADERS[i];
+      if (header.equalsIgnoreCase(type)) {
+        return i;
+      }
     }
 
     return 0;
   }
 
   public CInventory getItem(int position) {
-    if (items != null && items.size() > 0) {
-      return items.get(position);
+    if (mItems != null && mItems.size() > 0) {
+      return mItems.get(position);
     }
     return null;
   }

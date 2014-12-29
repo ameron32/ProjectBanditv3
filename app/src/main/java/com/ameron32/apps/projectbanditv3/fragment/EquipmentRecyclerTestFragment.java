@@ -28,9 +28,10 @@ public class EquipmentRecyclerTestFragment
   @InjectView(R.id.srv1)
   SuperRecyclerView list;
 
-  EquipmentRecyclerAdapter mAdapter;
-  InitialHeaderAdapter mDecoratorAdapter;
-  
+  private EquipmentRecyclerAdapter mAdapter;
+  private InitialHeaderAdapter mDecoratorAdapter;
+  private StickyHeadersItemDecoration mDecoration;
+
   @Override public void onViewCreated(
       View view,
       Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class EquipmentRecyclerTestFragment
 //    listView1.setAdapter(new EquipmentHeadersAdapter(getActivity(), R.layout.row_equipment));
 
     mAdapter = new EquipmentRecyclerAdapter(R.layout.row_equipment);
-    mDecoratorAdapter = new InitialHeaderAdapter(mAdapter.getItems());
+//    mDecoratorAdapter = new InitialHeaderAdapter(mAdapter.getItems());
 
     list.setAdapter(mAdapter);
     list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -48,16 +49,31 @@ public class EquipmentRecyclerTestFragment
     list.setRefreshingColorResources(android.R.color.holo_orange_light, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_red_light);
 
 
+//    // Build item decoration and add it to the RecyclerView
+//    mDecoration = new StickyHeadersBuilder()
+//        .setAdapter(mAdapter)
+//        .setRecyclerView(list.getRecyclerView())
+//        .setStickyHeadersAdapter(mDecoratorAdapter)
+//        .build();
+//
+//    list.addItemDecoration(mDecoration);
+    applyDecoration();
+
+    mAdapter.addOnQueryLoadListener(this);
+  }
+
+  private void applyDecoration() {
+
+    mDecoratorAdapter = new InitialHeaderAdapter(mAdapter.getItems());
+
     // Build item decoration and add it to the RecyclerView
-    StickyHeadersItemDecoration decoration = new StickyHeadersBuilder()
+    mDecoration = new StickyHeadersBuilder()
         .setAdapter(mAdapter)
         .setRecyclerView(list.getRecyclerView())
         .setStickyHeadersAdapter(mDecoratorAdapter)
         .build();
 
-    list.addItemDecoration(decoration);
-
-    mAdapter.addOnQueryLoadListener(this);
+    list.addItemDecoration(mDecoration);
   }
 
   @Override
@@ -76,6 +92,18 @@ public class EquipmentRecyclerTestFragment
   public void onLoaded(List<CInventory> objects, Exception e) {
     if (e == null) {
       mDecoratorAdapter.replaceItems(objects);
+
+//      list.removeItemDecoration(mDecoration);
+
+//      // Build item decoration and add it to the RecyclerView
+//      StickyHeadersItemDecoration decoration = new StickyHeadersBuilder()
+//          .setAdapter(mAdapter)
+//          .setRecyclerView(list.getRecyclerView())
+//          .setStickyHeadersAdapter(mDecoratorAdapter)
+//          .build();
+//
+//      list.addItemDecoration(decoration);
+//      applyDecoration();
     }
   }
 

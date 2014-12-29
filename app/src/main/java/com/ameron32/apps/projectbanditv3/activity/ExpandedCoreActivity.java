@@ -102,7 +102,9 @@ public class ExpandedCoreActivity
     }
     
     public void pushAppStateToOff() {
-      chatService.setAppState(ChatService.APP_OFF);
+      if (chatService != null) {
+        chatService.setAppState(ChatService.APP_OFF);
+      }
     }
   }
   
@@ -155,7 +157,9 @@ public class ExpandedCoreActivity
   @Override protected void onPause() {
     super.onPause();
     mChatFragment = null;
-    mConn.pushAppStateToOff();
+    if (mConn != null) {
+      mConn.pushAppStateToOff();
+    }
     disconnectFromChatService();
   }
   

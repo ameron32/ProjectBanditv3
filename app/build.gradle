@@ -23,8 +23,8 @@ android {
         applicationId "com.ameron32.apps.projectbanditv3"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 22
-        versionName "0.1.0.2"
+        versionCode 23
+        versionName "0.1.0.3"
     }
     buildTypes {
         release {

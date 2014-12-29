@@ -2,6 +2,7 @@ package com.ameron32.apps.projectbanditv3.adapter;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +67,8 @@ public class EquipmentRecyclerAdapter
 
   @Override
   public void onBindViewHolder(ViewHolder holder, int position) {
-    CInventory object = getItem(position);
-    Item item = (Item) object.getParseObject("item");
+    final CInventory object = getItem(position);
+    final Item item = (Item) object.getParseObject("item");
 
     String name = object.getString("name");
     int baseValue = object.getInt("baseValue");
@@ -143,6 +144,12 @@ public class EquipmentRecyclerAdapter
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.inject(this, itemView);
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Log.i("ERA:itemClick", "item " + getPosition() + " clicked");
+        }
+      });
     }
   }
 }
