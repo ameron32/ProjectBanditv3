@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ameron32.apps.projectbanditv3.adapter.AbsParseRecyclerQueryAdapter;
+import com.ameron32.apps.projectbanditv3.adapter.AbsParseSuperRecyclerQueryAdapter;
 import com.ameron32.apps.projectbanditv3.R;
 import com.parse.ParseObject;
 
@@ -39,7 +39,7 @@ public class SkillsTestFragment
   
   public static class SkillAdapter
       extends
-      AbsParseRecyclerQueryAdapter<ParseObject, SkillAdapter.ViewHolder> {
+      AbsParseSuperRecyclerQueryAdapter<ParseObject, SkillAdapter.ViewHolder> {
     
     public SkillAdapter(String className) {
       super(className);

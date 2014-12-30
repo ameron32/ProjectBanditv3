@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.ameron32.apps.projectbanditv3.R;
-import com.ameron32.apps.projectbanditv3.adapter.AbsParseRecyclerQueryAdapter;
+import com.ameron32.apps.projectbanditv3.adapter.AbsParseSuperRecyclerQueryAdapter;
 import com.ameron32.apps.projectbanditv3.adapter.EquipmentRecyclerAdapter;
 import com.ameron32.apps.projectbanditv3.adapter.InitialHeaderAdapter;
 import com.ameron32.apps.projectbanditv3.object.CInventory;
@@ -23,7 +23,7 @@ import butterknife.InjectView;
 public class EquipmentRecyclerTestFragment
     extends SectionContainerTestFragment
     implements SwipeRefreshLayout.OnRefreshListener,
-    AbsParseRecyclerQueryAdapter.OnQueryLoadListener<CInventory> {
+    AbsParseSuperRecyclerQueryAdapter.OnQueryLoadListener<CInventory> {
   
   @InjectView(R.id.srv1)
   SuperRecyclerView list;

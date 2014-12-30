@@ -11,7 +11,7 @@ import com.parse.ParseQueryAdapter.QueryFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbsParseRecyclerQueryAdapter<T extends ParseObject, U extends RecyclerView.ViewHolder>
+public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<U>
 {
 
@@ -20,16 +20,17 @@ public abstract class AbsParseRecyclerQueryAdapter<T extends ParseObject, U exte
   private List<T> items;
 
   // PRIMARY CONSTRUCTOR
-  public AbsParseRecyclerQueryAdapter(final QueryFactory<T> factory) {
+  public AbsParseSuperRecyclerQueryAdapter(final QueryFactory<T> factory) {
     this.factory = factory;
     this.items = new ArrayList<T>();
     mListeners = new ArrayList<OnDataSetChangedListener>();
-    
+
+    setHasStableIds(true);
     loadObjects();
   }
   
   // ALTERNATE CONSTRUCTOR
-  public AbsParseRecyclerQueryAdapter(final String className) {
+  public AbsParseSuperRecyclerQueryAdapter(final String className) {
     this(new QueryFactory<T>() {
       
       @Override public ParseQuery<T> create() {
@@ -39,7 +40,7 @@ public abstract class AbsParseRecyclerQueryAdapter<T extends ParseObject, U exte
   }
   
   // ALTERNATE CONSTRUCTOR
-  public AbsParseRecyclerQueryAdapter(final Class<T> c) {
+  public AbsParseSuperRecyclerQueryAdapter(final Class<T> c) {
     this(new QueryFactory<T>() {
       
       @Override public ParseQuery<T> create() {
@@ -47,11 +48,15 @@ public abstract class AbsParseRecyclerQueryAdapter<T extends ParseObject, U exte
       }
     });
   }
-  
-  
-  
-  
-  
+
+
+
+
+  @Override
+  public long getItemId(int position) {
+    return position;
+  }
+
   @Override public int getItemCount() {
     return items.size();
   }

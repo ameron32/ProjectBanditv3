@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class EquipmentRecyclerAdapter
-    extends AbsParseRecyclerQueryAdapter<CInventory, EquipmentRecyclerAdapter.ViewHolder>
+    extends AbsParseSuperRecyclerQueryAdapter<CInventory, EquipmentRecyclerAdapter.ViewHolder>
 {
 
   private final int mRowViewResource;
@@ -56,7 +56,6 @@ public class EquipmentRecyclerAdapter
   public EquipmentRecyclerAdapter(final int rowViewResource) {
     super(makeQuery());
     mRowViewResource = rowViewResource;
-    setHasStableIds(true);
   }
 
   @Override
@@ -82,11 +81,8 @@ public class EquipmentRecyclerAdapter
     }
     // int quantity = object.getInt("quantity");
     holder.itemName.setText(name);
-    holder.itemDurability.setText("["
-        + currentDurability + "/"
-        + maxDurability + "]");
-    holder.itemValue.setText("$"
-        + baseValue);
+    holder.itemDurability.setText("[" + currentDurability + "/" + maxDurability + "]");
+    holder.itemValue.setText("$" + baseValue);
     holder.equipmentSlot.setText(slots);
     // if (quantity < 2) {
     // holder.itemQuantity.setVisibility(View.INVISIBLE);
@@ -144,10 +140,12 @@ public class EquipmentRecyclerAdapter
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.inject(this, itemView);
+      final int position = getPosition();
+      Log.i("ERA:itemClick", "item " + position + " clicked");
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          Log.i("ERA:itemClick", "item " + getPosition() + " clicked");
+          Log.i("ERA:itemClick", "item " + position + " clicked");
         }
       });
     }
