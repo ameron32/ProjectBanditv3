@@ -1,15 +1,16 @@
 package com.ameron32.apps.projectbanditv3.adapter;
 
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.ameron32.apps.projectbanditv3.AutoReloader;
 import com.ameron32.apps.projectbanditv3.R;
 import com.ameron32.apps.projectbanditv3.manager.CharacterManager;
 import com.ameron32.apps.projectbanditv3.object.CInventory;
@@ -25,8 +26,8 @@ import org.json.JSONException;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EquipmentRecyclerAdapter
-    extends AbsParseSuperRecyclerQueryAdapter<CInventory, EquipmentRecyclerAdapter.ViewHolder>
+public class InventoryRecyclerAdapter
+    extends AbsParseSuperRecyclerQueryAdapter<CInventory, InventoryRecyclerAdapter.ViewHolder>
 {
 
   private final int mRowViewResource;
@@ -37,10 +38,12 @@ public class EquipmentRecyclerAdapter
       @Override public ParseQuery<CInventory> create() {
         ParseQuery<CInventory> query = new ParseQuery<CInventory>("CInventory");
         query.include("item");
-        query.whereEqualTo("isEquipped", true);
 
         // We group by type, for the StickyHeaders
         query.orderByAscending("type");
+
+        // within groups, we put equipped on top
+        query.addDescendingOrder("isEquipped");
 
         // And sort the rest by name, A to Z
         query.addAscendingOrder("name");
@@ -53,7 +56,7 @@ public class EquipmentRecyclerAdapter
     };
   }
 
-  public EquipmentRecyclerAdapter(final int rowViewResource) {
+  public InventoryRecyclerAdapter(final int rowViewResource) {
     super(makeQuery(), true);
     mRowViewResource = rowViewResource;
   }
@@ -69,35 +72,35 @@ public class EquipmentRecyclerAdapter
     final CInventory object = getItem(position);
     final Item item = (Item) object.getParseObject("item");
 
-    String name = object.getString("name");
     int baseValue = object.getInt("baseValue");
-    int currentDurability = object.getInt("currentDurability");
-    int maxDurability = item.getInt("durabilityUses");
-    String slots = "none";
-    try {
-      slots = getSlots(item);
-    } catch (JSONException e) {
-      e.printStackTrace();
+    int quantity = object.getInt("quantity");
+    holder.itemName.setText(object.getString("name"));
+    if (quantity == 1) {
+      holder.itemQuantity.setVisibility(View.INVISIBLE);
+      holder.itemValue.setText("$ "
+          + baseValue);
+    } else {
+      holder.itemQuantity.setVisibility(View.VISIBLE);
+      holder.itemQuantity.setText(quantity
+          + "");
+      holder.itemValue.setText("$ "
+          + baseValue + " / $ "
+          + baseValue * quantity);
     }
-    // int quantity = object.getInt("quantity");
-    holder.itemName.setText(name);
-    holder.itemDurability.setText("[" + currentDurability + "/" + maxDurability + "]");
-    holder.itemValue.setText("$" + baseValue);
-    holder.equipmentSlot.setText(slots);
-    // if (quantity < 2) {
-    // holder.itemQuantity.setVisibility(View.INVISIBLE);
-    // holder.itemValue.setText("$ "
-    // + baseValue);
-    // } else {
-    // holder.itemQuantity.setVisibility(View.VISIBLE);
-    // holder.itemQuantity.setText(quantity
-    // + "");
-    // holder.itemValue.setText("$ "
-    // + baseValue + " / $ "
-    // + baseValue * quantity);
-    // }
-    holder.durabilityBar.setMax(maxDurability);
-    holder.durabilityBar.setProgress(currentDurability);
+
+    if (object.getBoolean("isEquipped")) {
+      holder.itemImage.setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+    } else {
+      holder.itemImage.clearColorFilter();
+    }
+
+    boolean isArmor = item.getBoolean("isArmor");
+    boolean isWeapon = item.getBoolean("isWeapon");
+    if (isArmor || isWeapon) {
+      holder.itemImage.setOnClickListener(new OnInventoryItemClick(object, this));
+    } else {
+      holder.itemImage.setOnClickListener(null);
+    }
   }
 
   private String getSlots(
@@ -124,30 +127,42 @@ public class EquipmentRecyclerAdapter
     return result;
   }
 
-  public class ViewHolder extends RecyclerView.ViewHolder {
+  public static class ViewHolder extends RecyclerView.ViewHolder {
 
-    @InjectView(R.id.button_value)
-    Button itemValue;
-    @InjectView(R.id.textview_equipment_item_name)
+    @InjectView(R.id.imagebutton_inventory_item)
+    ImageButton itemImage;
+    @InjectView(R.id.textview_inventory_item_name)
     TextView itemName;
-    @InjectView(R.id.textview_equipment_item_value)
-    TextView itemDurability;
-    @InjectView(R.id.textview_equipment_item_slot)
-    TextView equipmentSlot;
-    @InjectView(R.id.progressBar1)
-    ProgressBar durabilityBar;
+    @InjectView(R.id.textview_inventory_item_value)
+    TextView itemValue;
+    @InjectView(R.id.textview_inventory_item_quantity)
+    TextView itemQuantity;
 
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.inject(this, itemView);
-      final int position = getPosition();
-      Log.i("ERA:itemClick", "item " + position + " clicked");
-      itemView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Log.i("ERA:itemClick", "item " + position + " clicked");
-        }
-      });
+    }
+  }
+
+  public static class OnInventoryItemClick
+      implements View.OnClickListener {
+
+    private final CInventory object;
+    private final AutoReloader reloader;
+
+    public OnInventoryItemClick(
+        CInventory object,
+        AutoReloader adapter) {
+      this.object = object;
+      this.reloader = adapter;
+    }
+
+    @Override public void onClick(View v) {
+      boolean isEquipped = object.getBoolean("isEquipped");
+      object.put("isEquipped", !isEquipped);
+      object.saveInBackground();
+
+      reloader.loadObjects();
     }
   }
 }

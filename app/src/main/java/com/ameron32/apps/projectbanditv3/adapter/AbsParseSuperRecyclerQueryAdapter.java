@@ -2,68 +2,88 @@ package com.ameron32.apps.projectbanditv3.adapter;
 
 import android.support.v7.widget.RecyclerView;
 
+import com.ameron32.apps.projectbanditv3.AutoReloader;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter.QueryFactory;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<U>
+    implements AutoReloader
 {
 
-  
-  private final QueryFactory<T> factory;
-  private List<T> items;
+  @NotNull
+  private final QueryFactory<T> mFactory;
+  private final boolean hasStableIds;
+  @NotNull
+  private final List<T> mItems;
 
   // PRIMARY CONSTRUCTOR
-  public AbsParseSuperRecyclerQueryAdapter(final QueryFactory<T> factory) {
-    this.factory = factory;
-    this.items = new ArrayList<T>();
-    mListeners = new ArrayList<OnDataSetChangedListener>();
+  public AbsParseSuperRecyclerQueryAdapter(final QueryFactory<T> factory, final boolean hasStableIds) {
+    mFactory = factory;
+    mItems = new ArrayList<T>();
+    mDataSetListeners = new ArrayList<OnDataSetChangedListener>();
+    mQueryListeners = new ArrayList<OnQueryLoadListener<T>>();
+    this.hasStableIds = hasStableIds;
 
-    setHasStableIds(true);
+    setHasStableIds(hasStableIds);
     loadObjects();
   }
   
   // ALTERNATE CONSTRUCTOR
-  public AbsParseSuperRecyclerQueryAdapter(final String className) {
+  public AbsParseSuperRecyclerQueryAdapter(final String className, final boolean hasStableIds) {
     this(new QueryFactory<T>() {
       
       @Override public ParseQuery<T> create() {
         return ParseQuery.getQuery(className);
       }
-    });
+    }, hasStableIds);
   }
   
   // ALTERNATE CONSTRUCTOR
-  public AbsParseSuperRecyclerQueryAdapter(final Class<T> c) {
+  public AbsParseSuperRecyclerQueryAdapter(final Class<T> clazz, final boolean hasStableIds) {
     this(new QueryFactory<T>() {
       
       @Override public ParseQuery<T> create() {
-        return ParseQuery.getQuery(c);
+        return ParseQuery.getQuery(clazz);
       }
-    });
+    }, hasStableIds);
   }
 
 
-
+  /*
+   *  REQUIRED RECYCLERVIEW METHOD OVERRIDES
+   */
 
   @Override
   public long getItemId(int position) {
-    return position;
+    if (hasStableIds) {
+      return position;
+    }
+    return super.getItemId(position);
   }
 
   @Override public int getItemCount() {
-    return items.size();
+    return mItems.size();
   }
-  
-  public T getItem(int position) { return items.get(position); }
 
-  public List<T> getItems() { return items; }
+  public T getItem(int position) { return mItems.get(position); }
+
+  @NotNull
+  public List<T> getItems() { return mItems; }
+
+
+
+
+
 
   protected void onFilterQuery(ParseQuery<T> query) { 
     // provide override for filtering query
@@ -71,15 +91,17 @@ public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U
   
   public void loadObjects() {
     dispatchOnLoading();
-    ParseQuery<T> query = factory.create();
+    final ParseQuery<T> query = mFactory.create();
     onFilterQuery(query);
     query.findInBackground(new FindCallback<T>() {;
     
       @Override public void done(
           List<T> queriedItems,
-          ParseException e) {
+          @Nullable ParseException e) {
         if (e == null) {
-          items = queriedItems;
+          mItems.clear();
+          mItems.addAll(queriedItems);
+//          mItems = queriedItems;
           dispatchOnLoaded(queriedItems, e);
           notifyDataSetChanged();
           fireOnDataSetChanged();
@@ -93,22 +115,23 @@ public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U
   public interface OnDataSetChangedListener {
     public void onDataSetChanged();
   }
-  
-  private List<OnDataSetChangedListener> mListeners;
+
+  @NotNull
+  private final List<OnDataSetChangedListener> mDataSetListeners;
   
   public void addOnDataSetChangedListener(OnDataSetChangedListener listener) {
-    mListeners.add(listener);
+    mDataSetListeners.add(listener);
   }
   
   public void removeOnDataSetChangedListener(OnDataSetChangedListener listener) {
-    if (mListeners.contains(listener)) {
-      mListeners.remove(listener);
+    if (mDataSetListeners.contains(listener)) {
+      mDataSetListeners.remove(listener);
     }
   }
   
   protected void fireOnDataSetChanged() {
-    for (int i = 0; i < mListeners.size(); i++) {
-      mListeners.get(i).onDataSetChanged();
+    for (int i = 0; i < mDataSetListeners.size(); i++) {
+      mDataSetListeners.get(i).onDataSetChanged();
     }
   }
   
@@ -120,7 +143,8 @@ public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U
     public void onLoading();
   }
   
-  private List<OnQueryLoadListener<T>> mQueryListeners = new ArrayList<OnQueryLoadListener<T>>();
+  @NotNull
+  private final List<OnQueryLoadListener<T>> mQueryListeners;
   
   public void addOnQueryLoadListener(
       OnQueryLoadListener<T> listener) {
@@ -147,8 +171,4 @@ public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U
       l.onLoaded(objects, e);
     }
   }
-
-
-
-  
 }

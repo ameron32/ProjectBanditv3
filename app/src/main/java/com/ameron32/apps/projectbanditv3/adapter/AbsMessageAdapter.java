@@ -37,8 +37,7 @@ import butterknife.Optional;
 
 
 public abstract class AbsMessageAdapter
-    extends
-    AbsParseSuperRecyclerQueryAdapter<Message, AbsMessageAdapter.ViewHolder>
+    extends AbsParseSuperRecyclerQueryAdapter<Message, AbsMessageAdapter.ViewHolder>
 //    RecyclerView.Adapter<AbsMessageAdapter.ViewHolder> 
 {
   
@@ -55,7 +54,7 @@ public abstract class AbsMessageAdapter
       Context context,
       QueryFactory<Message> factory,
       int itemLayout, int systemLayout, int gameLayout) {
-	  super(factory);
+	  super(factory, true);
     this.context = context;
 //    this.factory = factory;
     this.itemLayout = itemLayout;

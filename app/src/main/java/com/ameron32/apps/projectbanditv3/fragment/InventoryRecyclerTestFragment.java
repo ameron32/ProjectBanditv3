@@ -3,14 +3,16 @@ package com.ameron32.apps.projectbanditv3.fragment;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import com.ameron32.apps.projectbanditv3.R;
 import com.ameron32.apps.projectbanditv3.adapter.AbsParseSuperRecyclerQueryAdapter;
-import com.ameron32.apps.projectbanditv3.adapter.EquipmentRecyclerAdapter;
 import com.ameron32.apps.projectbanditv3.adapter.InitialHeaderAdapter;
+import com.ameron32.apps.projectbanditv3.adapter.InventoryRecyclerAdapter;
 import com.ameron32.apps.projectbanditv3.object.CInventory;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersBuilder;
 import com.eowise.recyclerview.stickyheaders.StickyHeadersItemDecoration;
@@ -21,7 +23,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EquipmentRecyclerTestFragment
+public class InventoryRecyclerTestFragment
     extends SectionContainerTestFragment
     implements SwipeRefreshLayout.OnRefreshListener,
     AbsParseSuperRecyclerQueryAdapter.OnQueryLoadListener<CInventory> {
@@ -29,7 +31,7 @@ public class EquipmentRecyclerTestFragment
   @InjectView(R.id.srv1)
   SuperRecyclerView list;
 
-  private EquipmentRecyclerAdapter mAdapter;
+  private InventoryRecyclerAdapter mAdapter;
   private InitialHeaderAdapter mDecoratorAdapter;
   private StickyHeadersItemDecoration mDecoration;
 
@@ -41,11 +43,19 @@ public class EquipmentRecyclerTestFragment
     
 //    listView1.setAdapter(new EquipmentHeadersAdapter(getActivity(), R.layout.row_equipment));
 
-    mAdapter = new EquipmentRecyclerAdapter(R.layout.row_equipment);
+    mAdapter = new InventoryRecyclerAdapter(R.layout.row_griditem_inventory);
 //    mDecoratorAdapter = new InitialHeaderAdapter(mAdapter.getItems());
 
     list.setAdapter(mAdapter);
-    final RecyclerView.LayoutManager lm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+    final GridLayoutManager lm = new GridLayoutManager(getActivity(), 1);
+    lm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+      @Override
+      public int getSpanSize(int i) {
+        final int dpColumnWidth = 200;
+        final int pxColumnWidth = dpToPx(dpColumnWidth);
+        return Math.max(1, list.getMeasuredWidth() / pxColumnWidth);
+      }
+    });
     list.setLayoutManager(lm);
     list.setRefreshListener(this);
     list.setRefreshingColorResources(android.R.color.holo_orange_light, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_red_light);
@@ -113,4 +123,15 @@ public class EquipmentRecyclerTestFragment
   public void onLoading() {
 
   }
+
+
+
+
+
+  public int dpToPx(int dp) {
+    DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+    int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    return px;
+  }
+
 }

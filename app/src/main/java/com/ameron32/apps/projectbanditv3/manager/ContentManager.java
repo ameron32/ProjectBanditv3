@@ -13,6 +13,7 @@ import com.ameron32.apps.projectbanditv3.fragment.EquipmentRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.GameFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryHeadersTestFragment;
+import com.ameron32.apps.projectbanditv3.fragment.InventoryRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.IssueItemFragment;
 import com.ameron32.apps.projectbanditv3.R;
@@ -48,16 +49,17 @@ public class ContentManager extends AbsManager {
   
   private List<ContentItem> contentItems;
   
-  private ContentManager() {}
-  
-  public void initialize() {
+  private ContentManager() {
     listeners = new ArrayList<OnContentChangeListener>();
     contentItems = createContentItems();
+  }
+  
+  public void initialize() {
     setInitialized(true);
   }
   
   private List<ContentItem> createContentItems() {
-    List<ContentItem> items = new ArrayList<ContentItem>();
+    final List<ContentItem> items = new ArrayList<ContentItem>();
 
     items.add(new ContentItem("Test:Game", R.drawable.ic_construction,
         GameFragment.newInstance(R.layout.section_game)));
@@ -73,10 +75,12 @@ public class ContentManager extends AbsManager {
 //        SectionContainerTestFragment.newInstance(EquipmentHeadersTestFragment.class, R.layout.section_character_equipment_headers)));
     items.add(new ContentItem("Test:Equipment3", R.drawable.ic_construction,
         SectionContainerTestFragment.newInstance(EquipmentRecyclerTestFragment.class, R.layout.section_character_equipment_3)));
-    items.add(new ContentItem("Test:Inventory2", R.drawable.ic_construction,
-        SectionContainerTestFragment.newInstance(InventoryHeadersTestFragment.class, R.layout.section_character_inventory_headers)));
-    
-    
+//    items.add(new ContentItem("Test:Inventory2", R.drawable.ic_construction,
+//        SectionContainerTestFragment.newInstance(InventoryHeadersTestFragment.class, R.layout.section_character_inventory_headers)));
+    items.add(new ContentItem("Test:Inventory3", R.drawable.ic_construction,
+        SectionContainerTestFragment.newInstance(InventoryRecyclerTestFragment.class, R.layout.section_character_inventory_3)));
+
+
 //  TODO: reenable later
 //    items.add(new ContentItem("Test:Characters", R.drawable.ic_construction,
 //        TableTestFragment.create("Character", R.layout.fragment_default_table_layout)));
@@ -110,6 +114,7 @@ public class ContentManager extends AbsManager {
       items.add(new ContentItem("GM: Create Item", R.drawable.ic_gm, new CreateItemFragment()));
       items.add(new ContentItem("GM: Issue Item", R.drawable.ic_gm, new IssueItemFragment()));
       items.add(new ContentItem("GM: Roll Dice", R.drawable.ic_gm, new RollDiceFragment()));
+
       items.add(new ContentItem("Database: Create Item Set", R.drawable.ic_gm, new CreateSetItemsFragment()));
       items.add(new ContentItem("Database: Attach Relation", R.drawable.ic_gm, new RelationAttacherFragment()));
     }

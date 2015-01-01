@@ -20,7 +20,7 @@
     <dimen name="item_textsize_name">11sp</dimen>
     <dimen name="item_textsize_quantity">9sp</dimen>
 
-    <item name="inventory_grid_column_count" format="integer" type="dimen">4</item>
+    <item name="inventory_grid_column_count" format="integer" type="dimen">2</item>
 
     <!-- STANDARD VIEW -->
     <dimen name="image_character_length_squared">32dp</dimen>

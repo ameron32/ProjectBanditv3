@@ -38,11 +38,10 @@ public class SkillsTestFragment
   }
   
   public static class SkillAdapter
-      extends
-      AbsParseSuperRecyclerQueryAdapter<ParseObject, SkillAdapter.ViewHolder> {
+      extends AbsParseSuperRecyclerQueryAdapter<ParseObject, SkillAdapter.ViewHolder> {
     
     public SkillAdapter(String className) {
-      super(className);
+      super(className, true);
     }
     
     public static class ViewHolder

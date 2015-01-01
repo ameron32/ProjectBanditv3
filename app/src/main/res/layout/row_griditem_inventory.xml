@@ -9,7 +9,7 @@
         android:layout_height="@dimen/item_size_squared"
         android:alpha="0.3"
         android:gravity="center"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_construction" />
 
     <TextView
         android:id="@+id/textview_inventory_item_name"
