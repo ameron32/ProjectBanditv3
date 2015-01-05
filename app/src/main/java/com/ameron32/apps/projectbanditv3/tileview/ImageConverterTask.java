@@ -135,7 +135,7 @@ public class ImageConverterTask extends AsyncTask<String[], Integer, String> {
   
   private void log(String s) {
     Log.e("ImageConverterTask", s);
-    Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+//    Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
   }
   
 }

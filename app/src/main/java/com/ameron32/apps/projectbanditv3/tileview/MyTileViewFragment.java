@@ -171,7 +171,7 @@ public class MyTileViewFragment extends TileViewFragment {
 //        TextView textView = ((TextView) getView().findViewById(R.id.tvHello));
 //        textView.setText(message);
         log("MARKER_TAP", message);
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
       }
     });
     
@@ -193,17 +193,13 @@ public class MyTileViewFragment extends TileViewFragment {
      * "downsamples/map.png");
      */
     tileView.addDetailLevel(0.5f, tiles + "500_%col%_%row%.png", "map.png");
-//    tileView.addDetailLevel(0.25f, tiles + "250_%col%_%row%.png", "map.png");
-//    tileView.addDetailLevel(0.125f, tiles + "125_%col%_%row%.png", "map.png");
+    tileView.addDetailLevel(0.25f, tiles + "250_%col%_%row%.png", "map.png");
+    tileView.addDetailLevel(0.125f, tiles + "125_%col%_%row%.png", "map.png");
     /*
      * tileView.addDetailLevel(0.0625f, "tiles/62_%col%_%row%.png",
      * "downsamples/map.png");
-     */
-    /*
      * tileView.addDetailLevel(0.03125f, "tiles/31_%col%_%row%.png",
      * "downsamples/map.png");
-     */
-    /*
      * tileView.addDetailLevel(0.015625f, "tiles/15_%col%_%row%.png",
      * "downsamples/map.png");
      */
@@ -319,7 +315,7 @@ public class MyTileViewFragment extends TileViewFragment {
 //        TextView textView = ((TextView) getView().findViewById(R.id.tvHello));
 //        textView.setText(message);
         log("MARKER_TAP", message);
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
       }
     });
     
@@ -446,7 +442,7 @@ public class MyTileViewFragment extends TileViewFragment {
   private void log(String tag, String message) {
     if (DEBUG) {
       Log.i("MyTileViewFragment", tag + " " + message);
-      Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+//      Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
   }
 }
