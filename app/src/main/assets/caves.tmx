@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="9" height="9" tilewidth="1200" tileheight="1200">
+ <tileset firstgid="1" source="Caves.tsx"/>
+ <tileset firstgid="40" source="Water.tsx"/>
+ <tileset firstgid="49" source="RiverTempleOutside.tsx"/>
+ <tileset firstgid="85" source="OpenAreas.tsx"/>
+ <tileset firstgid="103" source="Basic.tsx"/>
+ <layer name="Tile Layer 1" width="9" height="9">
+  <data>
+   <tile gid="2684354580"/>
+   <tile gid="2684354576"/>
+   <tile gid="27"/>
+   <tile gid="2684354576"/>
+   <tile gid="3221225492"/>
+   <tile gid="3221225495"/>
+   <tile gid="2684354615"/>
+   <tile gid="74"/>
+   <tile gid="58"/>
+   <tile gid="1610612744"/>
+   <tile gid="4"/>
+   <tile gid="5"/>
+   <tile gid="1"/>
+   <tile gid="30"/>
+   <tile gid="1610612755"/>
+   <tile gid="2684354615"/>
+   <tile gid="74"/>
+   <tile gid="58"/>
+   <tile gid="3221225478"/>
+   <tile gid="3221225474"/>
+   <tile gid="3221225477"/>
+   <tile gid="1073741832"/>
+   <tile gid="17"/>
+   <tile gid="1610612759"/>
+   <tile gid="2684354615"/>
+   <tile gid="74"/>
+   <tile gid="58"/>
+   <tile gid="1610612840"/>
+   <tile gid="1610612846"/>
+   <tile gid="1610612865"/>
+   <tile gid="3221225567"/>
+   <tile gid="98"/>
+   <tile gid="3221225569"/>
+   <tile gid="2684354615"/>
+   <tile gid="74"/>
+   <tile gid="58"/>
+   <tile gid="3221225608"/>
+   <tile gid="3221225558"/>
+   <tile gid="1610612822"/>
+   <tile gid="1610612828"/>
+   <tile gid="3221225570"/>
+   <tile gid="3221225571"/>
+   <tile gid="2684354615"/>
+   <tile gid="74"/>
+   <tile gid="58"/>
+   <tile gid="3221225622"/>
+   <tile gid="2684354646"/>
+   <tile gid="1610612833"/>
+   <tile gid="1610612855"/>
+   <tile gid="3221225600"/>
+   <tile gid="2684354621"/>
+   <tile gid="2684354610"/>
+   <tile gid="74"/>
+   <tile gid="58"/>
+   <tile gid="1610612877"/>
+   <tile gid="3221225635"/>
+   <tile gid="2684354621"/>
+   <tile gid="3221225527"/>
+   <tile gid="3221225521"/>
+   <tile gid="2684354610"/>
+   <tile gid="56"/>
+   <tile gid="62"/>
+   <tile gid="58"/>
+   <tile gid="3221225527"/>
+   <tile gid="3221225527"/>
+   <tile gid="2684354610"/>
+   <tile gid="56"/>
+   <tile gid="2684354634"/>
+   <tile gid="2684354634"/>
+   <tile gid="62"/>
+   <tile gid="2684354618"/>
+   <tile gid="58"/>
+   <tile gid="2684354634"/>
+   <tile gid="2684354634"/>
+   <tile gid="2684354634"/>
+   <tile gid="62"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+   <tile gid="58"/>
+  </data>
+ </layer>
+</map>

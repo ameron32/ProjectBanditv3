@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="6" height="6" tilewidth="1200" tileheight="1200">
+ <tileset firstgid="1" source="Basic.tsx" />
+ <layer name="Tile Layer 1" width="6" height="6">
+  <data>
+   <tile gid="0"/>
+   <tile gid="2"/>
+   <tile gid="1610612745"/>
+   <tile gid="1610612756"/>
+   <tile gid="30"/>
+   <tile gid="2684354569"/>
+   <tile gid="0"/>
+   <tile gid="8"/>
+   <tile gid="2684354569"/>
+   <tile gid="2684354593"/>
+   <tile gid="2684354564"/>
+   <tile gid="0"/>
+   <tile gid="1610612761"/>
+   <tile gid="13"/>
+   <tile gid="2684354633"/>
+   <tile gid="3221225498"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="3221225510"/>
+   <tile gid="2684354615"/>
+   <tile gid="37"/>
+   <tile gid="49"/>
+   <tile gid="2684354567"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="49"/>
+   <tile gid="2684354584"/>
+   <tile gid="3221225517"/>
+   <tile gid="2684354565"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="3221225478"/>
+   <tile gid="0"/>
+  </data>
+ </layer>
+</map>

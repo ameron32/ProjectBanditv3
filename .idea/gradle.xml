@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/ParseLoginUI" />
+            <option value="$PROJECT_DIR$/TileView" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
