@@ -399,8 +399,7 @@ public class MyTileViewFragment extends TileViewFragment {
     
     tileView.setScale(scale);
     tileView.setScaleLimits(0.2d, 2.25d);
-//    tileView.setCacheEnabled(true);
-
+    tileView.setCacheEnabled(true);
   }
   
   @Override
