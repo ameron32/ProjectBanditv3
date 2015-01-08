@@ -221,7 +221,7 @@ public class MyTileViewFragment extends TileViewFragment {
   private void initZoomPanGridLayout() {
     
     TileView tileView = getTileView();
-    
+
     requestView = (RequestView) getView().findViewById(R.id.request_view);
     
     tileView.addTileViewEventListener(new TileView.TileViewEventListener() {
@@ -325,7 +325,7 @@ public class MyTileViewFragment extends TileViewFragment {
     int height = tilesize[1] * 6;
     float scale = 0.2f;
     tileView.setSize(width, height);
-    
+
     // LayoutInflater inflater = (LayoutInflater)
     // getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     // GridLayout gridLayout = (GridLayout) inflater.inflate(R.layout.grid_view,
@@ -336,7 +336,8 @@ public class MyTileViewFragment extends TileViewFragment {
     // View v = inflater.inflate(R.layout.grid_view_tile_child, null);
     // gridLayout.addView(v);
     // }
-    
+
+
     tileView.addTileViewEventListener(new MyTileViewEventListener() {
       
       @Override
@@ -345,28 +346,29 @@ public class MyTileViewFragment extends TileViewFragment {
 //            .setText("Current Scale: " + scale);
       }
     });
-    
-    
+
+
     float k = 2.0f;
     String httpPrefix = "https://dl.dropboxusercontent.com/u/949753/ANDROID/TileView/indoor/";
     // httpPrefix = "https://copy.com/s/2zeq8Eyhbgje/";
     String tilesPrefix = "tileset";
     String backdropPrefix = "backdrop";
-    
+
     TileMap tmxResult = TiledXMLParser.parseTMX(getActivity(), "basic.tmx");
     Log.i("KrisTMX", tmxResult.toString());
 
-    
 
-    Tileset.ComponentHandler handler 
-      = new Tileset.ComponentHandler(httpPrefix + tilesPrefix, 
+
+    Tileset.ComponentHandler handler
+      = new Tileset.ComponentHandler(httpPrefix + tilesPrefix,
           "Basic", 600, "png");
-    
+
     tileView.setDownsampleDecoder(new BitmapDecoderAssets());
     /**
      * @note future downsample should smart function (like TileBitmapDecoder)
      */
     String downsampleImage = "Basic.png";
+    downsampleImage = "trans.png";
     tileView.setTileDecoder(new MyFOWTileBitmapDecoder(getTileView(), tmxResult, getActivity()));
 
 //    tileView.addDetailLevel(1.0f * k, "indoor/tiles/fantasy_rohan_1x.png", "indoor/backdrop/black.png", 128, 128);
@@ -385,21 +387,41 @@ public class MyTileViewFragment extends TileViewFragment {
 
     // FIXME: uncomment when OOM fixed.
 //  tileView.addDetailLevel(1.000f, httpPrefix + tilesPrefix + "dt01_1200_%col%_-%row%.jpg", "black.png", 1200, 1200);
-    tileView.addDetailLevel(0.500f, handler.getDetailLevelUrl(600), downsampleImage, 600, 600);
+//    tileView.addDetailLevel(0.500f, handler.getDetailLevelUrl(600), downsampleImage, 600, 600);
     tileView.addDetailLevel(0.250f, handler.getDetailLevelUrl(300), downsampleImage, 300, 300);
     tileView.addDetailLevel(0.125f, handler.getDetailLevelUrl(150), downsampleImage, 150, 150);
-    
+
     // lets center all markers both horizontally and vertically
     tileView.setMarkerAnchorPoints(-0.5f, -0.5f);
-    
+
     // use pixel coordinates to roughly center it
     // they are calculated against the "full" size of the mapView
     // i.e., the largest zoom level as it would be rendered at a scale of 1.0f
+
+    // lets center all markers both horizontally and vertically
+
+
     tileView.moveToAndCenter(0, 0);
-    
+
     tileView.setScale(scale);
     tileView.setScaleLimits(0.2d, 2.25d);
     tileView.setCacheEnabled(true);
+
+
+    TileView overlayView = getOverlayView();
+
+    overlayView.setSize(width, height);
+    overlayView.setDownsampleDecoder(new BitmapDecoderAssets());
+    overlayView.setTileDecoder(new MyFOW2TileBitmapDecoder(getOverlayView(), tmxResult, getActivity()));
+
+    overlayView.addDetailLevel(0.125f, handler.getDetailLevelUrl(150), "trans.png", 25, 25);
+    overlayView.setMarkerAnchorPoints(-0.5f, -0.5f);
+
+    overlayView.moveToAndCenter(0, 0);
+
+    overlayView.setScale(scale);
+    overlayView.setScaleLimits(0.2d, 2.25d);
+    overlayView.setCacheEnabled(true);
   }
   
   @Override

@@ -139,7 +139,11 @@ public class Tileset {
     int colNumber = gid % maxX;
     int rowNumber = gid / maxX;
     
-    return getTileAt(size, colNumber, rowNumber, tileset);
+    try {
+        return getTileAt(size, colNumber, rowNumber, tileset);
+    } catch (Exception e) {
+        return null;
+    }
   }
   
   public static class ComponentHandler {

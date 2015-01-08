@@ -21,8 +21,8 @@ public class MyFOWTileBitmapDecoder extends MyTileBitmapDecoderHttp {
     
     Tile[][] tiles = tileMap.getTiles(0);
     broken = new boolean[tiles.length][tiles[0].length];
-    broken[2][2] = true;
-    broken[4][3] = true;
+    broken[0][0] = true;
+    broken[2][1] = true;
   }
 
   @Override

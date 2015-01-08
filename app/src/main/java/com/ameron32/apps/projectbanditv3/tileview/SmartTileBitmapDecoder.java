@@ -15,6 +15,10 @@ import com.qozix.tileview.graphics.BitmapDecoderHttp;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.Log;
 
 
@@ -41,6 +45,8 @@ public abstract class SmartTileBitmapDecoder extends BitmapDecoderHttp {
     // HashMap    <Bitmap>:  Bitmap:  TILESET IMAGE
     private Map<Integer, Map<String, SoftReference<Bitmap>>> sizesMap;
     private Bitmap error;
+    private Bitmap blank;
+    private Bitmap clear;
     
     public BitmapCache() {
       sizesMap = new HashMap<Integer, Map<String, SoftReference<Bitmap>>>();
@@ -139,9 +145,54 @@ public abstract class SmartTileBitmapDecoder extends BitmapDecoderHttp {
       }
       return error;
     }
+
+    /**
+     * Load a basic cached bitmap
+     */
+    protected Bitmap loadBlankTile(int tileSizeX, int tileSizeY, Context context) {
+      // load the error tile if it has never been loaded before
+      if (blank == null) {
+        try {
+          blank = BitmapFactory.decodeStream(context.getAssets().open("black.png"));
+          blank = Bitmap.createScaledBitmap(blank, tileSizeX, tileSizeY, false);
+        }
+        catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      return blank;
+    }
+
+    /**
+     * Load a basic cached bitmap
+     */
+    protected Bitmap loadTransparentTile(int tileSizeX, int tileSizeY, Context context) {
+      // load the error tile if it has never been loaded before
+      if (clear == null) {
+        try {
+          clear = BitmapFactory.decodeStream(context.getAssets().open("trans.png"));
+          clear = Bitmap.createScaledBitmap(clear, tileSizeX, tileSizeY, false);
+          Canvas canvas = new Canvas(clear);
+
+          Paint transPainter = new Paint();
+          transPainter.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+
+          canvas.drawRect(0, 0, tileSizeX, tileSizeY, transPainter);
+        }
+        catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      return clear;
+    }
   }
-  
-  
+
+
+
+
+
+
+
   protected static void log(String tag, String message) {
     if (DEBUG) {
       Log.i(tag, message);
