@@ -47,15 +47,7 @@ public class InventoryRecyclerTestFragment
 //    mDecoratorAdapter = new InitialHeaderAdapter(mAdapter.getItems());
 
     list.setAdapter(mAdapter);
-    final GridLayoutManager lm = new GridLayoutManager(getActivity(), 1);
-    lm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-      @Override
-      public int getSpanSize(int i) {
-        final int dpColumnWidth = 200;
-        final int pxColumnWidth = dpToPx(dpColumnWidth);
-        return Math.max(1, list.getMeasuredWidth() / pxColumnWidth);
-      }
-    });
+    final GridLayoutManager lm = new GridLayoutManager(getActivity(), 2);
     list.setLayoutManager(lm);
     list.setRefreshListener(this);
     list.setRefreshingColorResources(android.R.color.holo_orange_light, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_red_light);
@@ -75,7 +67,6 @@ public class InventoryRecyclerTestFragment
   }
 
   private void applyDecoration() {
-
     mDecoratorAdapter = new InitialHeaderAdapter(mAdapter.getItems());
 
     // Build item decoration and add it to the RecyclerView
@@ -120,18 +111,5 @@ public class InventoryRecyclerTestFragment
   }
 
   @Override
-  public void onLoading() {
-
-  }
-
-
-
-
-
-  public int dpToPx(int dp) {
-    DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
-    int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    return px;
-  }
-
+  public void onLoading() {}
 }
