@@ -23,7 +23,7 @@ public class GameFragment extends
     SectionContainerTestFragment {
   
   private static final String ARG_PARAM1 = "param1";
-  
+
   public static GameFragment newInstance(int param1) {
     GameFragment fragment = new GameFragment();
     Bundle args = new Bundle();
@@ -31,11 +31,13 @@ public class GameFragment extends
     fragment.setArguments(args);
     return fragment;
   }
-  
+
   public GameFragment() {
     // Required empty public constructor
   }
-  
+
+  private int mParam1;
+
   @Override public void onCreate(
       Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -43,15 +45,14 @@ public class GameFragment extends
       mParam1 = getArguments().getInt(ARG_PARAM1);
     }
   }
-  
+
   @InjectView(R.id.textcomboview_game)
   FloatingHintTextView game;
   @InjectView(R.id.textcomboview_game_gm) FloatingHintTextView gm;
   @InjectView(R.id.textcomboview_game_players) FloatingHintTextView players;
+
   @InjectView(R.id.textcomboview_username) FloatingHintTextView user;
-  
-  private int mParam1;
-  
+
   @Override public void onViewCreated(
       View view,
       Bundle savedInstanceState) {

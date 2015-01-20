@@ -43,8 +43,8 @@ public class EquipmentRecyclerTestFragment
 
     mAdapter = new EquipmentRecyclerAdapter(R.layout.row_equipment);
 //    mDecoratorAdapter = new InitialHeaderAdapter(mAdapter.getItems());
-
     list.setAdapter(mAdapter);
+
     final RecyclerView.LayoutManager lm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
     list.setLayoutManager(lm);
     list.setRefreshListener(this);

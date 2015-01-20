@@ -8,6 +8,7 @@ import com.ameron32.apps.projectbanditv3.fragment.ChatManagerFragment;
 import com.ameron32.apps.projectbanditv3.adapter.ContentAdapter;
 import com.ameron32.apps.projectbanditv3.fragment.CreateItemFragment;
 import com.ameron32.apps.projectbanditv3.fragment.CreateSetItemsFragment;
+import com.ameron32.apps.projectbanditv3.fragment.DEMORxJavaFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentHeadersTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentTestFragment;
@@ -112,6 +113,8 @@ public class ContentManager extends AbsManager {
 
         items.add(new ContentItem("GM:Test:TileView", R.drawable.ic_gm,
                 MyTileViewFragment.newInstance()));
+
+      items.add(new ContentItem("RxJava DEMO", R.drawable.ic_gm, new DEMORxJavaFragment()));
 
       items.add(new ContentItem("GM: Add Players", R.drawable.ic_gm, new AddPlayersFragment()));
       items.add(new ContentItem("GM: Add Characters", R.drawable.ic_gm, new AddCharactersFragment()));

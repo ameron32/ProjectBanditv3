@@ -48,6 +48,7 @@ dependencies {
     compile 'com.eowise:recyclerview-stickyheaders:0.5.0@aar'
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.intellij:annotations:+@jar'
+  compile 'io.reactivex:rxandroid:0.23.0'
     compile 'com.jakewharton.timber:timber:2.5.0'
     compile project(':ParseLoginUI')
     compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
