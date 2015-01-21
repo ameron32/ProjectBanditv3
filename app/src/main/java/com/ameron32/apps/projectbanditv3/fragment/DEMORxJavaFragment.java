@@ -35,7 +35,7 @@ import rx.schedulers.Schedulers;
  */
 public class DEMORxJavaFragment extends SectionContainerTestFragment {
 
-  private Subscription _subscribe;
+  private Subscription _subscription;
 
   public DEMORxJavaFragment() {
     // Required empty public constructor
@@ -58,22 +58,22 @@ public class DEMORxJavaFragment extends SectionContainerTestFragment {
   public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.reset(this);
-    if (_subscribe != null) {
-      _subscribe.unsubscribe();
+    if (_subscription != null) {
+      _subscription.unsubscribe();
     }
   }
-
-  Thread t;
 
   @OnClick(R.id.start_button)
   void start() {
     _progress.setVisibility(View.VISIBLE);
     _log("ButtonClicked");
 
-    _subscribe = AndroidObservable.bindFragment(this, _getObservable())
-      .subscribeOn(Schedulers.computation())
-      .observeOn(AndroidSchedulers.mainThread())
-      .subscribe(_getObserver());
+    _subscription = AndroidObservable.bindFragment(this, _getObservable())
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(_getObserver());
+
+
   }
 
   private Observable<Boolean> _getObservable() {
@@ -141,8 +141,6 @@ public class DEMORxJavaFragment extends SectionContainerTestFragment {
 
     if (_isCurrentlyOnMainThread()) {
       _logs.add(logMsg + " (main thread) ");
-//      _adapter.clear();
-//      _adapter.addAll(_logs);
       _adapter.notifyDataSetChanged();
     } else {
       _logs.add(logMsg + " (NOT main thread) ");
@@ -152,8 +150,6 @@ public class DEMORxJavaFragment extends SectionContainerTestFragment {
 
         @Override
         public void run() {
-//          _adapter.clear();
-//          _adapter.addAll(_logs);
           _adapter.notifyDataSetChanged();
         }
       });
