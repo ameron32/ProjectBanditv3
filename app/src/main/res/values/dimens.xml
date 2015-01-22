@@ -1,39 +1,43 @@
 <resources>
 
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    
-    <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp: -->
-    <!-- https://developer.android.com/design/patterns/navigation-drawer.html -->
-    <dimen name="navigation_drawer_width">320dp</dimen>
-    <dimen name="chat_manager_width">320dp</dimen>
-    <dimen name="navigation_quickbar_width">48dp</dimen>
-    <!--  -->
-    <dimen name="message_text_size">13sp</dimen>
-    <dimen name="inputbox_text_size">11sp</dimen>
-    <dimen name="debug_text_size">9sp</dimen>
-    <dimen name="sliding_bar_width">150dp</dimen>
-    <dimen name="sliding_icon_bar_width">48dp</dimen>
-    <dimen name="item_size_squared">48dp</dimen>
-    <dimen name="item_textsize_value">9sp</dimen>
-    <dimen name="item_textsize_name">11sp</dimen>
-    <dimen name="item_textsize_quantity">9sp</dimen>
+  <!-- Default screen margins, per the Android Design guidelines. -->
+  <dimen name="activity_horizontal_margin">16dp</dimen>
+  <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <item name="inventory_grid_column_count" format="integer" type="dimen">2</item>
+  <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp: -->
+  <!-- https://developer.android.com/design/patterns/navigation-drawer.html -->
+  <dimen name="navigation_drawer_width">320dp</dimen>
+  <dimen name="chat_manager_width">320dp</dimen>
+  <dimen name="navigation_quickbar_width">48dp</dimen>
+  <!--  -->
+  <dimen name="message_text_size">13sp</dimen>
+  <dimen name="inputbox_text_size">11sp</dimen>
+  <dimen name="debug_text_size">9sp</dimen>
+  <dimen name="sliding_bar_width">150dp</dimen>
+  <dimen name="sliding_icon_bar_width">48dp</dimen>
+  <dimen name="item_size_squared">48dp</dimen>
+  <dimen name="item_textsize_value">9sp</dimen>
+  <dimen name="item_textsize_name">11sp</dimen>
+  <dimen name="item_textsize_quantity">9sp</dimen>
 
-    <!-- STANDARD VIEW -->
-    <dimen name="image_character_length_squared">32dp</dimen>
-    <dimen name="image_action_length_squared">16dp</dimen>
+  <item name="inventory_grid_column_count" format="integer" type="dimen">2</item>
 
-    <!-- LARGE VIEW -->
-    <dimen name="image_character_length_squared_large">48dp</dimen>
-    <dimen name="image_action_length_squared_large">32dp</dimen>
-    
-    
-    
-    
-    <dimen name="toolbar_elevation">4dp</dimen>
-    <dimen name="text_game_listitem_textsize">24sp</dimen>
+  <!-- STANDARD VIEW -->
+  <dimen name="image_character_length_squared">32dp</dimen>
+  <dimen name="image_action_length_squared">16dp</dimen>
+
+  <!-- LARGE VIEW -->
+  <dimen name="image_character_length_squared_large">48dp</dimen>
+  <dimen name="image_action_length_squared_large">32dp</dimen>
+
+
+  <dimen name="toolbar_elevation">4dp</dimen>
+  <dimen name="text_game_listitem_textsize">24sp</dimen>
+
+
+  <!-- PARTIALSLIDINGPANE -->
+  <dimen name="side_pane_width">240dp</dimen>
+  <dimen name="main_pane_width">1000dp</dimen>
+  <dimen name="partial_pane_width">64dp</dimen>
 
 </resources>

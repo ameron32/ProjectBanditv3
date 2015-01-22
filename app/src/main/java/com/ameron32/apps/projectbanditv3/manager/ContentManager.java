@@ -18,6 +18,7 @@ import com.ameron32.apps.projectbanditv3.fragment.InventoryRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.IssueItemFragment;
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.fragment.PartialPaneFragment;
 import com.ameron32.apps.projectbanditv3.fragment.RelationAttacherFragment;
 import com.ameron32.apps.projectbanditv3.fragment.RollDiceFragment;
 import com.ameron32.apps.projectbanditv3.fragment.SectionContainerTestFragment;
@@ -88,6 +89,11 @@ public class ContentManager extends AbsManager {
 //        TableTestFragment.create("Character", R.layout.fragment_default_table_layout)));
     
     if (GameManager.get().isCurrentUserGM()) {
+
+      items.add(new ContentItem("RxJava DEMO", R.drawable.ic_gm, new DEMORxJavaFragment()));
+      items.add(new ContentItem("SlidingPaneTest", R.drawable.ic_gm, new PartialPaneFragment()));
+
+
 //      items.add(new ContentItem("GM:Demo:blank", R.drawable.ic_gm, 
 //          AbsContentFragment.newInstance(/*1*/)));
       items.add(new ContentItem("GM:Chat", R.drawable.ic_gm, 
@@ -114,7 +120,7 @@ public class ContentManager extends AbsManager {
         items.add(new ContentItem("GM:Test:TileView", R.drawable.ic_gm,
                 MyTileViewFragment.newInstance()));
 
-      items.add(new ContentItem("RxJava DEMO", R.drawable.ic_gm, new DEMORxJavaFragment()));
+
 
       items.add(new ContentItem("GM: Add Players", R.drawable.ic_gm, new AddPlayersFragment()));
       items.add(new ContentItem("GM: Add Characters", R.drawable.ic_gm, new AddCharactersFragment()));

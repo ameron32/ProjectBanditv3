@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ameron32.apps.projectbanditv3.view.PartialSlidingPaneLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sliding_pane_layout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <FrameLayout
+      android:layout_width="@dimen/side_pane_width"
+      android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_blue_dark"
+        android:text="Full1"/>
+    <TextView
+        android:layout_width="@dimen/partial_pane_width"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_blue_light"
+        android:text="Partial1"/>
+  </FrameLayout>
+  <!--<TextView-->
+      <!--android:layout_width="@dimen/main_pane_width"-->
+      <!--android:layout_height="match_parent"-->
+      <!--android:layout_weight="1"-->
+      <!--android:layout_marginLeft="@dimen/partial_pane_width"-->
+      <!--android:text="Pane2"/>-->
+
+  <com.ameron32.apps.projectbanditv3.view.PartialSlidingPaneLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/sliding_pane_layout2"
+      android:layout_width="match_parent"
+      android:layout_weight="1"
+      android:layout_marginLeft="@dimen/partial_pane_width"
+      android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="@dimen/side_pane_width"
+        android:layout_height="match_parent">
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="@android:color/holo_blue_dark"
+          android:text="Full2"/>
+      <TextView
+          android:layout_width="@dimen/partial_pane_width"
+          android:layout_height="match_parent"
+          android:background="@android:color/holo_blue_light"
+          android:text="Partial2"/>
+    </FrameLayout>
+    <!--<TextView-->
+    <!--android:layout_width="@dimen/main_pane_width"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:layout_marginLeft="@dimen/partial_pane_width"-->
+    <!--android:text="Pane2"/>-->
+
+    <com.ameron32.apps.projectbanditv3.view.PartialSlidingPaneLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sliding_pane_layout3"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/partial_pane_width"
+        android:layout_height="match_parent">
+      <FrameLayout
+          android:layout_width="@dimen/side_pane_width"
+          android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark"
+            android:text="Full3"/>
+        <TextView
+            android:layout_width="@dimen/partial_pane_width"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_light"
+            android:text="Partial3"/>
+      </FrameLayout>
+      <TextView
+      android:layout_width="@dimen/main_pane_width"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:layout_marginLeft="@dimen/partial_pane_width"
+      android:text="Pane4"/>
+
+    </com.ameron32.apps.projectbanditv3.view.PartialSlidingPaneLayout>
+
+  </com.ameron32.apps.projectbanditv3.view.PartialSlidingPaneLayout>
+
+</com.ameron32.apps.projectbanditv3.view.PartialSlidingPaneLayout>
