@@ -13,6 +13,7 @@ import com.ameron32.apps.projectbanditv3.fragment.EquipmentHeadersTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.GameFragment;
+import com.ameron32.apps.projectbanditv3.fragment.HtmlTextViewTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryHeadersTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryTestFragment;
@@ -92,6 +93,7 @@ public class ContentManager extends AbsManager {
 
       items.add(new ContentItem("RxJava DEMO", R.drawable.ic_gm, new DEMORxJavaFragment()));
       items.add(new ContentItem("SlidingPaneTest", R.drawable.ic_gm, new PartialPaneFragment()));
+      items.add(new ContentItem("HtmlTextView DEMO", R.drawable.ic_gm, new HtmlTextViewTestFragment()));
 
 
 //      items.add(new ContentItem("GM:Demo:blank", R.drawable.ic_gm, 
