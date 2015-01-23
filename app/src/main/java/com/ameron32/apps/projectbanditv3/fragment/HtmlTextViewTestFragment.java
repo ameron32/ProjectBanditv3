@@ -1,22 +1,21 @@
 package com.ameron32.apps.projectbanditv3.fragment;
 
 import android.content.res.AssetManager;
-import android.content.res.AssetManager.AssetInputStream;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
-import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.SpannedString;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ameron32.apps.projectbanditv3.R;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Created by klemeilleur on 1/23/2015.
