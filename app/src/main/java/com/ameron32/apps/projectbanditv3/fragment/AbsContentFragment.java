@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.manager.CommunicationPipeline;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -19,7 +20,7 @@ import butterknife.Optional;
 
 
 public abstract class AbsContentFragment
-  extends Fragment 
+  extends Fragment
 {
   
   public AbsContentFragment() {}

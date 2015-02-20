@@ -2,7 +2,10 @@ package com.ameron32.apps.projectbanditv3.manager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
+import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.fragment.AbsContentFragment;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 
@@ -27,7 +30,7 @@ public class CommunicationPipeline extends Fragment {
   private Subscription _subscription;
 
   public CommunicationPipeline() {
-    //
+    // required empty public constructor
   }
 
   @Override
@@ -48,101 +51,62 @@ public class CommunicationPipeline extends Fragment {
    * FROM PARSE RECEIVER
    */
   public void onReceive() {
-    addSubscription();
+//    enqueue();
   }
 
-  private void addSubscription() {
-
-  }
-
-  private void example(List<ParseObject> objects) {
+  public void example() {
     // putPusher()
 
-    final Observer<ParseObject> observer = _getPushWatcher();
+    final Observer<ParseObject> observer = _getObserver();
 
-    for (ParseObject obj : objects) {
-      final Observable<ParseObject> observable = _getPush(obj);
-      _subscription =
-          AndroidObservable.bindFragment(this, observable)
-          .subscribeOn(Schedulers.computation())
-          .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(observer);
-    }
+    final Observable<ParseObject> observable = _getObservable();
+//    final Observable<ParseObject> observable = Observable.from(objects.toArray(new ParseObject[objects.size()]));
+    _subscription =
+        AndroidObservable.bindFragment(this, observable)
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(observer);
+
   }
 
 
-  private Observable<Boolean> _getObservable() {
-    return Observable.create(new Observable.OnSubscribe<Boolean>() {
+  private Observable<ParseObject> _getObservable() {
+    return Observable.create(new Observable.OnSubscribe<ParseObject>() {
 
       @Override
-      public void call(Subscriber<? super Boolean> subscriber) {
-//        _log("Within Observable");
+      public void call(Subscriber<? super ParseObject> subscriber) {
+        _log("Within Observable");
 //        _doSomeLongOperation_thatBlocksCurrentThread();
-        subscriber.onNext(true);
+        subscriber.onNext(null);
         subscriber.onCompleted();
       }
     });
   }
 
-  private Observer<Boolean> _getObserver() {
-    return new Observer<Boolean>() {
+  private Observer<ParseObject> _getObserver() {
+    return new Observer<ParseObject>() {
 
       @Override
       public void onCompleted() {
-//        _log("OnCompleted");
+        _log("OnCompleted");
 //        _progress.setVisibility(View.INVISIBLE);
       }
 
       @Override
       public void onError(Throwable e) {
         e.printStackTrace();
-//        _log(String.format("BooError %s", e.getMessage()));
+        _log(String.format("BooError %s", e.getMessage()));
 //        _progress.setVisibility(View.INVISIBLE);
       }
 
       @Override
-      public void onNext(Boolean aBoolean) {
-//        _log(String.format("onNext with return value \"%b\"", aBoolean));
+      public void onNext(ParseObject aBoolean) {
+        _log(String.format("onNext with return value "+ aBoolean));
       }
     };
   }
 
-  private Observable<ParseObject> _getPush(final ParseObject object) {
-    return Observable.create(new Observable.OnSubscribe<ParseObject>() {
-
-      @Override
-      public void call(Subscriber<? super ParseObject> subscriber) {
-//        _log("Within Observable");
-//        _doSomeLongOperation_thatBlocksCurrentThread();
-        try {
-          object.save();
-          subscriber.onNext(object);
-          subscriber.onCompleted();
-        } catch (ParseException e) {
-          e.printStackTrace();
-          subscriber.onError(e);
-        }
-      }
-    });
-  }
-
-  private Observer<ParseObject> _getPushWatcher() {
-    return new Observer<ParseObject>() {
-
-      @Override
-      public void onNext(ParseObject parseObject) {
-
-      }
-
-      @Override
-      public void onCompleted() {
-
-      }
-
-      @Override
-      public void onError(Throwable e) {
-
-      }
-    };
+  private void _log(String format) {
+    Log.d("_log", format);
   }
 }

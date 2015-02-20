@@ -59,6 +59,14 @@ dependencies {
   // IntelliJ smart annotations for improved realtime error checking
   compile 'com.intellij:annotations:+@jar'
 
+  // Parse with LoginUI
+  compile project(':ParseLoginUI')
+
+  // Crashlytics of Fabric by Twitter
+  compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
+    transitive = true;
+  }
+
   // RxAndroid of RxJava Reactive Extensions
   compile 'io.reactivex:rxandroid:0.23.0'
 
@@ -69,14 +77,6 @@ dependencies {
 //  compile 'com.google.dagger:dagger-compiler:2.0-SNAPSHOT'
 //  compile 'com.google.dagger:dagger:2.0-SNAPSHOT'
 //  compile 'javax.annotation:jsr250-api:1.0'
-
-  // Parse with LoginUI
-  compile project(':ParseLoginUI')
-
-  // Crashlytics of Fabric by Twitter
-  compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
-    transitive = true;
-  }
 
   // TileView
   compile project(':TileView')

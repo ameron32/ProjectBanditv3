@@ -44,8 +44,10 @@ public class ToolbarFragment
     mToolbar = (Toolbar) v.findViewById(R.id.toolbar_actionbar);
     View layout = LayoutInflater.from(context).inflate(R.layout.view_toolbar_character_recyclerview, mToolbar, false);
     mCharacterRecyclerView = (RecyclerView) layout.findViewById(R.id.recyclerview);
-    mToolbar.addView(mCharacterRecyclerView);
-    mCallbacks.onToolbarCreated(mToolbar);
+
+    // implement custom slider
+    loadCustomViews();
+
     return v;
   }
   
@@ -53,10 +55,16 @@ public class ToolbarFragment
       View view,
       Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    mCallbacks.onToolbarCreated(mToolbar);
     init();
+  }
+
+  private void loadCustomViews() {
+    mToolbar.addView(mCharacterRecyclerView);
   }
   
   private void init() {
+    // load custom slider
     addCharacterIcons_v2(mToolbar);
   }
   

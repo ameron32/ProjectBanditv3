@@ -18,8 +18,10 @@ import com.crashlytics.android.Crashlytics;
 import butterknife.ButterKnife;
 import io.fabric.sdk.android.Fabric;
 
-public class CoreActivity 
-    extends ActionBarActivity
+public class
+      CoreActivity
+    extends
+      ActionBarActivity
     implements 
       ContentManager.OnContentChangeListener,
       ToolbarFragment.OnToolbarFragmentCallbacks
