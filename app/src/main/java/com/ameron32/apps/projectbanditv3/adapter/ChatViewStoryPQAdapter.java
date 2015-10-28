@@ -6,12 +6,12 @@ import com.ameron32.apps.projectbanditv3.Query;
 import com.ameron32.apps.projectbanditv3.R;
 import com.ameron32.apps.projectbanditv3.object.Message;
 import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter;
-import com.parse.ParseQueryAdapter.QueryFactory;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter.QueryFactory;
 
 /**
- * 
- * 
+ *
+ *
  *
  */
 public class ChatViewStoryPQAdapter extends AbsMessageAdapter {

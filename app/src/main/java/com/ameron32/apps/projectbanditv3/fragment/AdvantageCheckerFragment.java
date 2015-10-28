@@ -24,37 +24,37 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class AdvantageCheckerFragment 
+public class AdvantageCheckerFragment
   extends AbsContentFragment
 {
 
   @Override protected int getCustomLayoutResource() {
     return R.layout.fragment_basic_recyclerview;
   }
-  
+
   @InjectView(R.id.recyclerview) RecyclerView mRecyclerView;
-  
+
   @Override public void onViewCreated(
       View view,
       Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.inject(this, view);
-    
+
     mRecyclerView.setHasFixedSize(true);
-    
+
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-    
+
     ParseQuery.getQuery(Advantage.class).setLimit(1000).orderByDescending("bIsForbidden").addAscendingOrder("sADPQ").addAscendingOrder("sName").findInBackground(new FindCallback<Advantage>() {
-      
+
       @Override public void done(
           final List<Advantage> advs,
           ParseException e) {
         if (e == null) {
-       
+
           mRecyclerView.setAdapter(new AdvantageAdapter(advs));
-          mRecyclerView.addOnItemTouchListener(new ItemClickListener(getActivity(), 
+          mRecyclerView.addOnItemTouchListener(new ItemClickListener(getActivity(),
               new ItemClickListener.OnItemClickListener() {
-            
+
             @Override public void onItemClick(
                 View view, int position) {
             }
@@ -63,7 +63,7 @@ public class AdvantageCheckerFragment
       }
     });
   }
-  
+
   public static class AdvantageAdapter extends RecyclerView.Adapter<AdvantageAdapter.ViewHolder> {
 
     private List<Advantage> advs;
@@ -73,23 +73,23 @@ public class AdvantageCheckerFragment
       this.advs = advs;
       mCollapsedStatus = new SparseBooleanArray();
     }
-    
-    public class ViewHolder extends RecyclerView.ViewHolder 
-//        implements OnClickListener 
+
+    public class ViewHolder extends RecyclerView.ViewHolder
+//        implements OnClickListener
     {
 //      private int mOriginalHeight = 0;
 //      private boolean mIsViewExpanded = false;
-//      
+//
 //      private ValueAnimator sizeAnimator;
 //      private ValueAnimator alphaAnimator;
-      
-//      @InjectView(R.id.expand_collapse) 
+
+//      @InjectView(R.id.expand_collapse)
 //      ImageButton mButton;
-//      @InjectView(R.id.expandable_text) 
+//      @InjectView(R.id.expandable_text)
 //      TextView mTextView;
       @InjectView(R.id.expand_text_view)
 ExpandableTextView mExpandableTextView;
-      
+
       public ViewHolder(View v) {
         super(v);
 //        mExpandableTextView = (ExpandableTextView2) v;
@@ -128,7 +128,7 @@ ExpandableTextView mExpandableTextView;
 //          }
 //        });
 //        alphaAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//          
+//
 //          @Override public void onAnimationUpdate(
 //              ValueAnimator animation) {
 //            Float value = (Float) animation.getAnimatedValue();
@@ -139,7 +139,7 @@ ExpandableTextView mExpandableTextView;
 //        alphaAnimator.start();
 //      }
     }
-    
+
     @Override public int getItemCount() {
       return advs.size();
     }
@@ -159,18 +159,18 @@ ExpandableTextView mExpandableTextView;
       return new AdvantageAdapter.ViewHolder(v);
     }
   }
-  
+
   public static class ItemClickListener implements RecyclerView.OnItemTouchListener {
-    
+
     private OnItemClickListener mListener;
-    
+
     public interface OnItemClickListener {
       public void onItemClick(
           View view, int position);
     }
-    
+
     private final GestureDetector mGestureDetector;
-    
+
     public ItemClickListener(Context context, OnItemClickListener listener) {
       mListener = listener;
       SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
@@ -181,11 +181,11 @@ ExpandableTextView mExpandableTextView;
       };
       mGestureDetector = new GestureDetector(context, gestureListener);
     }
-    
+
     @Override public void onTouchEvent(
         RecyclerView view,
         MotionEvent e) {}
-    
+
     @Override public boolean onInterceptTouchEvent(
         RecyclerView view,
         MotionEvent e) {
@@ -196,5 +196,19 @@ ExpandableTextView mExpandableTextView;
       }
       return false;
     }
-  } 
+
+    /**
+     * Called when a child of RecyclerView does not want RecyclerView and its ancestors to
+     * intercept touch events with
+     * {@link ViewGroup#onInterceptTouchEvent(MotionEvent)}.
+     *
+     * @param disallowIntercept True if the child does not want the parent to
+     *                          intercept touch events.
+     * @see ViewParent#requestDisallowInterceptTouchEvent(boolean)
+     */
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+      // TODO confirm empty
+    }
+  }
 }

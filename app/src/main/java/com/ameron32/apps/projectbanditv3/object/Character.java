@@ -11,21 +11,22 @@ import com.parse.SaveCallback;
 import java.util.Set;
 
 
-@ParseClassName("Character") 
+@ParseClassName("Character")
 public class Character
   extends AbsBanditObject<AbsBanditObject.Column>
 {
   private static final String TAG = Character.class.getSimpleName();
   private static final boolean TOAST = false;
   private static final boolean LOG = true;
-  
+
   private String name = "Nameless";
   private int currentHealth = 0;
   private int maxHealth = 0;
   private int currentLevel = 0;
   private int currentXP = 0;
   private boolean isGameCharacter = false;
-  
+  private String currentChannel = "root";
+
   public static Character getFromName(
       String name) {
     try {
@@ -35,7 +36,7 @@ public class Character
     }
     return null;
   }
-  
+
   // public static Character create(String name) {
   // return new Character().setName(name);
   // }
@@ -59,48 +60,48 @@ public class Character
   // newCharacter.setObjectId(objectId);
   // return newCharacter;
   // }
-  
+
   public Character() {
-    
+
   }
-  
+
   public Character setName(String name) {
     this.name = name;
     return this;
   }
-  
+
   public Character setHealth(
       int currentHealth, int maxHealth) {
     this.currentHealth = currentHealth;
     this.maxHealth = maxHealth;
     return this;
   }
-  
+
   public Character setXP(int currentXP,
       int currentLevel) {
     this.currentLevel = currentLevel;
     this.currentXP = currentXP;
     return this;
   }
-  
+
   public Character setGameCharacter(
       boolean isGameCharacter) {
     this.isGameCharacter = isGameCharacter;
     return this;
   }
-  
+
   public void send() {
     applyToParseObject();
       send(null);
   }
-  
+
   public void send(
       SaveObjectSerialExecutor.OnSaveCallbacks callback) {
     applyToParseObject();
       SaveObjectSerialExecutor.get().sendMessage(this, callback);
 //    new SaveObjectAsyncTask(callback).execute(this);
   }
-  
+
   private void applyToParseObject() {
     this.put("name", name);
     this.put("currentHealth", currentHealth);
@@ -108,46 +109,54 @@ public class Character
     this.put("currentLevel", currentLevel);
     this.put("currentXP", currentXP);
     this.put("isGameCharacter", isGameCharacter);
+    this.put("currentChannel", currentChannel);
   }
-  
-  
-  
+
   public String getName() {
     return this.getString("name");
   }
-  
+
   public int getCurrentHealth() {
     return this.getInt("currentHealth");
   }
-  
+
   public int getMaxHealth() {
     return this.getInt("maxHealth");
   }
-  
+
   public int getLevel() {
     return this.getInt("currentLevel");
   }
-  
+
   public int getXP() {
     return this.getInt("currentXP");
   }
-  
+
   public boolean isPlayable() {
     return this.getBoolean("inGameCharacter");
   }
-  
+
   public int getGold() {
     return this.getInt("currentGold");
   }
-  
+
   public String getUrlFullSize() {
     return this.getString("profilePicFullSizeUrl");
   }
-  
+
+  public String getCurrentChannel() {
+    return this.getString("currentChannel");
+  }
+
+  public void moveToChannel(String channel) {
+    this.currentChannel = channel;
+    this.put("currentChannel", channel);
+  }
+
 //  @Override public String get(
 //      int columnPosition) {
 //    if (isHeader) { return getColumnHeader(columnPosition); }
-//    
+//
 //    switch (columnPosition) {
 //    case 0:
 //      return getName();
@@ -175,11 +184,11 @@ public class Character
 //      return "none";
 //    }
 //  }
-//  
+//
 //  @Override public int getColumnCount() {
 //    return 5;
 //  }
-//  
+//
 //  @Override public String getColumnHeader(
 //      int columnPosition) {
 //    switch (columnPosition) {
@@ -197,20 +206,20 @@ public class Character
 //      return "none";
 //    }
 //  }
-//  
+//
 //  private boolean isHeader = false;
 //  @Override public void useAsHeaderView(boolean b) {
 //    isHeader = b;
 //  }
-//  
+//
 //  @Override public boolean isHeaderView() {
 //    return isHeader;
 //  }
-  
+
   private static final AbsBanditObject.Column[] COLUMNS = {
     new Column("name", DataType.String)
   };
-  
+
   @Override public String toString() {
     final Set<String> keySet = this.keySet();
     final StringBuilder sb = new StringBuilder();
@@ -222,41 +231,41 @@ public class Character
     }
     return sb.toString();
   }
-  
+
   @Override public AbsBanditObject.Column get(
       int columnPosition) {
     return COLUMNS[columnPosition];
   }
-  
+
   @Override public int getColumnCount() {
     return COLUMNS.length;
   }
-  
+
   private boolean isIdEquals(Character character) {
     if (this.getObjectId().equalsIgnoreCase(character.getObjectId())) { return true; }
     return false;
   }
-  
+
   @Override public boolean equals(
       Object o) {
     if (o instanceof Character) {
       return this.equals((Character) o);
-    } else { 
+    } else {
       return false;
     }
   }
-  
+
   public boolean equals(
       Character character) {
     return this.isIdEquals(character);
   }
-  
+
   private static Character makeCharacter(
       Character.Builder builder,
       SaveCallback callback) {
     if (callback == null) {
       callback = new SaveCallback() {
-        
+
         @Override public void done(
             ParseException e) {
           if (e == null) {
@@ -274,21 +283,21 @@ public class Character
     character.saveInBackground(callback);
     return character;
   }
-  
+
   private void loadCharacter(Character.Builder builder) {
     // TODO: populate fields
   }
-  
+
   public static class Builder {
     private Builder() {}
     public static Builder getNewCharacter() { return new Builder(); }
-    
-    
-    
+
+
+
     public Character create() {
       return create(null);
     }
-    
+
     public Character create(
         SaveCallback callback) {
 //      rootView = null;

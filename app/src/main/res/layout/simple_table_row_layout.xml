@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ameron32.lib.recyclertableview.TableRowLayout 
+<com.ameron32.apps.projectbanditv3.view.TableRowLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

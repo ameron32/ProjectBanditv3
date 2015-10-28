@@ -19,9 +19,9 @@ import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseImageView;
+import com.ameron32.apps.projectbanditv3.parseui.ParseImageView;
 import com.parse.ParseObject;
-import com.parse.ParseQueryAdapter.QueryFactory;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter.QueryFactory;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
@@ -38,18 +38,18 @@ import butterknife.Optional;
 
 public abstract class AbsMessageAdapter
     extends AbsParseSuperRecyclerQueryAdapter<Message, AbsMessageAdapter.ViewHolder>
-//    RecyclerView.Adapter<AbsMessageAdapter.ViewHolder> 
+//    RecyclerView.Adapter<AbsMessageAdapter.ViewHolder>
 {
-  
-  
-  
+
+
+
 //  private List<Message> items = new ArrayList<Message>();
 //  private QueryFactory<Message> factory;
   private int itemLayout;
   private int systemLayout;
   private int gameLayout;
 
-  
+
   public AbsMessageAdapter(
       Context context,
       QueryFactory<Message> factory,
@@ -61,56 +61,56 @@ public abstract class AbsMessageAdapter
     this.systemLayout = systemLayout;
     this.gameLayout = gameLayout;
 //    mListeners = new ArrayList<OnDataSetChangedListener>();
-    
+
 //    loadObjects();
   }
-  
+
 //  private List<OnDataSetChangedListener> mListeners;
-//  
+//
 //  public void addOnDataSetChangedListener(OnDataSetChangedListener listener) {
 //    mListeners.add(listener);
 //  }
-//  
+//
 //  public void removeOnDataSetChangedListener(OnDataSetChangedListener listener) {
 //    if (mListeners.contains(listener)) {
 //      mListeners.remove(listener);
 //    }
 //  }
-//  
+//
 //  private void fireOnDataSetChanged() {
 //    for (int i = 0; i < mListeners.size(); i++) {
 //      mListeners.get(i).onDataSetChanged();
 //    }
 //  }
-//  
+//
 //  public interface OnDataSetChangedListener {
 //    public void onDataSetChanged();
 //  }
-  
-  
+
+
   private static final int MESSAGE_TYPE_GAME = 2;
   private static final int MESSAGE_TYPE_SYSTEM = 1;
   private static final int MESSAGE_TYPE_STANDARD = 0;
-  
+
   @Override public int getItemViewType(
       int position) {
     Message message = getItem(position);
     String messageType = message.getString("type");
     if (messageType != null && messageType.equals("System")) {
       return MESSAGE_TYPE_SYSTEM;
-    } 
+    }
     else
     if (message.getCharacter().isPlayable()) {
       return MESSAGE_TYPE_GAME;
     }
     return MESSAGE_TYPE_STANDARD;
   }
-  
+
   @Override public ViewHolder onCreateViewHolder(
       ViewGroup parent, int viewType) {
-    
+
     View v = null;
-    
+
     switch(viewType) {
     case MESSAGE_TYPE_SYSTEM:
       v = LayoutInflater.from(parent.getContext()).inflate(systemLayout, parent, false);
@@ -124,14 +124,14 @@ public abstract class AbsMessageAdapter
       v = LayoutInflater.from(parent.getContext()).inflate(gameLayout, parent, false);
       return new ViewHolder(v);
     }
-    
+
     v = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
     return new ViewHolder(v);
   }
-  
+
   @Override public void onBindViewHolder(
       ViewHolder holder, int position) {
-    
+
     switch(getItemViewType(position)) {
     case MESSAGE_TYPE_SYSTEM:
       getSystemItemView(getItem(position), holder.itemView);
@@ -146,53 +146,53 @@ public abstract class AbsMessageAdapter
       // none yet
     }
   }
-  
+
 //  @Override public int getItemCount() {
 //    return items.size();
 //  }
-  
+
   public static class ViewHolder extends
       RecyclerView.ViewHolder {
-    
+
     @InjectView(R.id.textview_message)
-    public TextView messageText; 
+    public TextView messageText;
     @InjectView(R.id.textview_channel)
-    public TextView channelText; 
+    public TextView channelText;
     @InjectView(R.id.textview_object_id)
-    public TextView objectIdText; 
+    public TextView objectIdText;
     @InjectView(R.id.textview_username)
-    public TextView usernameText; 
+    public TextView usernameText;
     @InjectView(R.id.textview_character)
-    public TextView characterText; 
+    public TextView characterText;
     @InjectView(R.id.textview_action)
-    public TextView actionText; 
+    public TextView actionText;
     @InjectView(R.id.textview_created_time)
-    public TextView timeText; 
+    public TextView timeText;
     @Optional @InjectView(R.id.imageview_character)
-    public ParseImageView characterImageView; 
+    public ParseImageView characterImageView;
     @Optional @InjectView(R.id.imageview_action)
-    public ParseImageView actionImageView; 
-    
+    public ParseImageView actionImageView;
+
     public ViewHolder(View v) {
       super(v);
       ButterKnife.inject(this, v);
     }
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   private static final String TAG = AbsMessageAdapter.class.getSimpleName();
   private static final boolean TOAST = false;
   private static final boolean LOG = false;
   private static final boolean ERROR = false;
-  
+
   private final Context context;
-  
+
 //  public void loadObjects() {
 //    factory.create().findInBackground(new FindCallback<Message>() {
-//      
+//
 //      @Override public void done(
 //          List<Message> messages,
 //          ParseException e) {
@@ -205,13 +205,13 @@ public abstract class AbsMessageAdapter
 //    });
 //  }
 
-  
+
   // Customize the layout by overriding getItemView
   public void bindItemView(Message m,
       ViewHolder vh) {
-    
+
     final String objectId = m.getObjectId();
-    
+
     vh.usernameText.setText(".........");
     vh.actionText.setText(".........");
     vh.characterText.setText(".........");
@@ -222,36 +222,36 @@ public abstract class AbsMessageAdapter
     vh.actionText.setTag(objectId);
     vh.characterImageView.setTag(objectId);
     vh.actionImageView.setTag(objectId);
-    
+
     ParseObject messageObject = m;
     String objectStr = messageObject.getObjectId();
     String messageStr = messageObject.getString("message");
     String channel = messageObject.getString("channel");
     Date createdAt = messageObject.getCreatedAt();
     String time = new SimpleDateFormat("h:mm aa M/d/yyyy", Locale.US).format(createdAt);
-    
+
     // ParseUser user;
 //    int logID = 0;
 //    if (LOG) {
 //      logID = Loggy.start("getItemView()--fetch");
 //    }
-    
-    pullAdditionalQueryData(objectId, 
-        vh.usernameText, 
-        vh.characterText, 
-        vh.actionText, 
-        vh.characterImageView, 
-        vh.actionImageView, 
+
+    pullAdditionalQueryData(objectId,
+        vh.usernameText,
+        vh.characterText,
+        vh.actionText,
+        vh.characterImageView,
+        vh.actionImageView,
         messageObject);
-    
+
 //    if (LOG) Loggy.stop(logID);
-    
+
     vh.messageText.setText(messageStr + "");
     vh.channelText.setText(channel + "");
     vh.objectIdText.setText(objectStr + "");
     vh.timeText.setText(time + "");
   }
-  
+
   private void pullAdditionalQueryData(
       final String objectId,
       final TextView usernameText,
@@ -266,14 +266,14 @@ public abstract class AbsMessageAdapter
     } else {
       usernameText.setText("none");
     }
-    
+
     ParseObject characterObject = messageObject.getParseObject("character");
     if (characterObject != null) {
       characterObject.fetchIfNeededInBackground(new GetCharacterCallback(characterText, objectId, characterImageView));
     } else {
       characterText.setText("none");
     }
-    
+
     ParseObject actionObject = messageObject.getParseObject("actionO");
     if (actionObject != null) {
       actionObject.fetchIfNeededInBackground(new GetActionCallback(actionText, objectId, actionImageView));
@@ -283,7 +283,7 @@ public abstract class AbsMessageAdapter
       }
     }
   }
-  
+
   //Customize the layout by overriding getItemView
    public View getSystemItemView(Message m,
        View v) {
@@ -295,9 +295,9 @@ public abstract class AbsMessageAdapter
      // Context.MODE_PRIVATE).getInt("message_row", R.layout.row_message);
      // v = View.inflate(context, res, null);
      // }
-     
+
      // super.getItemView(object, v, parent);
-     
+
      // Add and download the image
      // ParseImageView todoImage = (ParseImageView)
      // v.findViewById(R.id.icon);
@@ -306,15 +306,15 @@ public abstract class AbsMessageAdapter
      // todoImage.setParseFile(imageFile);
      // todoImage.loadInBackground();
      // }
-     
+
      // Add the title view
      // TextView titleTextView = (TextView) v.findViewById(R.id.text1);
      // titleTextView.setText(object.getString("title"));
-     
+
      // Add a reminder of how long this item has been outstanding
      // TextView timestampView = (TextView) v.findViewById(R.id.timestamp);
      // timestampView.setText(object.getCreatedAt().toString());
-     
+
      final String objectId = m.getObjectId();
      final TextView messageText = (TextView) v.findViewById(R.id.textview_message);
      final TextView channelText = (TextView) v.findViewById(R.id.textview_channel);
@@ -325,7 +325,7 @@ public abstract class AbsMessageAdapter
      final TextView timeText = (TextView) v.findViewById(R.id.textview_created_time);
      final ParseImageView characterImageView = (ParseImageView) v.findViewById(R.id.imageview_character);
      final ParseImageView actionImageView = (ParseImageView) v.findViewById(R.id.imageview_action);
-     
+
      usernameText.setText(".........");
      actionText.setText(".........");
      characterText.setText(".........");
@@ -336,29 +336,29 @@ public abstract class AbsMessageAdapter
      actionText.setTag(objectId);
   //   characterImageView.setTag(objectId);
   //   actionImageView.setTag(objectId);
-     
+
      ParseObject messageObject = m;
      String objectStr = messageObject.getObjectId();
      String messageStr = messageObject.getString("message");
      String channel = messageObject.getString("channel");
      Date createdAt = messageObject.getCreatedAt();
      String time = new SimpleDateFormat("h:mm aa M/d/yyyy", Locale.US).format(createdAt);
-     
+
      // ParseUser user;
      int logID = 0;
      if (LOG) {
        logID = Loggy.start("getItemView()--fetch");
      }
-     
+
      pullAdditionalSystemQueryData(objectId, usernameText, characterText, actionText, characterImageView, actionImageView, messageObject);
-     
+
      if (LOG) Loggy.stop(logID);
-     
+
      messageText.setText(messageStr + "");
      channelText.setText(channel + "");
      objectIdText.setText(objectStr + "");
      timeText.setText(time + "");
-     
+
      return v;
    }
 
@@ -376,21 +376,21 @@ public abstract class AbsMessageAdapter
     } else {
       usernameText.setText("none");
     }
-    
+
     ParseObject characterObject = messageObject.getParseObject("character");
     if (characterObject != null) {
       characterObject.fetchIfNeededInBackground(new GetCharacterCallback(characterText, objectId, characterImageView));
     } else {
       characterText.setText("none");
     }
-    
+
     ParseObject actionObject = messageObject.getParseObject("actionO");
     if (actionObject != null) {
       actionObject.fetchIfNeededInBackground(new GetActionCallback(actionText, objectId, actionImageView));
     } else {
       actionImageView.setImageResource(android.R.color.transparent);
     }
-    
+
     // final String actionStr = messageObject.getString("action");
     // if (actionStr != null) {
     // ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("CAction");
@@ -444,49 +444,49 @@ public abstract class AbsMessageAdapter
     // actionImageView.setImageResource(android.R.color.transparent);
     // }
   }
-  
-  
-  
+
+
+
 //  public interface OnQueryLoadListener<T> {
-//    
+//
 //    public void onLoaded(
 //        List<T> objects, Exception e);
-//    
+//
 //    public void onLoading();
 //  }
-//  
+//
 //  private List<OnQueryLoadListener> listeners = new ArrayList<OnQueryLoadListener>();
-//  
+//
 //  public void addOnQueryLoadListener(
 //      OnQueryLoadListener listener) {
 //    if (!(listeners.contains(listener))) {
 //      listeners.add(listener);
 //    }
 //  }
-//  
+//
 //  public void removeOnQueryLoadListener(
 //      OnQueryLoadListener listener) {
 //    if (listeners.contains(listener)) {
 //      listeners.remove(listener);
 //    }
 //  }
-  
-  
-  
-  
+
+
+
+
   public static class GetUserCallback
-      extends GetCallback<ParseUser> {
-    
+      implements GetCallback<ParseUser> {
+
     private final WeakReference<TextView> weakView;
     private final String objectId;
-    
+
     public GetUserCallback(
         final TextView textView,
         final String objectId) {
       this.objectId = objectId;
       weakView = new WeakReference<TextView>(textView);
     }
-    
+
     @Override public void done(
         ParseUser user, ParseException e) {
       if (e == null) {
@@ -495,7 +495,7 @@ public abstract class AbsMessageAdapter
         if (ERROR) e.printStackTrace();
       }
     }
-    
+
     private void doneNoError(
         ParseUser user) {
       final TextView textView = weakView.get();
@@ -506,18 +506,18 @@ public abstract class AbsMessageAdapter
               + textView + "]");
         return;
       }
-      
+
       if (user == null) {
         textView.setText("none");
         return;
       }
-      
+
       String userName = user.getString("username");
       if (userName == null) {
         textView.setText("none");
         return;
       }
-      
+
       if (textView.getTag().equals(objectId)) {
         // the view STILL has the same objectId associated with it
         textView.setText(userName + "");
@@ -529,14 +529,14 @@ public abstract class AbsMessageAdapter
       }
     }
   }
-  
+
   public class GetCharacterCallback
-      extends GetCallback<ParseObject> {
-    
+      implements GetCallback<ParseObject> {
+
     private final WeakReference<TextView> weakView;
     private final WeakReference<ImageView> weakImageView;
     private final String objectId;
-    
+
     public GetCharacterCallback(
         final TextView textView,
         final String objectId,
@@ -545,7 +545,7 @@ public abstract class AbsMessageAdapter
       weakView = new WeakReference<TextView>(textView);
       weakImageView = new WeakReference<ImageView>(imageView);
     }
-    
+
     @Override public void done(
         ParseObject characterObject,
         ParseException e) {
@@ -555,7 +555,7 @@ public abstract class AbsMessageAdapter
         if (ERROR) e.printStackTrace();
       }
     }
-    
+
     private void doneNoError(
         ParseObject characterObject) {
       final TextView characterText = weakView.get();
@@ -568,19 +568,19 @@ public abstract class AbsMessageAdapter
               + "]");
         return;
       }
-      
+
       if (characterObject == null) {
         characterText.setText("none");
         return;
       }
-      
+
       // CHARACTER NAME -- TEXT
       String characterName = characterObject.getString("name");
       if (characterName == null) {
         characterText.setText("none");
         return;
       }
-      
+
       if (characterText.getTag().equals(objectId)) {
         // the view STILL has the same objectId associated with it
         characterText.setText(characterName
@@ -592,12 +592,12 @@ public abstract class AbsMessageAdapter
               + "],[" + objectId + "]");
         return;
       }
-      
+
       // CHARACTER PIC -- IMAGE
       if (imageView == null) {
         return;
       }
-      
+
       ParseFile characterPic = characterObject.getParseFile("profilePic");
       com.ameron32.apps.projectbanditv3.object.Character character = (Character) characterObject;
       String profilePicUrl = character.getProfilePicUrl();
@@ -605,31 +605,31 @@ public abstract class AbsMessageAdapter
         Log.d("MPQA", "characterPic & profilePicUrl are null");
         return;
       }
-      
+
       if (characterPic == null) {
         Log.d("MPQA", "characterPic is null, using profilePicUrl");
         Picasso.with(context).load(profilePicUrl).into(imageView);
         return;
       }
-      
+
       Picasso.with(context).load(characterPic.getUrl()).into(imageView);
       characterPic.getDataInBackground(new GetCharacterPicCallback(imageView, objectId));
     }
   }
-  
+
   public class GetCharacterPicCallback
-      extends GetDataCallback {
-    
+      implements GetDataCallback {
+
     private final WeakReference<ImageView> weakView;
     private final String objectId;
-    
+
     public GetCharacterPicCallback(
         final ImageView imageView,
         String objectId) {
       this.objectId = objectId;
       weakView = new WeakReference<ImageView>(imageView);
     }
-    
+
     @Override public void done(
         byte[] data, ParseException e) {
       if (e == null) {
@@ -642,7 +642,7 @@ public abstract class AbsMessageAdapter
         if (ERROR) e.printStackTrace();
       }
     }
-    
+
     private void doneNoError(byte[] data) {
       final ImageView imageView = weakView.get();
       if (imageView == null) {
@@ -652,7 +652,7 @@ public abstract class AbsMessageAdapter
               + imageView + "]");
         return;
       }
-      
+
       Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
       if (imageView.getTag().equals(objectId)) {
         imageView.setImageBitmap(bitmap);
@@ -664,14 +664,14 @@ public abstract class AbsMessageAdapter
       }
     }
   }
-  
-  public class GetActionCallback extends
+
+  public class GetActionCallback implements
       GetCallback<ParseObject> {
-    
+
     private final WeakReference<TextView> weakView;
     private final WeakReference<ImageView> weakImageView;
     private final String objectId;
-    
+
     public GetActionCallback(
         final TextView textView,
         final String objectId,
@@ -680,7 +680,7 @@ public abstract class AbsMessageAdapter
       weakView = new WeakReference<TextView>(textView);
       weakImageView = new WeakReference<ImageView>(imageView);
     }
-    
+
     @Override public void done(
         ParseObject characterObject,
         ParseException e) {
@@ -690,7 +690,7 @@ public abstract class AbsMessageAdapter
         if (ERROR) e.printStackTrace();
       }
     }
-    
+
     private void doneNoError(
         ParseObject actionObject) {
       final TextView actionText = weakView.get();
@@ -705,12 +705,12 @@ public abstract class AbsMessageAdapter
               + imageView + "]");
         return;
       }
-      
+
       if (actionObject == null) {
         actionText.setText("none");
         return;
       }
-      
+
       // ACTION TEXT
       String action = actionObject.getString("action");
       if (action == null) {
@@ -728,36 +728,36 @@ public abstract class AbsMessageAdapter
               + "],[" + objectId + "]");
         return;
       }
-      
+
       // CHARACTER PIC -- IMAGE
       ParseFile actionPic = actionObject.getParseFile("actionPic");
       if (actionPic == null) {
         Log.d("MPQA", "actionPic is null");
         return;
       }
-      
+
       if (imageView.getTag() == null) {
         return;
       }
-      
+
       Picasso.with(context).load(actionPic.getUrl()).into(imageView);
       actionPic.getDataInBackground(new GetActionPicCallback(imageView, objectId));
     }
   }
-  
+
   public class GetActionPicCallback
-      extends GetDataCallback {
-    
+      implements GetDataCallback {
+
     private final WeakReference<ImageView> weakView;
     private final String objectId;
-    
+
     public GetActionPicCallback(
         final ImageView imageView,
         String objectId) {
       this.objectId = objectId;
       weakView = new WeakReference<ImageView>(imageView);
     }
-    
+
     @Override public void done(
         byte[] data, ParseException e) {
       if (e == null) {
@@ -770,7 +770,7 @@ public abstract class AbsMessageAdapter
         if (ERROR) e.printStackTrace();
       }
     }
-    
+
     private void doneNoError(byte[] data) {
       final ImageView imageView = weakView.get();
       if (imageView == null) {
@@ -780,7 +780,7 @@ public abstract class AbsMessageAdapter
               + imageView + "]");
         return;
       }
-      
+
       Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
       if (imageView.getTag().equals(objectId)) {
         imageView.setImageBitmap(bitmap);

@@ -1,13 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:qv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_roll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Roll a Dice" />
+  <me.himanshusoni.quantityview.QuantityView
+      android:id="@+id/qv_d4"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginTop="10dp"
+      qv:qv_addButtonBackground="@drawable/ic_construction"
+      qv:qv_removeButtonBackground="@drawable/ic_construction"
+      qv:qv_addButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_removeButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_minQuantity="0"
+      qv:qv_maxQuantity="10"
+      qv:qv_quantityPadding="40dp"
+      qv:qv_quantity="0">
+
+    <ImageView
+        android:src="@drawable/d4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </me.himanshusoni.quantityview.QuantityView>
+
+  <me.himanshusoni.quantityview.QuantityView
+      android:id="@+id/qv_d6"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginTop="10dp"
+      qv:qv_addButtonBackground="@drawable/ic_construction"
+      qv:qv_removeButtonBackground="@drawable/ic_construction"
+      qv:qv_addButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_removeButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_minQuantity="0"
+      qv:qv_maxQuantity="10"
+      qv:qv_quantityPadding="40dp"
+      qv:qv_quantity="1">
+
+    <ImageView
+        android:src="@drawable/d6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </me.himanshusoni.quantityview.QuantityView>
+
+  <me.himanshusoni.quantityview.QuantityView
+      android:id="@+id/qv_d8"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginTop="10dp"
+      qv:qv_addButtonBackground="@drawable/ic_construction"
+      qv:qv_removeButtonBackground="@drawable/ic_construction"
+      qv:qv_addButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_removeButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_minQuantity="0"
+      qv:qv_maxQuantity="10"
+      qv:qv_quantityPadding="40dp"
+      qv:qv_quantity="0">
+
+    <ImageView
+        android:src="@drawable/d8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </me.himanshusoni.quantityview.QuantityView>
+
+  <me.himanshusoni.quantityview.QuantityView
+      android:id="@+id/qv_d10"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginTop="10dp"
+      qv:qv_addButtonBackground="@drawable/ic_construction"
+      qv:qv_removeButtonBackground="@drawable/ic_construction"
+      qv:qv_addButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_removeButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_minQuantity="0"
+      qv:qv_maxQuantity="10"
+      qv:qv_quantityPadding="40dp"
+      qv:qv_quantity="0">
+
+    <ImageView
+        android:src="@drawable/d10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </me.himanshusoni.quantityview.QuantityView>
+
+  <me.himanshusoni.quantityview.QuantityView
+      android:id="@+id/qv_d12"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginTop="10dp"
+      qv:qv_addButtonBackground="@drawable/ic_construction"
+      qv:qv_removeButtonBackground="@drawable/ic_construction"
+      qv:qv_addButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_removeButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_minQuantity="0"
+      qv:qv_maxQuantity="10"
+      qv:qv_quantityPadding="40dp"
+      qv:qv_quantity="0">
+
+    <ImageView
+        android:src="@drawable/d12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </me.himanshusoni.quantityview.QuantityView>
+
+  <me.himanshusoni.quantityview.QuantityView
+      android:id="@+id/qv_d20"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginTop="10dp"
+      qv:qv_addButtonBackground="@drawable/ic_construction"
+      qv:qv_removeButtonBackground="@drawable/ic_construction"
+      qv:qv_addButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_removeButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_minQuantity="0"
+      qv:qv_maxQuantity="10"
+      qv:qv_quantityPadding="40dp"
+      qv:qv_quantity="0">
+
+    <ImageView
+        android:src="@drawable/d20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+  </me.himanshusoni.quantityview.QuantityView>
+
+  <me.himanshusoni.quantityview.QuantityView
+      android:id="@+id/qv_mod"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginTop="10dp"
+      qv:qv_addButtonBackground="@drawable/ic_construction"
+      qv:qv_removeButtonBackground="@drawable/ic_construction"
+      qv:qv_addButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_removeButtonTextColor="@color/swipe_refresh_white"
+      qv:qv_minQuantity="-10"
+      qv:qv_maxQuantity="10"
+      qv:qv_quantityPadding="40dp"
+      qv:qv_quantity="0"/>
+
+  <Button
+      android:id="@+id/button_roll"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Roll a Dice"/>
 
 </LinearLayout>
+</ScrollView>

@@ -16,7 +16,7 @@ import com.ameron32.apps.projectbanditv3.object.Character;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter.QueryFactory;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter.QueryFactory;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,35 +26,35 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class CharacterSelectorAdapter 
-    extends RecyclerView.Adapter<CharacterSelectorAdapter.ViewHolder> 
+public class CharacterSelectorAdapter
+    extends RecyclerView.Adapter<CharacterSelectorAdapter.ViewHolder>
 {
-  
+
   class ViewHolder extends RecyclerView.ViewHolder {
 
     @InjectView(R.id.imageview) ImageView imageView;
     @InjectView(R.id.outline) FrameLayout outline;
-    
+
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.inject(this, itemView);
     }
   }
-  
+
   private Context context;
   private List<com.ameron32.apps.projectbanditv3.object.Character> mDataset;
   private QueryFactory<Character> factory;
-  
+
   public CharacterSelectorAdapter(Context context) {
     super();
     this.context = context;
     factory = makeQueryFactory();
     loadObjects();
   }
-  
+
   public void loadObjects() {
     factory.create().findInBackground(new FindCallback<Character>() {
-      
+
       @Override public void done(
           List<Character> characters,
           ParseException e) {
@@ -65,7 +65,7 @@ public class CharacterSelectorAdapter
       }
     });
   }
-  
+
 //  private TwoWayGridView gridView;
 
   public static QueryFactory<Character> makeQueryFactory() {
@@ -92,7 +92,7 @@ public class CharacterSelectorAdapter
 //    }
 //    v = super.getItemView(character, v, container);
 //    ButterKnife.inject(this, v);
-    
+
   private void onBind(Context context, ViewHolder holder, Character character) {
     final String picUrl = character.getString("profilePicUrl");
     Picasso.with(context).load(picUrl)
@@ -102,13 +102,13 @@ public class CharacterSelectorAdapter
       .into(holder.imageView);
     characters.add(character);
     holder.imageView.setTag(character);
-    
+
 //    return v;
   }
-  
+
   private final List<Character> characters = new ArrayList<Character>();
-  private int mCurrentSelectedPosition = 0; 
-  
+  private int mCurrentSelectedPosition = 0;
+
   @OnClick(R.id.imageview)
   void onClick(View v) {
     Character character = (Character) v.getTag();
@@ -120,17 +120,17 @@ public class CharacterSelectorAdapter
       Toast.makeText(context, "No character for " + position, Toast.LENGTH_SHORT).show();
     }
   }
-  
+
   public void setSelection(int position) {
     Character character = mDataset.get(position);
     Toast.makeText(context, "Switched to: " + character.getString("name"), Toast.LENGTH_SHORT).show();
     CharacterManager.get().setCurrentCharacter(character);
-    
+
     mCurrentSelectedPosition = position;
-    
+
     notifyDataSetChanged();
   }
-  
+
   private int getPositionFromCharacter(Character character) {
     for (int i = 0; i < characters.size(); i++) {
       if (characters.get(i).equals(character)) { return i; }
@@ -152,27 +152,27 @@ public class CharacterSelectorAdapter
     onBind(context, holder, character);
     displaySelected(holder, position);
   }
-  
+
   private void displaySelected(ViewHolder holder, int position) {
     boolean isSelected = isSelected(position);
-    
+
     View child = holder.itemView;
     View outline = child.findViewById(R.id.outline);
     int bgColor = 0;
-    
+
     // if not selected, reset color to clear
     if (!isSelected) {
       bgColor = context.getResources().getColor(android.R.color.transparent);
     }
-    
+
     // if selected, set color
     if (isSelected) {
       bgColor = context.getResources().getColor(R.color.character_toolbar_selected_outline);
     }
-    
+
     outline.setBackgroundColor(bgColor);
   }
-  
+
   private boolean isSelected(int position) {
     return position == mCurrentSelectedPosition;
   }

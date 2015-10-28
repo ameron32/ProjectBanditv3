@@ -89,7 +89,7 @@
             android:paddingRight="5px"
             android:paddingTop="5px" >
 
-            <com.parse.ParseImageView
+            <com.ameron32.apps.projectbanditv3.parseui.ParseImageView
                 android:id="@+id/imageview_skill"
                 android:layout_width="@dimen/image_character_length_squared"
                 android:layout_height="@dimen/image_character_length_squared"
@@ -97,7 +97,7 @@
                 android:src="@drawable/ic_launcher" />
         </FrameLayout>
 
-        <com.parse.ParseImageView
+        <com.ameron32.apps.projectbanditv3.parseui.ParseImageView
             android:id="@+id/imageview_action"
             android:layout_width="@dimen/image_action_length_squared"
             android:layout_height="@dimen/image_action_length_squared"

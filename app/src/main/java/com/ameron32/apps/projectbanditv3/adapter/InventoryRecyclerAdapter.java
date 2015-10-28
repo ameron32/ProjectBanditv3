@@ -18,7 +18,7 @@ import com.ameron32.apps.projectbanditv3.object.Item;
 import com.ameron32.apps.projectbanditv3.object.Character;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

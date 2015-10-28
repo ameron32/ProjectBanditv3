@@ -1,136 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.ameron32.apps.projectbanditv3"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-  <!-- to receive push messages, update all locations needed to projectbanditV3 -->
-
-  <uses-sdk
-      android:minSdkVersion="11"
-      android:targetSdkVersion="21" />
-
-  <!-- [start] *** REQUIRED FOR PARSE PUSH NOTIFICATIONS *** -->
-  <!-- [start] *** CRASHLYTICS *** -->
-  <uses-permission android:name="android.permission.INTERNET" />
-  <!-- [ end ] *** CRASHLYTICS *** -->
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
-  <uses-permission android:name="android.permission.VIBRATE" />
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-  <permission
-      android:name="com.ameron32.apps.projectbanditv3.permission.C2D_MESSAGE"
-      android:protectionLevel="signature" />
-
-  <uses-permission android:name="com.ameron32.apps.projectbanditv3.permission.C2D_MESSAGE" />
-  <!-- [ end ] *** REQUIRED FOR PARSE PUSH NOTIFICATIONS *** -->
-
-
-
-
-  <!-- [start] *** PARSE TOOLS *** -->
-  <application
-      android:name="com.ameron32.apps.projectbanditv3.ParseApplication"
-      android:allowBackup="true"
-      android:icon="@drawable/ic_launcher"
-      android:label="@string/app_name"
-      android:theme="@style/CustomTheme" >
-    <!-- [ end ] *** PARSE TOOLS *** -->
-
-    <activity
-        android:name=".activity.GatewayActivity"
-        android:label="@string/app_name" >
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
-    <activity
-        android:name=".activity.CoreActivity"
-        android:label="@string/app_name"
-        android:launchMode="singleTask" >
-    </activity>
-    <activity
-        android:name=".activity.ExpandedCoreActivity"
-        android:label="@string/app_name"
-        android:launchMode="singleTask" >
-    </activity>
-    <receiver
-        android:name="com.ameron32.apps.projectbanditv3.AppReceiver"
-        android:permission="com.google.android.c2dm.permission.SEND" >
-      <intent-filter>
-        <action android:name="com.ameron32.MESSAGE" />
-
-        <category android:name="com.ameron32.apps.projectbanditv3" />
-      </intent-filter>
-    </receiver>
-    <receiver
-        android:name="com.ameron32.apps.projectbanditv3.BootReceiver"
-        android:enabled="true"
-        android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
-      <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-        <category android:name="android.intent.category.DEFAULT" />
-      </intent-filter>
-    </receiver>
-    <service
-        android:name="com.ameron32.apps.projectbanditv3.ChatService"
-        android:enabled="true"
-        android:exported="true" >
-    </service>
-
-
-    <!-- [start] *** PARSE LOGIN UI *** -->
-    <activity
-        android:name="com.parse.ui.ParseLoginActivity"
-        android:label="@string/app_name"
-        android:launchMode="singleTop" >
-      <meta-data
-          android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
-          android:value="true" />
-    </activity>
-    <!-- [ end ] *** PARSE LOGIN UI *** -->
-
-
-    <!-- [start] *** CRASHLYTICS *** -->
-    <meta-data android:name="com.crashlytics.ApiKey"
-               android:value="451a4e784d66f9e46edd52c2e4fe58e0ba5f1f4c"/>
-    <!-- [ end ] *** CRASHLYTICS *** -->
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ameron32.apps.projectbanditv3" > <!-- to receive push messages, update all locations needed to projectbanditV3 -->
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="21" />
 
     <!-- [start] *** REQUIRED FOR PARSE PUSH NOTIFICATIONS *** -->
-    <service android:name="com.parse.PushService" />
-    <receiver android:name="com.parse.ParseBroadcastReceiver" >
-      <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-        <action android:name="android.intent.action.USER_PRESENT" />
-      </intent-filter>
-    </receiver>
-    <receiver
-        android:name="com.parse.ParsePushBroadcastReceiver"
-        android:exported="false" >
-      <intent-filter>
-        <action android:name="com.parse.push.intent.RECEIVE" />
-        <action android:name="com.parse.push.intent.DELETE" />
-        <action android:name="com.parse.push.intent.OPEN" />
-      </intent-filter>
-    </receiver>
-    <receiver
-        android:name="com.parse.GcmBroadcastReceiver"
-        android:permission="com.google.android.c2dm.permission.SEND" >
-      <intent-filter>
-        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+    <!-- [start] *** CRASHLYTICS *** -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- [ end ] *** CRASHLYTICS *** -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-        <category android:name="com.ameron32.apps.projectbanditv3" />
-      </intent-filter>
-    </receiver>
+    <permission
+        android:name="com.ameron32.apps.projectbanditv3.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.ameron32.apps.projectbanditv3.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- [ end ] *** REQUIRED FOR PARSE PUSH NOTIFICATIONS *** -->
 
-  </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+
+    <!-- [start] *** PARSE TOOLS *** -->
+    <application
+        android:name=".ParseApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/CustomTheme.NoActionBar" >
+
+        <!-- [ end ] *** PARSE TOOLS *** -->
+
+        <activity
+            android:name=".activity.GatewayActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.CoreActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name=".activity.ExpandedCoreActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+        </activity>
+
+        <!-- [start] *** PARSE LOGIN UI *** -->
+        <activity
+            android:name=".parseui.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <!-- [ end ] *** PARSE LOGIN UI *** -->
+
+
+        <!-- [start] *** CRASHLYTICS *** -->
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="451a4e784d66f9e46edd52c2e4fe58e0ba5f1f4c" />
+        <!-- [ end ] *** CRASHLYTICS *** -->
+
+
+        <!-- [start] *** REQUIRED FOR PARSE PUSH NOTIFICATIONS *** -->
+        <service android:name="com.parse.PushService" />
+
+        <receiver android:name="com.parse.ParseBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".AppReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.ameron32.MESSAGE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".ChatService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.ameron32.apps.projectbanditv3" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".AppReceiver2"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        <!-- [ end ] *** REQUIRED FOR PARSE PUSH NOTIFICATIONS *** -->
+    </application>
 
 </manifest>

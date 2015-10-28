@@ -11,7 +11,7 @@ import com.ameron32.apps.projectbanditv3.R;
 import com.ameron32.apps.projectbanditv3.manager.CharacterManager;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,10 +22,10 @@ import butterknife.InjectView;
 
 public class EquipmentAdapter extends
     ParseQueryAdapter<ParseObject> {
-  
+
   private final Context context;
   private final int itemViewResource;
-  
+
   public EquipmentAdapter(
       Context context,
       int itemViewResource) {
@@ -33,10 +33,10 @@ public class EquipmentAdapter extends
     this.context = context;
     this.itemViewResource = itemViewResource;
   }
-  
+
   private static ParseQueryAdapter.QueryFactory<ParseObject> makeQuery() {
     return new ParseQueryAdapter.QueryFactory<ParseObject>() {
-      
+
       @Override public ParseQuery<ParseObject> create() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("CInventory");
         query.include("item");
@@ -46,26 +46,26 @@ public class EquipmentAdapter extends
         query.whereEqualTo("owner", currentCharacter);
         query.orderByDescending("type");
         query.addAscendingOrder("name");
-        
+
         return query;
       }
     };
   }
-  
-  
-  
+
+
+
   @Override public View getItemView(
       ParseObject object, View v,
       ViewGroup parent) {
     v = super.getItemView(object, v, parent);
-    
+
     ViewHolder holder;
     holder = (ViewHolder) v.getTag();
     if (holder == null) {
       holder = new ViewHolder(v);
       v.setTag(holder);
     }
-    
+
     ParseObject item = object.getParseObject("item");
     String name = object.getString("name");
     int baseValue = object.getInt("baseValue");
@@ -99,10 +99,10 @@ public class EquipmentAdapter extends
     // }
     holder.durabilityBar.setMax(maxDurability);
     holder.durabilityBar.setProgress(currentDurability);
-    
+
     return v;
   }
-  
+
   private String getSlots(
       ParseObject item)
       throws JSONException {
@@ -112,7 +112,7 @@ public class EquipmentAdapter extends
     JSONArray slots = concatArray(armorSlots, weaponSlots);
     return slots.join(", ");
   }
-  
+
   private JSONArray concatArray(
       JSONArray... arrs)
       throws JSONException {
@@ -126,18 +126,18 @@ public class EquipmentAdapter extends
     }
     return result;
   }
-  
+
   static class ViewHolder {
-    
+
     @InjectView(R.id.button_value) Button itemValue;
     @InjectView(R.id.textview_equipment_item_name) TextView itemName;
     @InjectView(R.id.textview_equipment_item_value) TextView itemDurability;
     @InjectView(R.id.textview_equipment_item_slot) TextView equipmentSlot;
     @InjectView(R.id.progressBar1) ProgressBar durabilityBar;
-    
+
     public ViewHolder(View v) {
       ButterKnife.inject(this, v);
     }
   }
-  
+
 }

@@ -28,8 +28,8 @@ import com.ameron32.apps.projectbanditv3.object.ItemSet.Template;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter;
-import com.parse.ParseQueryAdapter.QueryFactory;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter.QueryFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +42,14 @@ import butterknife.InjectView;
  * A placeholder fragment containing a simple view.
  */
 public class CreateSetItemsFragment
-    extends AbsResettingContentFragment 
-    implements AbsResettingContentFragment.OnPerformTaskListener, AbsResettingContentFragment.TaskWorker 
+    extends AbsResettingContentFragment
+    implements AbsResettingContentFragment.OnPerformTaskListener, AbsResettingContentFragment.TaskWorker
 {
-  
+
   private static final String TAG = CreateSetItemsFragment.class.getSimpleName();
   private static final boolean TOAST = false;
   private static final boolean LOG = true;
-  
+
   @InjectView(R.id.s_set_template) Spinner setTemplate;
   @InjectView(R.id.et_name) EditText name;
   @InjectView(R.id.et_base_value) EditText baseValue;
@@ -57,21 +57,21 @@ public class CreateSetItemsFragment
   @InjectView(R.id.mss_armor_slots)
   MultiSelectSpinner armorSlots;
   @InjectView(R.id.lv_other_sets) ListView otherSets;
-  
+
   View mRootView;
   int templatePosition = 0;
 
 //  OnFragmentFinishListener callback;
-  
+
   public CreateSetItemsFragment() {}
-  
+
   @Override public void onCreate(
       Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
+
     createTemplates();
   }
-  
+
   //@formatter:off
   List<Template> templates;
   private void createTemplates() {
@@ -87,18 +87,18 @@ public class CreateSetItemsFragment
 //    ButterKnife.inject(this, mRootView);
 //    return mRootView;
 //  }
-  
+
   @Override protected int getCustomLayoutResource() {
     return R.layout.fragment_create_set_items;
   }
-  
+
   @Override public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.reset(this);
   }
-  
+
   @InjectView(R.id.cb_verify) CheckBox addToGame;
-  
+
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.inject(this, view);
@@ -106,11 +106,11 @@ public class CreateSetItemsFragment
 
     armorSlots.setItems(getResources().getStringArray(R.array.rules_armor_slots));
     armorSlots.setSelectedIndex(0);
-    
+
     String[] itemTypes = getResources().getStringArray(R.array.rules_item_types);
     spinnerSetTypes.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, itemTypes));
     spinnerSetTypes.setOnItemSelectedListener(new OnItemSelectedListener() {
-      
+
       @Override public void onItemSelected(
           AdapterView<?> parent,
           View view, int position,
@@ -132,9 +132,9 @@ public class CreateSetItemsFragment
         }
         if (type.equalsIgnoreCase("Item")) {
           hideElements();
-        } 
+        }
       }
-      
+
       @Override public void onNothingSelected(
           AdapterView<?> parent) {
         hideElements();
@@ -142,10 +142,10 @@ public class CreateSetItemsFragment
     });
 
     resetOtherSetsItems();
-    
+
     setTemplate.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getItems()));
     setTemplate.setOnFocusChangeListener(new OnFocusChangeListener() {
-      
+
       @Override public void onFocusChange(
           View v, boolean hasFocus) {
         if (!hasFocus) {
@@ -167,10 +167,10 @@ public class CreateSetItemsFragment
         templatePosition = setTemplate.getSelectedItemPosition();
       }});
   }
-  
+
   private void resetOtherSetsItems() {
     otherSets.setAdapter(new ParseQueryAdapter<ParseObject>(getActivity(), new QueryFactory<ParseObject>() {
-      
+
       @Override public ParseQuery<ParseObject> create() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Item");
         query.whereStartsWith("type", "Setreference");
@@ -178,7 +178,7 @@ public class CreateSetItemsFragment
         return query;
       }
     }) {
-      
+
       @Override public View getItemView(
           ParseObject object, View v,
           ViewGroup parent) {
@@ -193,7 +193,7 @@ public class CreateSetItemsFragment
       }
     });
   }
-  
+
   private List<String> getItems() {
     List<String> strings = new ArrayList<String>();
     for (Template t : templates) {
@@ -201,7 +201,7 @@ public class CreateSetItemsFragment
     }
     return strings;
   }
-  
+
   private void hideElements() {
     mRootView.findViewById(R.id.ll_weapon_elements).setVisibility(View.GONE);
     mRootView.findViewById(R.id.ll_ammo_elements).setVisibility(View.GONE);
@@ -209,7 +209,7 @@ public class CreateSetItemsFragment
     mRootView.findViewById(R.id.ll_ingredient_elements).setVisibility(View.GONE);
     mRootView.findViewById(R.id.ll_durability_elements).setVisibility(View.GONE);
   }
-  
+
   private void unhideElement(
       int... resources) {
     for (int res : resources) {
@@ -224,20 +224,20 @@ public class CreateSetItemsFragment
 //    if (!(activity instanceof OnFragmentFinishListener)) { throw new IllegalStateException("Activity must implement Fragment's callback."); }
 //    callback = (OnFragmentFinishListener) activity;
 //  }
-//  
+//
 //  @Override public void onDetach() {
 //    callback = new OnFragmentFinishListener() {
-//      
+//
 //      @Override public void onFinish() {}
 //    };
 //    super.onDetach();
 //  };
-//  
+//
 //  public interface OnFragmentFinishListener {
-//    
+//
 //    public void onFinish();
 //  }
-  
+
 //  @OnClick(R.id.b_submit) public void onSubmit(
 //      View button) {
 //    pullData();
@@ -304,6 +304,6 @@ public class CreateSetItemsFragment
 
   @Override public void onPostPerformTask() {
     // TODO Auto-generated method stub
-    
+
   }
 }

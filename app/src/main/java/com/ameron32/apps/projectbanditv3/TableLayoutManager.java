@@ -12,35 +12,35 @@ import com.ameron32.apps.projectbanditv3.view.TableRowLayout;
 
 public class TableLayoutManager extends
     LinearLayoutManager {
-  
+
   public TableLayoutManager(
       Context context, int orientation,
       boolean reverseLayout) {
     super(context, orientation, reverseLayout);
 
   }
-  
+
   public TableLayoutManager(
       Context context) {
     super(context);
-    
+
   }
-  
+
   public static class RecyclerCellClickListener
       implements
       RecyclerView.OnItemTouchListener {
-    
+
     private RecyclerCellClickListener.OnCellClickListener mListener;
-    
+
     public interface OnCellClickListener {
       public void onCellClick(
           View cellView,
           int rowPosition,
           int columnPosition);
     }
-    
+
     private final GestureDetector mGestureDetector;
-    
+
     public RecyclerCellClickListener(
         Context context,
         RecyclerCellClickListener.OnCellClickListener listener) {
@@ -53,7 +53,7 @@ public class TableLayoutManager extends
       };
       mGestureDetector = new GestureDetector(context, gestureListener);
     }
-    
+
     @Override public boolean onInterceptTouchEvent(
         RecyclerView view, MotionEvent e) {
       View childView = view.findChildViewUnder(e.getX(), e.getY());
@@ -61,21 +61,34 @@ public class TableLayoutManager extends
           && mListener != null
           && mGestureDetector.onTouchEvent(e)) {
         TableRowLayout rowView = (TableRowLayout) childView;
-        
+
         int rowPosition = view.getChildPosition(childView);
         int columnPosition = rowView.findCellPositionUnder(view, e.getX(), e.getY());
         View cellView = rowView.getChildAt(columnPosition);
-        
+
         if (cellView != null) {
           mListener.onCellClick(cellView, rowPosition, columnPosition);
         }
       }
       return false;
     }
-    
+
     @Override public void onTouchEvent(
         RecyclerView view,
         MotionEvent motionEvent) {}
-    
+
+    /**
+     * Called when a child of RecyclerView does not want RecyclerView and its ancestors to
+     * intercept touch events with
+     * {@link ViewGroup#onInterceptTouchEvent(MotionEvent)}.
+     *
+     * @param disallowIntercept True if the child does not want the parent to
+     *                          intercept touch events.
+     * @see ViewParent#requestDisallowInterceptTouchEvent(boolean)
+     */
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+      // TODO confirm empty
+    }
   }
 }
