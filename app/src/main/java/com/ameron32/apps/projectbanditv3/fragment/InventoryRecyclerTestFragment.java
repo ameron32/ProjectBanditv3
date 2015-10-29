@@ -27,7 +27,7 @@ public class InventoryRecyclerTestFragment
     extends SectionContainerTestFragment
     implements SwipeRefreshLayout.OnRefreshListener,
     AbsParseSuperRecyclerQueryAdapter.OnQueryLoadListener<CInventory> {
-  
+
   @InjectView(R.id.srv1)
   SuperRecyclerView list;
 
@@ -40,14 +40,16 @@ public class InventoryRecyclerTestFragment
       Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.inject(this, view);
-    
+
 //    listView1.setAdapter(new EquipmentHeadersAdapter(getActivity(), R.layout.row_equipment));
 
     mAdapter = new InventoryRecyclerAdapter(R.layout.row_griditem_inventory);
 //    mDecoratorAdapter = new InitialHeaderAdapter(mAdapter.getItems());
 
     list.setAdapter(mAdapter);
-    final GridLayoutManager lm = new GridLayoutManager(getActivity(), 2);
+    final RecyclerView.LayoutManager lm
+//        = new GridLayoutManager(getActivity(), 2);
+          = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
     list.setLayoutManager(lm);
     list.setRefreshListener(this);
     list.setRefreshingColorResources(android.R.color.holo_orange_light, android.R.color.holo_blue_light, android.R.color.holo_green_light, android.R.color.holo_red_light);

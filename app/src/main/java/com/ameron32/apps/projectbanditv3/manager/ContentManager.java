@@ -81,10 +81,8 @@ public class ContentManager extends AbsManager {
         SectionContainerTestFragment.newInstance(EquipmentRecyclerTestFragment.class, R.layout.section_character_equipment_3)));
 //    items.add(new ContentItem("Test:Inventory2", R.drawable.ic_construction,
 //        SectionContainerTestFragment.newInstance(InventoryHeadersTestFragment.class, R.layout.section_character_inventory_headers)));
-//    items.add(new ContentItem("Test:Inventory3", R.drawable.ic_construction,
-//        SectionContainerTestFragment.newInstance(InventoryRecyclerTestFragment.class, R.layout.section_character_inventory_3)));
-    items.add(new ContentItem("Inventory2", R.drawable.ic_construction,
-        SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)));
+    items.add(new ContentItem("Inventory3", R.drawable.ic_construction,
+        SectionContainerTestFragment.newInstance(InventoryRecyclerTestFragment.class, R.layout.section_character_inventory_3)));
     items.add(new ContentItem("Roll Dice", R.drawable.ic_construction, new RollDiceFragment()));
 
 //  TODO: reenable later
@@ -114,10 +112,7 @@ public class ContentManager extends AbsManager {
 
       items.add(new ContentItem("GM:Test:Skills", R.drawable.ic_gm,
           SectionContainerTestFragment.newInstance(SkillsTestFragment.class, R.layout.section_skills)));
-      items.add(new ContentItem("GM:Test:Table Character", R.drawable.ic_gm,
-          TableTestFragment.create("Character", R.layout.section_)));
-      items.add(new ContentItem("GM:Test:Table CInventory", R.drawable.ic_gm,
-          TableTestFragment.create("CInventory", R.layout.section_)));
+
       items.add(new ContentItem("GM:Test:Table Item", R.drawable.ic_gm,
           TableTestFragment.create("Item", R.layout.section_)));
 
@@ -131,9 +126,18 @@ public class ContentManager extends AbsManager {
       items.add(new ContentItem("GM: Create Item", R.drawable.ic_gm, new CreateItemFragment()));
       items.add(new ContentItem("GM: Issue Item", R.drawable.ic_gm, new IssueItemFragment()));
 
-      items.add(new ContentItem("Database: Create Item Set", R.drawable.ic_gm, new CreateSetItemsFragment()));
-      items.add(new ContentItem("Database: Attach Relation", R.drawable.ic_gm, new RelationAttacherFragment()));
+      items.add(new ContentItem("Database: Create Item Set", R.mipmap.ic_data,
+          new CreateSetItemsFragment()));
+      items.add(new ContentItem("Database: Attach Relation", R.mipmap.ic_data,
+          new RelationAttacherFragment()));
+      items.add(new ContentItem("Database: Character", R.mipmap.ic_data,
+          TableTestFragment.create("Character", R.layout.section_)));
+      items.add(new ContentItem("Database: CInventory", R.mipmap.ic_data,
+          TableTestFragment.create("CInventory", R.layout.section_)));
     }
+
+    items.add(new ContentItem("Inventory2", R.drawable.ic_construction,
+        SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)));
 
     return items;
   }
