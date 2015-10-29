@@ -48,14 +48,28 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true" />
 
-            <ImageButton
+            <FrameLayout
+              android:id="@+id/random_padding"
+              android:layout_alignParentBottom="true"
+              android:layout_alignParentRight="true"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/activity_vertical_margin"
+              android:layout_marginLeft="@dimen/activity_horizontal_margin"
+              android:layout_marginRight="@dimen/activity_horizontal_margin"
+              android:layout_marginTop="@dimen/activity_vertical_margin">
+
+              <ImageButton
                 android:id="@+id/button_toggle_show_hide"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_bandit_clear" />
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/ic_bandit_clear"/>
+            </FrameLayout>
             <!-- [ end ] EXPANDEDACTIVITY -->
             
         </RelativeLayout>

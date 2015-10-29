@@ -44,7 +44,6 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:alpha="0.2"
-            android:onClick="toggleShowHideChat"
             android:src="@drawable/ic_bandit_clear" />
 
         <LinearLayout

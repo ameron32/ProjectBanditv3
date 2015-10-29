@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textview_created_time"
-        android:text="#objectId" />
+        android:text="#objectId"
+        android:visibility="invisible"/>
 
 
     <com.ameron32.apps.projectbanditv3.parseui.ParseImageView

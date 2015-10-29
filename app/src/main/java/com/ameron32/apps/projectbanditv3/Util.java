@@ -132,9 +132,10 @@ public class Util {
 
           try {
             ParseObject oAttempts = new ParseQuery<ParseObject>("CAction").get("QJJa4LdZUV");
+            Character character = CharacterManager.get().getCurrentCharacter();
 
             Message.create()
-              .setMessage(user + " rolls [" + total + "] on " + description + ".")
+              .setMessage(character.getName() + " rolls [" + total + "] on " + description + ".")
               .setAction(oAttempts)
               .setChannel(CharacterManager.get().getCurrentCharacter().getCurrentChannel())
               .setType(MessageType.SYSTEM)

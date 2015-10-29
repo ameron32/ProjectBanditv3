@@ -65,7 +65,7 @@ public class ContentManager extends AbsManager {
   private List<ContentItem> createContentItems() {
     final List<ContentItem> items = new ArrayList<ContentItem>();
 
-    items.add(new ContentItem("Test:Game", R.drawable.ic_construction,
+    items.add(new ContentItem("Game", R.drawable.ic_construction,
         GameFragment.newInstance(R.layout.section_game)));
 
 
@@ -73,16 +73,18 @@ public class ContentManager extends AbsManager {
 //    items.add(new ContentItem("GridTest", R.drawable.ic_construction,
 //        GridPagerFragment.newInstance(3)));
 
-    items.add(new ContentItem("Test:Stats", R.drawable.ic_construction,
+    items.add(new ContentItem("Stats", R.drawable.ic_construction,
         SectionContainerTestFragment.newInstance(StatsTestFragment.class, R.layout.section_character_stats)));
 //    items.add(new ContentItem("Test:Equipment2", R.drawable.ic_construction,
 //        SectionContainerTestFragment.newInstance(EquipmentHeadersTestFragment.class, R.layout.section_character_equipment_headers)));
-    items.add(new ContentItem("Test:Equipment3", R.drawable.ic_construction,
+    items.add(new ContentItem("Equipment3", R.drawable.ic_construction,
         SectionContainerTestFragment.newInstance(EquipmentRecyclerTestFragment.class, R.layout.section_character_equipment_3)));
 //    items.add(new ContentItem("Test:Inventory2", R.drawable.ic_construction,
 //        SectionContainerTestFragment.newInstance(InventoryHeadersTestFragment.class, R.layout.section_character_inventory_headers)));
-    items.add(new ContentItem("Test:Inventory3", R.drawable.ic_construction,
-        SectionContainerTestFragment.newInstance(InventoryRecyclerTestFragment.class, R.layout.section_character_inventory_3)));
+//    items.add(new ContentItem("Test:Inventory3", R.drawable.ic_construction,
+//        SectionContainerTestFragment.newInstance(InventoryRecyclerTestFragment.class, R.layout.section_character_inventory_3)));
+    items.add(new ContentItem("Inventory2", R.drawable.ic_construction,
+        SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)));
     items.add(new ContentItem("Roll Dice", R.drawable.ic_construction, new RollDiceFragment()));
 
 //  TODO: reenable later
