@@ -97,4 +97,7 @@ dependencies {
 
   // Audio
   compile 'com.google.android.exoplayer:exoplayer:r1.5.1'
+
+  // ViewPagerIndicator
+  compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
 }

@@ -13,7 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.object.Character;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseQuery;
+
+import org.json.JSONObject;
 
 import rx.Observable;
 import rx.Observer;

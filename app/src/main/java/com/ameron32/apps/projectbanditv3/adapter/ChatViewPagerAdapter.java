@@ -28,8 +28,8 @@ public class ChatViewPagerAdapter extends PagerAdapter {
   private final ViewPager      mViewPager;
   private final LayoutInflater mInflater;
   private final ChatViewSelector mChatViewSelector;
-  
-  int[]                        viewIds = new int[5];
+
+  int[]                        viewIds = new int[4];
 
   public ChatViewPagerAdapter(Context context, ViewPager viewPager) {
     super();
@@ -48,12 +48,12 @@ public class ChatViewPagerAdapter extends PagerAdapter {
   public boolean isViewFromObject(View view, Object object) {
     return view == ((View) object);
   }
-  
+
   @Override
   public Object instantiateItem(ViewGroup collection, int position) {
     if (LOG) Log.d(TAG, "position: " + position);
     View item = collection.getChildAt(position);
-    
+
     if (item == null) {
       item = mChatViewSelector.getViewAt(position);
       collection.addView(item);
@@ -61,7 +61,7 @@ public class ChatViewPagerAdapter extends PagerAdapter {
 
     return item;
   }
-  
+
   @Override
   public void destroyItem(ViewGroup container, int position, Object object) {
     // super.destroyItem(container, position, object);
@@ -72,22 +72,22 @@ public class ChatViewPagerAdapter extends PagerAdapter {
   public ViewPager getViewPager() {
     return mViewPager;
   }
-  
+
   public LayoutInflater getInflater() {
     return mInflater;
   }
-  
+
   private ChatViewSelector getChatSelector() {
     return mChatViewSelector;
   }
-  
+
 //  public int getViewPositionFromId(String id) {
 //    int position = chatViewManager.getViewFromId(id);
 //    return position;
 //  }
-  
+
   public static class ChatViewSelector {
-    
+
     private static final String  TAG     = ChatViewSelector.class.getSimpleName();
     private static final boolean TOAST   = false;
     private static final boolean LOG     = true;
@@ -117,7 +117,7 @@ public class ChatViewPagerAdapter extends PagerAdapter {
       // }
       return item;
     }
-    
+
 //    public int getViewFromId(String id) {
 //      for (int i = 0; i < chatViews.length; i++) {
 //        Class chatView = chatViews[i];
@@ -142,11 +142,11 @@ public class ChatViewPagerAdapter extends PagerAdapter {
       case 2:
         // left blank for expansion
         // fall-through
-      case 3:
+//      case 3:
         item = ChatViewStory.create(mInflater, R.layout.view_story_chat,
             mViewGroup);
         break;
-      case 4:
+      case 3:
         item = ChatViewThousand.create(mInflater,
             R.layout.view_thousand_chat, mViewGroup);
         break;

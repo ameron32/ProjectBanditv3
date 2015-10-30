@@ -1,11 +1,15 @@
 package com.ameron32.apps.projectbanditv3.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.ameron32.apps.projectbanditv3.R;
 import com.ameron32.apps.projectbanditv3.Util;
+import com.ameron32.apps.projectbanditv3.manager.GameManager;
+import com.ameron32.apps.projectbanditv3.object.Game;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -27,6 +31,28 @@ public class RollDiceFragment extends AbsContentFragment {
 	    Bundle savedInstanceState) {
 	  super.onViewCreated(view, savedInstanceState);
 	  ButterKnife.inject(this, view);
+
+		setDefaultsFromGame();
+	}
+
+	private void setDefaultsFromGame() {
+		final Game currentGame = GameManager.get().getCurrentGame();
+		String defaultDice = currentGame.getDefaultDice().trim();
+		Log.d("RollDice", defaultDice.toString());
+		String[] diceSizes = defaultDice.split(",");
+		Log.d("RollDice", Arrays.toString(diceSizes));
+		for (String dieSize : diceSizes) {
+			String[] pieces = dieSize.split(":");
+			Log.d("RollDice", Arrays.toString(diceSizes));
+			Dice die = Dice.valueOf(pieces[0]);
+			int quantityOfDiceAtSize = Integer.valueOf(pieces[1]);
+
+			setDieCount(die.ordinal(), quantityOfDiceAtSize);
+		}
+	}
+
+	private void setDieCount(int position, int qty) {
+		quantityViewDiceList.get(position).setQuantity(qty);
 	}
 
 	@InjectViews({R.id.qv_d4, R.id.qv_d6, R.id.qv_d8, R.id.qv_d10, R.id.qv_d12, R.id.qv_d20})
@@ -75,4 +101,9 @@ public class RollDiceFragment extends AbsContentFragment {
 	  ButterKnife.reset(this);
 	}
 
+	enum Dice {
+		d4, d6, d8, d10, d12, d20;
+
+
+	}
 }

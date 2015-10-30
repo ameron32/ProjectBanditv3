@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#AAAAAA"
-    android:padding="2dp" >
+    android:padding="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,12 +28,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/button_toggle_show_hide"
             android:layout_toLeftOf="@+id/button_toggle_show_hide"
             android:gravity="left|bottom"
             android:ems="10"
             android:hint="Message as"
-            android:maxLines="3"
+            tools:text="max\nlines\nis\n12\nso\nhere\nis\nan\nexample\n10\n11\n12"
+            android:maxLines="12"
             android:textSize="@dimen/inputbox_text_size" >
         </com.ameron32.apps.projectbanditv3.view.FloatingHintEditText>
 
@@ -46,48 +47,72 @@
             android:alpha="0.2"
             android:src="@drawable/ic_bandit_clear" />
 
-        <LinearLayout
-            android:id="@+id/linearlayout_spinner_holder"
-            android:layout_width="match_parent"
+      <LinearLayout
+          android:id="@+id/linearlayout_spinner_holder"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_above="@+id/edittext_message_to_send"
+          android:layout_alignParentLeft="true"
+          android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/frame_image"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/edittext_message_to_send"
-            android:layout_alignParentLeft="true"
-            android:orientation="horizontal" >
+            android:background="@drawable/shadow_black"
+            android:paddingBottom="5px"
+            android:paddingLeft="6px"
+            android:paddingRight="5px"
+            android:paddingTop="5px">
 
-            <Spinner
-                android:id="@+id/spinner_character"
-                android:layout_width="0px"
-                android:layout_height="40dp"
-                android:layout_weight="3" />
+          <ImageView
+              android:id="@+id/imageview_character_spinner_image"
+              android:layout_width="@dimen/image_character_length_squared"
+              android:layout_height="@dimen/image_character_length_squared"
+              android:layout_gravity="center"
+              android:layout_margin="5px"/>
+        </FrameLayout>
 
-            <Spinner
-                android:id="@+id/spinner_action"
-                android:layout_width="0px"
-                android:layout_height="40dp"
-                android:layout_weight="2" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/bSend"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0px"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignRight="@+id/edittext_message_to_send"
-                android:layout_weight="1.99"
-                android:src="@android:drawable/ic_menu_send" />
+          <Spinner
+              android:id="@+id/spinner_character"
+              android:layout_width="0px"
+              android:layout_height="40dp"
+              android:layout_weight="3"/>
+
+          <Spinner
+              android:id="@+id/spinner_action"
+              android:layout_width="0px"
+              android:layout_height="40dp"
+              android:layout_weight="2"/>
+
+          <ImageButton
+              android:id="@+id/bSend"
+              style="?android:attr/borderlessButtonStyle"
+              android:layout_width="0px"
+              android:layout_height="48dp"
+              android:layout_alignParentBottom="true"
+              android:layout_alignRight="@+id/edittext_message_to_send"
+              android:layout_weight="2"
+              android:src="@android:drawable/ic_menu_send"/>
         </LinearLayout>
+      </LinearLayout>
 
-        <!--<com.viewpagerindicator.LinePageIndicator-->
-            <!--android:id="@+id/titles"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:padding="5dip"-->
-            <!--app:lineWidth="5dp"-->
-            <!--app:selectedColor="@color/chat_manager_page_indicator_selected"-->
-            <!--app:strokeWidth="15dp"-->
-            <!--app:unselectedColor="@color/chat_manager_page_indicator_unselected" />-->
+        <com.viewpagerindicator.LinePageIndicator
+            xmlns:vpi="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/titles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:padding="5dip"
+            vpi:lineWidth="5dp"
+            vpi:selectedColor="@color/chat_manager_page_indicator_selected"
+            vpi:strokeWidth="15dp"
+            vpi:unselectedColor="@color/chat_manager_page_indicator_unselected" />
 
         <ProgressBar
             android:id="@+id/progress_send"

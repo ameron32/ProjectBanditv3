@@ -121,7 +121,7 @@
                 android:layout_alignBottom="@+id/frame_image"
                 android:layout_alignRight="@+id/frame_image"
                 android:src="@drawable/ic_launcher"
-                android:visibility="invisible" />
+                android:visibility="visible" />
         </RelativeLayout>
     </RelativeLayout>
 

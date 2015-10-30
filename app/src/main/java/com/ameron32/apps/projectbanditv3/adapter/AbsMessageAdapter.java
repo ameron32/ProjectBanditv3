@@ -606,14 +606,14 @@ public abstract class AbsMessageAdapter
         return;
       }
 
-      if (characterPic == null) {
-        Log.d("MPQA", "characterPic is null, using profilePicUrl");
+//      if (characterPic == null) {
+//        Log.d("MPQA", "characterPic is null, using profilePicUrl");
         Picasso.with(context).load(profilePicUrl).into(imageView);
-        return;
-      }
-
-      Picasso.with(context).load(characterPic.getUrl()).into(imageView);
-      characterPic.getDataInBackground(new GetCharacterPicCallback(imageView, objectId));
+//        return;
+//      }
+//
+//      Picasso.with(context).load(characterPic.getUrl()).into(imageView);
+//      characterPic.getDataInBackground(new GetCharacterPicCallback(imageView, objectId));
     }
   }
 
@@ -730,8 +730,9 @@ public abstract class AbsMessageAdapter
       }
 
       // CHARACTER PIC -- IMAGE
-      ParseFile actionPic = actionObject.getParseFile("actionPic");
-      if (actionPic == null) {
+//      ParseFile actionPic = actionObject.getParseFile("actionPic");
+      String actionPicUrl = actionObject.getString("actionPicUrl");
+      if (actionPicUrl == null) {
         Log.d("MPQA", "actionPic is null");
         return;
       }
@@ -740,8 +741,8 @@ public abstract class AbsMessageAdapter
         return;
       }
 
-      Picasso.with(context).load(actionPic.getUrl()).into(imageView);
-      actionPic.getDataInBackground(new GetActionPicCallback(imageView, objectId));
+      Picasso.with(context).load(actionPicUrl).into(imageView);
+//      actionPic.getDataInBackground(new GetActionPicCallback(imageView, objectId));
     }
   }
 

@@ -12,6 +12,7 @@ import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -41,13 +42,14 @@ import com.google.android.exoplayer.util.Util;
 import com.parse.ParseObject;
 import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter;
 import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter.OnQueryLoadListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-//import com.viewpagerindicator.LinePageIndicator;
+import com.viewpagerindicator.LinePageIndicator;
 
 // TODO: ADD viewpagerindicator LinePageIndicator
 public class ChatManagerFragment
@@ -106,13 +108,14 @@ public class ChatManagerFragment
     return fragment;
   }
 
+  @InjectView(R.id.imageview_character_spinner_image) ImageView spinnerImage;
   @InjectView(R.id.spinner_action) Spinner actionSpinner;
   @InjectView(R.id.spinner_character) Spinner characterSpinner;
   @InjectView(R.id.edittext_message_to_send) EditText chatInputEditText;
   @InjectView(R.id.viewpager) ViewPager mViewPager;
   @InjectView(R.id.bSend) View sendButton;
   @InjectView(R.id.progress_send) ProgressBar sendProgress;
-//  @InjectView(R.id.titles) LinePageIndicator titleIndicator;
+  @InjectView(R.id.titles) LinePageIndicator titleIndicator;
 
 //  private OnClickListener clickListener;
 //  private OnLongClickListener longClickListener;
@@ -164,7 +167,7 @@ public class ChatManagerFragment
 
     });
 
-//    titleIndicator.setViewPager(mViewPager);
+    titleIndicator.setViewPager(mViewPager);
 
     changeChatView(mCurrentChatViewPosition);
   }
@@ -250,6 +253,7 @@ public class ChatManagerFragment
         // currentCharacter = Character
         // .getFromParseObject(characterParseObject);
         CharacterManager.get().setChatCharacter(character, position);
+        updateChatImage();
         updateEditTextHint();
       }
 
@@ -409,6 +413,11 @@ public class ChatManagerFragment
 
   private void unregisterAsListener() {
     MessageManager.get().addMessageListener(null);
+  }
+
+  public void updateChatImage() {
+    String profilePicUrl = CharacterManager.get().getChatCharacter().getProfilePicUrl();
+    Picasso.with(getActivity()).load(profilePicUrl).into(spinnerImage);
   }
 
   public void updateEditTextHint() {

@@ -10,7 +10,7 @@
         android:id="@+id/recyclerlistView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textview_chat_title" />
+        android:layout_below="@+id/button_filter_menu_toggle" />
 
 	<!-- FILTERS MENU GOES HERE -->
     <TextView
@@ -35,7 +35,7 @@
         android:text="FILTERS"
         android:textColor="@color/debug_text"
         android:textSize="10sp" />
-    
+
     <ImageButton
         android:id="@+id/button_filter_menu_toggle"
         style="?android:attr/borderlessButtonStyle"
