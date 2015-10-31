@@ -62,10 +62,17 @@ import com.parse.SaveCallback;
       return false;
     }
   }
+
+  public boolean isTester() {
+    return this.getBoolean("isTester");
+  }
+
+  public boolean isDataAdmin() {
+    return this.getBoolean("isDataAdmin");
+  }
   
   public boolean equals(
       User user) {
     return this.isIdEquals(user);
   }
-  
 }

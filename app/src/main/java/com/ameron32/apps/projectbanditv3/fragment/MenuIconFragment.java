@@ -66,7 +66,7 @@ public class MenuIconFragment extends
     mRecyclerView.setLayoutManager(layoutManager);
     mRecyclerView.setHasFixedSize(true);
     
-    mAdapter = new IconAdapter(getActivity(), R.layout.row_nav_icon_only, R.id.imageview, ContentManager.get().getImageIcons());
+    mAdapter = new IconAdapter(getActivity(), R.layout.row_nav_icon_only, R.id.imageview, ContentManager.get().getContentItems());
     mRecyclerView.setAdapter(mAdapter);
   }
   

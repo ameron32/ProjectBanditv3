@@ -75,7 +75,9 @@ public class IssueItemFragment extends
     
     itemSpinner = (MultiSelectSpinner) rootView.findViewById(R.id.mss_item_selector);
     characterSpinner = (MultiSelectSpinner) rootView.findViewById(R.id.mss_character_selector);
-    
+
+    runItemQuery();
+    runCharacterQuery();
     OnFocusChangeListener listener = new OnFocusChangeListener() {
       
       @Override public void onFocusChange(

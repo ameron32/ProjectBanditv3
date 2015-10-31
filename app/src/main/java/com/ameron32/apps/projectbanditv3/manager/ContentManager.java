@@ -9,12 +9,10 @@ import com.ameron32.apps.projectbanditv3.adapter.ContentAdapter;
 import com.ameron32.apps.projectbanditv3.fragment.CreateItemFragment;
 import com.ameron32.apps.projectbanditv3.fragment.CreateSetItemsFragment;
 import com.ameron32.apps.projectbanditv3.fragment.DEMORxJavaFragment;
-import com.ameron32.apps.projectbanditv3.fragment.EquipmentHeadersTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.GameFragment;
 import com.ameron32.apps.projectbanditv3.fragment.HtmlTextViewTestFragment;
-import com.ameron32.apps.projectbanditv3.fragment.InventoryHeadersTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryRecyclerTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.InventoryTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.IssueItemFragment;
@@ -88,44 +86,52 @@ public class ContentManager extends AbsManager {
 //  TODO: reenable later
 //    items.add(new ContentItem("Test:Characters", R.drawable.ic_construction,
 //        TableTestFragment.create("Character", R.layout.fragment_default_table_layout)));
+    if (UserManager.get().isCurrentUserTester()) {
+      items.add(new ContentItem("Inventory2", R.drawable.ic_bandit_clear,
+          SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)).alpha(0.3f));
+    }
 
     if (GameManager.get().isCurrentUserGM()) {
-
-      items.add(new ContentItem("RxJava DEMO", R.drawable.ic_gm, new DEMORxJavaFragment()));
-      items.add(new ContentItem("SlidingPaneTest", R.drawable.ic_gm, new PartialPaneFragment()));
-      items.add(new ContentItem("HtmlTextView DEMO", R.drawable.ic_gm, new HtmlTextViewTestFragment()));
-
-
-//      items.add(new ContentItem("GM:Demo:blank", R.drawable.ic_gm,
-//          AbsContentFragment.newInstance(/*1*/)));
-      items.add(new ContentItem("GM:Chat", R.drawable.ic_gm,
-              ChatManagerFragment.newInstance(0, null)));
-      items.add(new ContentItem("GM:RETIRED:Equipment", R.drawable.ic_gm,
-          SectionContainerTestFragment.newInstance(EquipmentTestFragment.class, R.layout.section_character_equipment)));
-      items.add(new ContentItem("GM:RETIRED:Inventory", R.drawable.ic_gm,
-          SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)));
-
-      items.add(new ContentItem("GM:Test:Advantages2", R.drawable.ic_gm,
-          new AdvantageCheckerFragment()));
-      items.add(new ContentItem("GM:Test:Skills2", R.drawable.ic_gm,
-          new SkillCheckerFragment()));
-
-      items.add(new ContentItem("GM:Test:Skills", R.drawable.ic_gm,
-          SectionContainerTestFragment.newInstance(SkillsTestFragment.class, R.layout.section_skills)));
-
-      items.add(new ContentItem("GM:Test:Table Item", R.drawable.ic_gm,
-          TableTestFragment.create("Item", R.layout.section_)));
-
-//        items.add(new ContentItem("GM:Test:TileView", R.drawable.ic_gm,
-//                MyTileViewFragment.newInstance()));
-
-
-
       items.add(new ContentItem("GM: Add Players", R.drawable.ic_gm, new AddPlayersFragment()));
       items.add(new ContentItem("GM: Add Characters", R.drawable.ic_gm, new AddCharactersFragment()));
       items.add(new ContentItem("GM: Create Item", R.drawable.ic_gm, new CreateItemFragment()));
       items.add(new ContentItem("GM: Issue Item", R.drawable.ic_gm, new IssueItemFragment()));
 
+
+      if (UserManager.get().isCurrentUserTester()) {
+        items.add(new ContentItem("RxJava DEMO", R.drawable.ic_bandit_clear, new DEMORxJavaFragment()).alpha(0.3f));
+        items.add(new ContentItem("SlidingPaneTest", R.drawable.ic_bandit_clear, new PartialPaneFragment()).alpha(0.3f));
+        items.add(new ContentItem("HtmlTextView DEMO", R.drawable.ic_bandit_clear, new HtmlTextViewTestFragment()).alpha(0.3f));
+
+
+//      items.add(new ContentItem("GM:Demo:blank", R.drawable.ic_gm,
+//          AbsContentFragment.newInstance(/*1*/)));
+        items.add(new ContentItem("GM:Chat", R.drawable.ic_bandit_clear,
+            ChatManagerFragment.newInstance(0, null)).alpha(0.3f));
+        items.add(new ContentItem("GM:RETIRED:Equipment", R.drawable.ic_bandit_clear,
+            SectionContainerTestFragment.newInstance(EquipmentTestFragment.class, R.layout.section_character_equipment)).alpha(0.3f));
+        items.add(new ContentItem("GM:RETIRED:Inventory", R.drawable.ic_bandit_clear,
+            SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)).alpha(0.3f));
+
+        items.add(new ContentItem("GM:Test:Advantages2", R.drawable.ic_bandit_clear,
+            new AdvantageCheckerFragment()).alpha(0.3f));
+        items.add(new ContentItem("GM:Test:Skills2", R.drawable.ic_bandit_clear,
+            new SkillCheckerFragment()).alpha(0.3f));
+
+        items.add(new ContentItem("GM:Test:Skills", R.drawable.ic_bandit_clear,
+            SectionContainerTestFragment.newInstance(SkillsTestFragment.class, R.layout.section_skills)).alpha(0.3f));
+
+        items.add(new ContentItem("GM:Test:Table Item", R.drawable.ic_bandit_clear,
+            TableTestFragment.create("Item", R.layout.section_)).alpha(0.3f));
+
+//        items.add(new ContentItem("GM:Test:TileView", R.drawable.ic_gm,
+//                MyTileViewFragment.newInstance()));
+
+
+      }
+    }
+
+    if (UserManager.get().isCurrentUserDataAdmin()) {
       items.add(new ContentItem("Database: Create Item Set", R.mipmap.ic_data,
           new CreateSetItemsFragment()));
       items.add(new ContentItem("Database: Attach Relation", R.mipmap.ic_data,
@@ -135,9 +141,6 @@ public class ContentManager extends AbsManager {
       items.add(new ContentItem("Database: CInventory", R.mipmap.ic_data,
           TableTestFragment.create("CInventory", R.layout.section_)));
     }
-
-    items.add(new ContentItem("Inventory2", R.drawable.ic_construction,
-        SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)));
 
     return items;
   }
@@ -208,6 +211,7 @@ public class ContentManager extends AbsManager {
     public String title;
     public int imageResource;
     AbsContentFragment fragment;
+    private float alpha;
 
     public ContentItem(String title,
         int imageResource,
@@ -216,10 +220,24 @@ public class ContentManager extends AbsManager {
       this.title = title;
       this.imageResource = imageResource;
       this.fragment = fragment;
+      alpha(1.0f);
+    }
+
+    public ContentItem alpha(float alpha) {
+      this.alpha = alpha;
+      return this;
+    }
+
+    public int alphaAsInt() {
+      return Math.round(alpha * 255.0f);
     }
   }
 
   public ContentAdapter getAdapter() {
     return new ContentAdapter(contentItems);
+  }
+
+  public List<ContentItem> getContentItems() {
+    return contentItems;
   }
 }

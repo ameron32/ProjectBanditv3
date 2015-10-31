@@ -2,6 +2,7 @@ package com.ameron32.apps.projectbanditv3.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 
 import com.ameron32.apps.projectbanditv3.R;
 import com.ameron32.apps.projectbanditv3.manager.ContentManager;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -26,16 +29,18 @@ public class IconAdapter
   private LayoutInflater mInflater;
   private int mLayoutResource;
   private int mImageViewId;
-  private int[] mImageResources;
+//  private int[] mImageResources;
+  private List<ContentManager.ContentItem> mData;
   
   public IconAdapter(
       Context context,
       int layoutResource,
       int imageViewId,
-      int[] imageResources) {
+      List<ContentManager.ContentItem> mData) {
     this.mLayoutResource = layoutResource;
     this.mImageViewId = imageViewId;
-    this.mImageResources = imageResources;
+//    this.mImageResources = imageResources;
+    this.mData = mData;
     this.mInflater = LayoutInflater.from(context);
   }
   
@@ -52,14 +57,18 @@ public class IconAdapter
       mImageView = (ImageView) itemView.findViewById(imageViewResId);
     }
   }
+
+  public ContentManager.ContentItem getItem(int position) {
+    return mData.get(position);
+  }
   
   public int getItemResource(
       int position) {
-    return mImageResources[position];
+    return getItem(position).imageResource;
   }
   
   @Override public int getItemCount() {
-    return mImageResources.length;
+    return mData.size();
   }
   
   @Override public ViewHolder onCreateViewHolder(
@@ -71,7 +80,9 @@ public class IconAdapter
   @Override public void onBindViewHolder(
       final ViewHolder holder,
       final int position) {
-    holder.mImageView.setImageResource(getItemResource(position));
+    Drawable d = holder.mImageView.getContext().getResources().getDrawable(getItem(position).imageResource);
+    d.mutate().setAlpha(getItem(position).alphaAsInt());
+    holder.mImageView.setImageDrawable(d);
     
     holder.itemView.setOnTouchListener(new View.OnTouchListener() {
       @Override public boolean onTouch(

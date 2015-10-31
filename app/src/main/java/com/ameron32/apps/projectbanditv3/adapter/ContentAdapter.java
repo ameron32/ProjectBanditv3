@@ -73,6 +73,7 @@ public class ContentAdapter
     final int position = p - 1;
     holder.textView.setText(getItem(position).title);
     Drawable d = holder.textView.getContext().getResources().getDrawable(getItem(position).imageResource);
+    d.mutate().setAlpha(getItem(position).alphaAsInt());
     holder.textView.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
     
     holder.itemView.setOnTouchListener(new View.OnTouchListener() {

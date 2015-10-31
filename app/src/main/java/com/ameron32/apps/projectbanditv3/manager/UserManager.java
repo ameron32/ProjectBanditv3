@@ -61,6 +61,14 @@ public class UserManager extends AbsManager {
     // currentUser.getObjectId());
     return currentUser;
   }
+
+  public boolean isCurrentUserTester() {
+    return getCurrentUser().isTester();
+  }
+
+  public boolean isCurrentUserDataAdmin() {
+    return getCurrentUser().isDataAdmin();
+  }
   
   public void setGamesOfCurrentUser(
       List<Game> games) {
