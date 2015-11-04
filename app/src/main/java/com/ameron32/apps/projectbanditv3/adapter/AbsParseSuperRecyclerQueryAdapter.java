@@ -1,18 +1,22 @@
 package com.ameron32.apps.projectbanditv3.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.ameron32.apps.projectbanditv3.AutoReloader;
+import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter.QueryFactory;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter.QueryFactory;
+import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U extends RecyclerView.ViewHolder>
@@ -52,7 +56,8 @@ public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U
   public AbsParseSuperRecyclerQueryAdapter(final Class<T> clazz, final boolean hasStableIds) {
     this(new QueryFactory<T>() {
 
-      @Override public ParseQuery<T> create() {
+      @Override
+      public ParseQuery<T> create() {
         return ParseQuery.getQuery(clazz);
       }
     }, hasStableIds);
@@ -91,26 +96,27 @@ public abstract class AbsParseSuperRecyclerQueryAdapter<T extends ParseObject, U
 
   public void loadObjects() {
     dispatchOnLoading();
+
+    // first, query new since
     final ParseQuery<T> query = mFactory.create();
     onFilterQuery(query);
-    query.findInBackground(new FindCallback<T>() {;
+    query.findInBackground(new FindCallback<T>() {
 
-      @Override public void done(
-          List<T> queriedItems,
-          @Nullable ParseException e) {
+      @Override
+      public void done(List<T> objects, ParseException e) {
         if (e == null) {
           mItems.clear();
-          mItems.addAll(queriedItems);
-//          mItems = queriedItems;
-          dispatchOnLoaded(queriedItems, e);
+          mItems.addAll(objects);
+          //                mItems = queriedItems;
+          dispatchOnLoaded(objects, e);
           notifyDataSetChanged();
           fireOnDataSetChanged();
+        } else {
+          e.printStackTrace();
         }
       }
     });
   }
-
-
 
   public interface OnDataSetChangedListener {
     public void onDataSetChanged();

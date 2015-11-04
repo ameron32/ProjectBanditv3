@@ -20,6 +20,8 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -37,6 +39,8 @@ public class ParseApplication extends
   @Override public void onCreate() {
     super.onCreate();
 //    applicationContext = getApplicationContext();
+
+    JodaTimeAndroid.init(this);
 
     YOUR_APPLICATION_ID = getResources().getString(R.string.parse_application_id);
     YOUR_CLIENT_KEY = getResources().getString(R.string.parse_client_key);

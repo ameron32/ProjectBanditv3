@@ -100,4 +100,7 @@ dependencies {
 
   // ViewPagerIndicator
   compile 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
+
+  // JodaTimeAndroid
+  compile 'net.danlew:android.joda:2.9.0'
 }

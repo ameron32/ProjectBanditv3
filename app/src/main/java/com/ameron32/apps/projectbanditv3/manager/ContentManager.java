@@ -63,14 +63,13 @@ public class ContentManager extends AbsManager {
   private List<ContentItem> createContentItems() {
     final List<ContentItem> items = new ArrayList<ContentItem>();
 
+    items.add(new ContentItem("Chat", R.drawable.ic_bandit_clear,
+        ChatManagerFragment.newInstance(0, null)));
     items.add(new ContentItem("Game", R.drawable.ic_construction,
         GameFragment.newInstance(R.layout.section_game)));
-
-
 //  TODO: instantiate GridPagerFragment correctly
 //    items.add(new ContentItem("GridTest", R.drawable.ic_construction,
 //        GridPagerFragment.newInstance(3)));
-
     items.add(new ContentItem("Stats", R.drawable.ic_construction,
         SectionContainerTestFragment.newInstance(StatsTestFragment.class, R.layout.section_character_stats)));
 //    items.add(new ContentItem("Test:Equipment2", R.drawable.ic_construction,
