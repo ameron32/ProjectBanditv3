@@ -1,18 +1,14 @@
 package com.ameron32.apps.projectbanditv3.fragment;
 
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.ameron32.apps.projectbanditv3.R;
-import com.ameron32.apps.projectbanditv3.fragment.AbsContentFragment;
 import com.qozix.tileview.TileView;
 
 import java.io.IOException;
@@ -24,6 +20,7 @@ public class TileViewFragment extends AbsContentFragment
     implements View.OnTouchListener {
 
   @InjectView(R.id.tileview) TileView mTileView;
+  private TileRevealView revealView;
 
   public TileViewFragment() {}
 
@@ -41,6 +38,9 @@ public class TileViewFragment extends AbsContentFragment
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    revealView = new TileRevealView(getContext());
+    mTileView.addScalingViewGroup(revealView);
   }
 
   @Override

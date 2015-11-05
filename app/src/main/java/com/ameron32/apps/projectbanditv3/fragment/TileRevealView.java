@@ -4,18 +4,22 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Picture;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by klemeilleur on 11/5/2015.
  */
-public class TileReviewView extends View {
+public class TileRevealView extends ViewGroup {
 
+  public static final String TAG = TileRevealView.class.getSimpleName();
   private int sizeX, sizeY;
 
   //drawing path
@@ -29,25 +33,30 @@ public class TileReviewView extends View {
   //canvas bitmap
   private Bitmap canvasBitmap;
 
-  public TileReviewView(Context context) {
+  public TileRevealView(Context context) {
     super(context);
     initializeView();
   }
 
-  public TileReviewView(Context context, AttributeSet attrs) {
+  public TileRevealView(Context context, AttributeSet attrs) {
     super(context, attrs);
     initializeView();
   }
 
-  public TileReviewView(Context context, AttributeSet attrs, int defStyleAttr) {
+  public TileRevealView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     initializeView();
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public TileReviewView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+  public TileRevealView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
     initializeView();
+  }
+
+  @Override
+  protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    // called on TileView scale
   }
 
   private void initializeView() {
@@ -68,7 +77,9 @@ public class TileReviewView extends View {
     // TODO make size dynamic
     sizeX = sizeY = 8;
     canvasBitmap = Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888);
+    canvasBitmap.setPixel(0,0, Color.BLUE);
     drawCanvas = new Canvas(canvasBitmap);
+    drawCanvas.scale(100.0f, 100.0f);
   }
 
   @Override
@@ -79,6 +90,7 @@ public class TileReviewView extends View {
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
+    // called on TileView scale
   }
 
   @Override
@@ -110,6 +122,6 @@ public class TileReviewView extends View {
     }
 
     invalidate();
-    return true;
+    return false;
   }
 }
