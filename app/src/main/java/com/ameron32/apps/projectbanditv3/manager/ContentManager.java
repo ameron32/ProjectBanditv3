@@ -25,6 +25,7 @@ import com.ameron32.apps.projectbanditv3.fragment.SkillCheckerFragment;
 import com.ameron32.apps.projectbanditv3.fragment.SkillsTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.StatsTestFragment;
 import com.ameron32.apps.projectbanditv3.fragment.TableTestFragment;
+import com.ameron32.apps.projectbanditv3.fragment.TileViewFragment;
 //import com.ameron32.apps.projectbanditv3.tileview.MyTileViewFragment;
 
 import java.util.ArrayList;
@@ -88,6 +89,8 @@ public class ContentManager extends AbsManager {
     if (UserManager.get().isCurrentUserTester()) {
       items.add(new ContentItem("Inventory2", R.drawable.ic_bandit_clear,
           SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)).alpha(0.3f));
+      items.add(new ContentItem("Tiles", R.drawable.ic_bandit_clear,
+          new TileViewFragment()).alpha(0.3f));
     }
 
     if (GameManager.get().isCurrentUserGM()) {
