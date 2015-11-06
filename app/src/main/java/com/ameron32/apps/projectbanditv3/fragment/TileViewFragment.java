@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.view.TileRevealView;
 import com.qozix.tileview.TileView;
 
 import java.io.IOException;
@@ -31,15 +33,19 @@ public class TileViewFragment extends AbsContentFragment
 
     try {
       Bitmap downsample = BitmapFactory.decodeStream(getActivity().getAssets().open("map.png"));
-      ImageView downsampleView = (ImageView) view.findViewById(R.id.downsample);
+      ImageView downsampleView = new ImageView(getContext());
       downsampleView.setImageBitmap(downsample);
 
+      mTileView.addView(downsampleView, 0);
       mTileView.setSize(downsample.getWidth() * 8, downsample.getHeight() * 8);
     } catch (IOException e) {
       e.printStackTrace();
     }
 
     revealView = new TileRevealView(getContext());
+    revealView.setId(R.id.section_label);
+    final ViewGroup.LayoutParams layoutParams = new TileRevealView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    revealView.setLayoutParams(layoutParams);
     mTileView.addScalingViewGroup(revealView);
   }
 
