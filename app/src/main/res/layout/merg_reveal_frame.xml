@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <com.qozix.tileview.TileView
-      android:id="@+id/tileview"
+  <com.ameron32.apps.projectbanditv3.view.RevealView
+      android:id="@+id/reveal_view"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
-  </com.qozix.tileview.TileView>
-
-</RelativeLayout>
+      android:layout_height="match_parent"/>
+</LinearLayout>

@@ -26,13 +26,14 @@ public abstract class AbsContentFragment
   public AbsContentFragment() {}
   
   @Optional @InjectView(R.id.section_label) TextView label;
+  View rootView;
   
   @Override public final View onCreateView(
       LayoutInflater inflater,
       ViewGroup container,
       Bundle savedInstanceState) {
     // INFLATE FRAGMENT_CORE.XML
-    View rootView = inflater.inflate(R.layout.fragment_core, container, false);
+    rootView = inflater.inflate(R.layout.fragment_core, container, false);
     FrameLayout frame = ((FrameLayout) rootView.findViewById(R.id.custom_element));
     if (getCustomLayoutResource() != 0) {
       // INFLATE CUSTOM VIEW FROM RESOURCE INTO FRAME
@@ -42,6 +43,15 @@ public abstract class AbsContentFragment
     }
     ButterKnife.inject(this, rootView);
     return rootView;
+  }
+
+  protected void setPadding(boolean isOn) {
+    if (!isOn) {
+      rootView.setPadding(0, 0, 0, 0);
+      rootView.requestLayout();
+    } else {
+      // TODO padding on
+    }
   }
   
   protected abstract int getCustomLayoutResource();
