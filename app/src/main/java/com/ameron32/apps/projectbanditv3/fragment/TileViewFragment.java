@@ -72,10 +72,9 @@ public class TileViewFragment extends AbsContentFragment
 
   @Override
   public void onDestroyView() {
-    super.onDestroy();
-    ButterKnife.reset(this);
     mTileView.destroy();
-    mTileView = null;
+    ButterKnife.reset(this);
+    super.onDestroy();
   }
 
   public TileView getTileView() {

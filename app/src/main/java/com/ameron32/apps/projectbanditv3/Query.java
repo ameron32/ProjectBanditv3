@@ -55,7 +55,7 @@ public class Query {
       withinCurrentChannel(query);
       orderNewestFirst(query);
       recentOnly(query);
-      setLimit(query, 1000);
+      setLimit(query, 50);
       standardIncludes(query);
 
       return query;
@@ -66,7 +66,7 @@ public class Query {
 
       withinCurrentGame_CurrentSession(query);
       orderNewestFirst(query);
-      setLimit(query, 1000);
+      setLimit(query, 100);
       standardIncludes(query);
 
       query.whereMatchesQuery("character", _Character.getOOCQuery());
@@ -103,7 +103,7 @@ public class Query {
       withinCurrentGame_CurrentSession(query);
       orderNewestFirst(query);
       since(query, ChatService.getLastSystemTimeWhenAppOff());
-      setLimit(query, 1000);
+      setLimit(query, 100);
       standardIncludes(query);
 
       return query;
