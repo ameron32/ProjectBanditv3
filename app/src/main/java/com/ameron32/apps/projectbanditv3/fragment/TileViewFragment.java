@@ -1,18 +1,19 @@
 package com.ameron32.apps.projectbanditv3.fragment;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ameron32.apps.projectbanditv3.R;
-import com.ameron32.apps.projectbanditv3.view.RevealView;
 import com.qozix.tileview.TileView;
+import com.qozix.tileview.graphics.BitmapProvider;
+import com.qozix.tileview.tiles.Tile;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ public class TileViewFragment extends AbsContentFragment
     implements View.OnTouchListener {
 
   @InjectView(R.id.tileview) TileView mTileView;
-  private RevealView revealView;
+  private TileRevealView revealView;
 
   public TileViewFragment() {}
 
@@ -31,32 +32,42 @@ public class TileViewFragment extends AbsContentFragment
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.inject(this, view);
-    setPadding(false);
 
     try {
-      Bitmap downsample = BitmapFactory.decodeStream(getActivity().getAssets().open("Basic.png"));
-      final View downsampleLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_downsample_view, mTileView, false);
-      final ImageView downsampleImageView = (ImageView) downsampleLayer.findViewById(R.id.downsample);
-      downsampleImageView.setImageBitmap(downsample);
-      mTileView.addScalingViewGroup((ViewGroup) downsampleLayer);
-//      ImageView downsampleView = new ImageView(getContext());
-//      downsampleView.setImageBitmap(downsample);
-//
-//      mTileView.addView(downsampleView, 0);
-      mTileView.setSize(downsample.getWidth() * 8, downsample.getHeight() * 8);
-      mTileView.setScaleLimits(0, 2);
+      Bitmap downsample = BitmapFactory.decodeStream(getActivity().getAssets().open("map.png"));
+      ImageView downsampleView = new ImageView(getContext());
+      downsampleView.setId(R.id.tileview);
+      downsampleView.setImageBitmap(downsample);
 
-      final View fogLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, mTileView, false);
-      final View blackLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, mTileView, false);
-      final RevealView fog = (RevealView) fogLayer.findViewById(R.id.reveal_view);
-      final RevealView black = (RevealView) blackLayer.findViewById(R.id.reveal_view);
-      fog._randomizeVisiblity(true, true);
-      black._randomizeVisiblity(false, false);
-      mTileView.addScalingViewGroup((ViewGroup) fogLayer);
-      mTileView.addScalingViewGroup((ViewGroup) blackLayer);
+      mTileView.setSize(7500 * 2, 4684 * 2);
+      mTileView.addView(downsampleView, 0);
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    mTileView.setBitmapProvider(new BitmapProvider() {
+      @Override
+      public Bitmap getBitmap(Tile tile, Context context) {
+        Object data = tile.getData();
+        if (data instanceof String) {
+          String unformattedFileName = (String) tile.getData();
+          String formattedFileName = String.format(unformattedFileName, tile.getColumn(), tile.getRow());
+          try {
+            return Picasso.with(context).load(formattedFileName).get();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        return null;
+      }
+    });
+
+    mTileView.addDetailLevel( 0.5000f , "https://dl.dropboxusercontent.com/u/949753/android/tileview/jhara/tiles/500_%d_%d.png");
+    mTileView.addDetailLevel( 0.2500f , "https://dl.dropboxusercontent.com/u/949753/android/tileview/jhara/tiles/250_%d_%d.png");
+    mTileView.addDetailLevel( 0.1250f , "https://dl.dropboxusercontent.com/u/949753/android/tileview/jhara/tiles/125_%d_%d.png");
+
+    revealView = new TileRevealView(getContext());
+    mTileView.addScalingViewGroup(revealView);
   }
 
   @Override
@@ -72,9 +83,10 @@ public class TileViewFragment extends AbsContentFragment
 
   @Override
   public void onDestroyView() {
-    mTileView.destroy();
-    ButterKnife.reset(this);
     super.onDestroy();
+    ButterKnife.reset(this);
+    mTileView.destroy();
+    mTileView = null;
   }
 
   public TileView getTileView() {
