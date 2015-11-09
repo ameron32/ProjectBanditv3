@@ -132,10 +132,7 @@ public class RevealView extends View implements View.OnClickListener {
 
   @Override
   public void onClick(View v) {
-    int row = (int) touchX / cellWidth;
-    int col = (int) touchY / cellHeight;
 
-    touchedCell.set(row, col);
   }
 
   public void setVisiblityData(boolean[][] newData) {
@@ -145,6 +142,33 @@ public class RevealView extends View implements View.OnClickListener {
       }
     }
 //    visiblity = newData;
+  }
+
+  /**
+   * feed me a motionevent from the ScalingLayout onTouch and
+   * @param e
+   */
+  public void reveal(MotionEvent e, int additionalRadius) {
+    touchX = e.getX();
+    touchY = e.getY();
+    int row = (int) touchX / cellWidth;
+    int col = (int) touchY / cellHeight;
+    touchedCell.set(row, col);
+
+    reveal(row, col, additionalRadius);
+    invalidate();
+  }
+
+  private void reveal(int row, int col, int additionalRadius) {
+    final int radius = additionalRadius;
+    visiblity[row][col] = true;
+    for (int r = row - radius; r <= row + radius; r++) {
+      for (int c = col - radius; c <= col + radius; c++) {
+        try {
+          visiblity[r][c] = true;
+        } catch (IndexOutOfBoundsException e) {}
+      }
+    }
   }
 
   public void _randomizeVisiblity(boolean andColor, boolean withTransparency) {

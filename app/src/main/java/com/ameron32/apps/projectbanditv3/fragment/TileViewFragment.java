@@ -1,21 +1,28 @@
 package com.ameron32.apps.projectbanditv3.fragment;
 
-import android.content.Context;
+import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.GestureDetector;
+import android.view.InputDevice;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.view.RevealView;
 import com.qozix.tileview.TileView;
-import com.qozix.tileview.graphics.BitmapProvider;
-import com.qozix.tileview.tiles.Tile;
+import com.qozix.tileview.markers.MarkerLayout;
+import com.qozix.tileview.widgets.ZoomPanLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,50 +31,151 @@ public class TileViewFragment extends AbsContentFragment
     implements View.OnTouchListener {
 
   @InjectView(R.id.tileview) TileView mTileView;
-  private TileRevealView revealView;
 
   public TileViewFragment() {}
+
+  MarkerLayout objectLayer;
+  MarkerLayout playerLayer;
+  MarkerLayout npcLayer;
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.inject(this, view);
+    setPadding(false);
 
     try {
-      Bitmap downsample = BitmapFactory.decodeStream(getActivity().getAssets().open("map.png"));
-      ImageView downsampleView = new ImageView(getContext());
-      downsampleView.setId(R.id.tileview);
-      downsampleView.setImageBitmap(downsample);
+      Bitmap downsample = BitmapFactory.decodeStream(getActivity().getAssets().open("Basic.png"));
+      final View downsampleLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_downsample_view, mTileView, false);
+      final ImageView downsampleImageView = (ImageView) downsampleLayer.findViewById(R.id.downsample);
+      downsampleImageView.setImageBitmap(downsample);
+      mTileView.addScalingViewGroup((ViewGroup) downsampleLayer);
+      mTileView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
+        @Override
+        public boolean onGenericMotion(View v, MotionEvent event) {
+          if (0 != (event.getSource() & InputDevice.SOURCE_CLASS_POINTER)) {
+            switch (event.getAction()) {
+              case MotionEvent.ACTION_SCROLL:
+                if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f)
+                  zoomIn(event);
+                else
+//                  zoomOut();
+                  return true;
+            }
+          }
+          return false;
+        }
+      });
 
-      mTileView.setSize(7500 * 2, 4684 * 2);
-      mTileView.addView(downsampleView, 0);
+      // size of original image at 100% mScale
+      mTileView.setSize(downsample.getWidth() * 8, downsample.getHeight() * 8);
+      // allow scaling past original size
+      mTileView.setScaleLimits(0, 2);
+
+      // lets center all markers both horizontally and vertically
+      mTileView.setMarkerAnchorPoints(-0.5f, -0.5f);
+
+      mTileView.getScalingLayout().setOnTouchListener(new View.OnTouchListener() {
+
+        boolean wasMove = false;
+        GestureDetector gestureDetector;
+        final GestureDetector.OnGestureListener listener = new GestureDetector.OnGestureListener() {
+          @Override public boolean onDown(MotionEvent e) { return false; }
+          @Override public void onShowPress(MotionEvent e) {}
+          @Override public boolean onSingleTapUp(MotionEvent e) { return false; }
+          @Override public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return false; }
+          @Override public void onLongPress(MotionEvent e) {
+            fog.reveal(e, 1);
+            black.reveal(e, 2);
+          }
+          @Override public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) { return false; }
+        };
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+          if (gestureDetector == null) {
+            gestureDetector = new GestureDetector(v.getContext(), listener);
+          }
+          gestureDetector.onTouchEvent(event);
+          return false;
+        }
+      });
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    mTileView.setBitmapProvider(new BitmapProvider() {
-      @Override
-      public Bitmap getBitmap(Tile tile, Context context) {
-        Object data = tile.getData();
-        if (data instanceof String) {
-          String unformattedFileName = (String) tile.getData();
-          String formattedFileName = String.format(unformattedFileName, tile.getColumn(), tile.getRow());
-          try {
-            return Picasso.with(context).load(formattedFileName).get();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-        return null;
-      }
-    });
+    drawObjectArcs();
+    drawNPCArcs();
+    drawPlayerArcs();
 
-    mTileView.addDetailLevel( 0.5000f , "https://dl.dropboxusercontent.com/u/949753/android/tileview/jhara/tiles/500_%d_%d.png");
-    mTileView.addDetailLevel( 0.2500f , "https://dl.dropboxusercontent.com/u/949753/android/tileview/jhara/tiles/250_%d_%d.png");
-    mTileView.addDetailLevel( 0.1250f , "https://dl.dropboxusercontent.com/u/949753/android/tileview/jhara/tiles/125_%d_%d.png");
+    drawObjects();
+    drawNPCs();
 
-    revealView = new TileRevealView(getContext());
-    mTileView.addScalingViewGroup(revealView);
+    drawFog();
+    drawBlack();
+
+    drawPlayerTokens();
+  }
+
+  private void zoomIn(MotionEvent event) {
+    mTileView.onDoubleTap(event);
+  }
+
+  private void drawObjectArcs() {
+    // TODO circles for range
+  }
+
+  private void drawNPCArcs() {
+    // TODO circles for range
+  }
+
+  private void drawPlayerArcs() {
+    // TODO circles for range
+  }
+
+  private void drawObjects() {
+    objectLayer = new MarkerLayout(getContext());
+    objectLayer.setAnchors(-0.5f, -0.5f);
+    mTileView.addScalingViewGroup(objectLayer);
+  }
+
+  private void drawNPCs() {
+    npcLayer = new MarkerLayout(getContext());
+    npcLayer.setAnchors(-0.5f, -0.5f);
+    mTileView.addScalingViewGroup(npcLayer);
+  }
+
+  RevealView fog;
+  private void drawFog() {
+    final View fogLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, mTileView, false);
+    fog = (RevealView) fogLayer.findViewById(R.id.reveal_view);
+    mTileView.addScalingViewGroup((ViewGroup) fogLayer);
+  }
+
+  RevealView black;
+  private void drawBlack() {
+    final View blackLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, mTileView, false);
+    black = (RevealView) blackLayer.findViewById(R.id.reveal_view);
+    mTileView.addScalingViewGroup((ViewGroup) blackLayer);
+  }
+  private void drawPlayerTokens() {
+    playerLayer = new MarkerLayout(getContext());
+    playerLayer.setAnchors(-0.5f, -0.5f);
+    mTileView.addScalingViewGroup(playerLayer);
+    placeMarker(objectLayer, "max2b.png", 1000, 1000);
+    placeMarker(playerLayer, "wizbang.png", 1300, 1000);
+    placeMarker(playerLayer, "shield.png", 1000, 1300);
+    frameTo(1000, 1000);
+  }
+
+  private void placeMarker(MarkerLayout layer, String path, int x, int y) {
+    ImageView imageView = new ImageView(getContext());
+    Picasso.with(getContext())
+        .load("file:///android_asset/"+path)
+        .resize(256, 256)
+        .rotate(90f * new Random().nextInt(4))
+        .into(imageView);
+    layer.addMarker(imageView, x, y, null, null);
   }
 
   @Override
