@@ -288,7 +288,8 @@ public class ChatManagerFragment
       final String message, final String channel) {
     final Character character = CharacterManager.get().getChatCharacter();
     final ParseObject action = currentAction;
-    return Message.create().setMessage(message).setChannel(channel).setCharacter(character).setAction(action);
+    return Message.create().setMessage(message)
+        .setChannel(channel).setCharacter(character).setAction(action);
   }
 
   @Override public void onAttach(

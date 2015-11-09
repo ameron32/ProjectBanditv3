@@ -4,6 +4,7 @@
     <color name="debug_text">#BDBDBD</color>
     <color name="debug_text_bg">#FFFFFF</color>
     <color name="message_text_color">#005353</color>
+    <color name="message_secret_text_color">#551A8B</color>
     <color name="message_game_text_color">#1B2982</color>
     <color name="message_system_text_color">#FFFFFF</color>
     <color name="chat_manager_background">#FFFFFF</color>
@@ -11,7 +12,7 @@
     <color name="chat_manager_page_indicator_unselected">#FF888888</color>
     <color name="link_text_color">#000080</color>
     <color name="game_text_bg">#FEE955</color>
-    
+
     <color name="colorPrimary">#C3C3C3</color>
     <color name="colorPrimaryDark">#030303</color>
     <color name="myPrimaryColor">#3F51B5</color>
@@ -23,7 +24,7 @@
     <color name="myTextPrimaryHintColor">#666666</color>
     <color name="myNavigationColor">#000000</color>
     <color name="selected_gray">#ffdbdbdb</color>
-    
+
     <color name="character_toolbar_selected_outline">#FFD700</color>
     <color name="background_transparent_overlay_navigation_drawer">#CCFFFFFF</color>
 

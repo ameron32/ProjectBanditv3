@@ -48,18 +48,20 @@ public abstract class AbsMessageAdapter
   private int itemLayout;
   private int systemLayout;
   private int gameLayout;
+  private int secretLayout;
 
 
   public AbsMessageAdapter(
       Context context,
       QueryFactory<Message> factory,
-      int itemLayout, int systemLayout, int gameLayout) {
+      int itemLayout, int systemLayout, int gameLayout, int secretLayout) {
 	  super(factory, true);
     this.context = context;
 //    this.factory = factory;
     this.itemLayout = itemLayout;
     this.systemLayout = systemLayout;
     this.gameLayout = gameLayout;
+    this.secretLayout = secretLayout;
 //    mListeners = new ArrayList<OnDataSetChangedListener>();
 
 //    loadObjects();
@@ -88,6 +90,7 @@ public abstract class AbsMessageAdapter
 //  }
 
 
+  private static final int MESSAGE_TYPE_SECRET = 3;
   private static final int MESSAGE_TYPE_GAME = 2;
   private static final int MESSAGE_TYPE_SYSTEM = 1;
   private static final int MESSAGE_TYPE_STANDARD = 0;
@@ -96,11 +99,11 @@ public abstract class AbsMessageAdapter
       int position) {
     Message message = getItem(position);
     String messageType = message.getString("type");
-    if (messageType != null && messageType.equals("System")) {
+    if (messageType != null && messageType.equals("Secret")) {
+      return MESSAGE_TYPE_SECRET;
+    } else if (messageType != null && messageType.equals("System")) {
       return MESSAGE_TYPE_SYSTEM;
-    }
-    else
-    if (message.getCharacter().isPlayable()) {
+    } else if (message.getCharacter().isPlayable()) {
       return MESSAGE_TYPE_GAME;
     }
     return MESSAGE_TYPE_STANDARD;
@@ -112,14 +115,18 @@ public abstract class AbsMessageAdapter
     View v = null;
 
     switch(viewType) {
+    case MESSAGE_TYPE_SECRET:
+      v = LayoutInflater.from(parent.getContext()).inflate(secretLayout, parent, false);
+      return new ViewHolder(v);
+
     case MESSAGE_TYPE_SYSTEM:
       v = LayoutInflater.from(parent.getContext()).inflate(systemLayout, parent, false);
       return new ViewHolder(v);
-//      break;
+
     case MESSAGE_TYPE_STANDARD:
       v = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
       return new ViewHolder(v);
-//      break;
+
     case MESSAGE_TYPE_GAME:
       v = LayoutInflater.from(parent.getContext()).inflate(gameLayout, parent, false);
       return new ViewHolder(v);
@@ -133,6 +140,9 @@ public abstract class AbsMessageAdapter
       ViewHolder holder, int position) {
 
     switch(getItemViewType(position)) {
+    case MESSAGE_TYPE_SECRET:
+      bindItemView(getItem(position), holder);
+      break;
     case MESSAGE_TYPE_SYSTEM:
       getSystemItemView(getItem(position), holder.itemView);
       break;

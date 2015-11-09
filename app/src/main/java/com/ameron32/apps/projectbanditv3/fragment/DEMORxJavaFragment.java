@@ -13,11 +13,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.manager.CharacterManager;
+import com.ameron32.apps.projectbanditv3.manager.GameManager;
+import com.ameron32.apps.projectbanditv3.object.CAction;
 import com.ameron32.apps.projectbanditv3.object.Character;
+import com.ameron32.apps.projectbanditv3.object.Message;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 
 import org.json.JSONObject;
 
@@ -127,8 +132,21 @@ public class DEMORxJavaFragment extends SectionContainerTestFragment {
     _log("performing long operation");
 
     try {
+      Message secretMessage =
+      Message.create().setType(Message.MessageType.SECRET)
+        .setMessage("testing Secret message")
+          .setType(Message.MessageType.SECRET)
+        .setCharacter(CharacterManager.get().getChatCharacter())
+        .setAction(ParseQuery.getQuery(CAction.class).get("rc7xowNm58"));
+      ParseRelation<Character> relation = secretMessage.getRelation("secretToCharacter");
+      relation.add(ParseQuery.getQuery(Character.class).get("OEcYqjmqo6"));
+      relation.add(CharacterManager.get().getChatCharacter());
+      secretMessage.send();
+
       Thread.sleep(3000);
     } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ParseException e) {
       e.printStackTrace();
     }
   }

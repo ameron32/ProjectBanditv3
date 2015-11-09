@@ -51,6 +51,12 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
+    <style name="text_message_secret">
+        <item name="android:textColor">@color/message_secret_text_color</item>
+        <item name="android:textSize">@dimen/message_text_size</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
     <style name="text_message_game">
         <item name="android:textColor">@color/message_game_text_color</item>
         <item name="android:textSize">@dimen/message_text_size</item>

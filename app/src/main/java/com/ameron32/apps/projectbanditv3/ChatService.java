@@ -25,40 +25,40 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class ChatService extends
     Service implements MessageListener {
-  
+
   private static final String TAG = ChatService.class.getSimpleName();
   private static final boolean TOAST = false;
   private static final boolean LOG = true;
-  
+
   private static final String NEW_MESSAGE_NOTIFICATION_ID = "77424";
   private static final String QUIET_STATE = "quiet_state";
-  
+
   public ChatService() {}
-  
+
   public static Intent makeIntent(
       Context context) {
     return new Intent(context, ChatService.class);
   }
-  
+
   @Override public IBinder onBind(
       Intent intent) {
     setAppOffToNow();
     return getMyBinder();
   }
-  
+
   @Override public boolean onUnbind(
       Intent intent) {
     setAppOffToNow();
     return super.onUnbind(intent);
   }
-  
+
   @Override public int onStartCommand(
       Intent intent, int flags,
       int startId) {
     setAppOffToNow();
     return START_STICKY;
   }
-  
+
   @Override public void onCreate() {
     super.onCreate();
     if (LOG) {
@@ -71,7 +71,7 @@ public class ChatService extends
     }
     MessageManager.get().addMessageListener(this);
   }
-  
+
   @Override public void onDestroy() {
     MessageManager.get().removeMessageListener(this);
     if (LOG) {
@@ -80,11 +80,11 @@ public class ChatService extends
     storeQuietSetting(quiet);
     super.onDestroy();
   }
-  
+
   public static long getLastSystemTimeWhenAppOff() {
     return lastSystemTimeWhenAppOff;
   }
-  
+
   public void setAppState(
       boolean newState) {
     lock.writeLock().lock();
@@ -93,18 +93,18 @@ public class ChatService extends
       if (LOG)
         Log.d(TAG, "appState is now: "
             + appState);
-      
+
       if (newState == APP_OFF) {
         setAppOffToNow();
       }
     } finally {
       lock.writeLock().unlock();
     }
-    
+
 //    resetUnreadCount();
     updateQuiet();
   }
-  
+
   public boolean isQuiet() {
     boolean isQuiet = false;
     lock.readLock().lock();
@@ -115,7 +115,7 @@ public class ChatService extends
     }
     return isQuiet;
   }
-  
+
   public void setQuiet(boolean isQuiet) {
     lock.writeLock().lock();
     try {
@@ -128,16 +128,16 @@ public class ChatService extends
     }
     storeQuietSetting(quiet);
   }
-  
+
   private final Context context = this;
   private boolean quiet = false;
   public class MyBinder extends Binder {
-    
+
     public ChatService getService() {
       return ChatService.this;
     }
   }
-  
+
   @Override public void onMessageReceived() {
     boolean willSend = !isQuiet();
 //    incrementUnreadCount();
@@ -148,27 +148,28 @@ public class ChatService extends
       queryNotificationDetails();
     }
   }
-  
+
   private final IBinder myBinder = new MyBinder();
-  
+
   protected IBinder getMyBinder() {
     return myBinder;
   }
-  
+
   private void queryNotificationDetails() {
     ParseQuery<Message> query = Query._Message.getNotificationQuery();
-    
+
     query.findInBackground(new FindCallback<Message>() {
-      
+
       @Override public void done(
           List<Message> unreadMessages,
           ParseException e) {
         if (e == null) {
           List<String> mstr = new ArrayList<String>();
           for (Message m : unreadMessages) {
-            mstr.add(m.toString());
+            String shortName = m.getParseObject("ofGame").getString("shortName");
+            mstr.add(shortName + m.toString());
           }
-          
+
           putNotification(NEW_MESSAGE_NOTIFICATION_ID, mstr);
           setSilentFor10SecondsThenUnsilence();
         } else {
@@ -177,7 +178,7 @@ public class ChatService extends
       }
     });
   }
-  
+
   private void putNotification(
       String id,
       List<String> unreadMessageTexts) {
@@ -185,17 +186,17 @@ public class ChatService extends
       // DO NOTHING
       return;
     }
- 
+
     // unreadMessageTexts > 0
     NewMessageNotification.notify(context, unreadMessageTexts.toArray(new String[unreadMessageTexts.size()]));
   }
-  
+
   private void setSilentFor10SecondsThenUnsilence() {
     final int silentForDelayInSeconds = 10;
     final int silentForDelayInMillis = silentForDelayInSeconds * 1000;
-    
+
     final Thread delay = new Thread(new Runnable() {
-      
+
       @Override public void run() {
         try {
           setQuiet(true);
@@ -211,9 +212,9 @@ public class ChatService extends
     });
     delay.start();
   }
-  
+
   ReentrantReadWriteLock lock = new ReentrantReadWriteLock(false);
-  
+
   private void updateQuiet() {
     if (getAppState() == APP_ON) {
       setQuiet(true);
@@ -221,7 +222,7 @@ public class ChatService extends
     if (getAppState() == APP_OFF) {
       setQuiet(false);
     }
-    
+
     if (LOG) {
       Log.i(TAG, "updated quiet state to: "
           + isQuiet());
@@ -229,11 +230,11 @@ public class ChatService extends
           + getAppState());
     }
   }
-  
+
   public static final boolean APP_OFF = false;
   public static final boolean APP_ON = true;
   private boolean appState = APP_OFF;
-  
+
   private boolean getAppState() {
     boolean appState = APP_OFF;
     lock.readLock().lock();
@@ -244,32 +245,32 @@ public class ChatService extends
     }
     return appState;
   }
-  
+
 //  private int unreadCount = 0;
   private static volatile long lastSystemTimeWhenAppOff;
-  
+
   private void setAppOffToNow() {
     lastSystemTimeWhenAppOff = System.currentTimeMillis();
   }
-//  
+//
 //  private void resetUnreadCount() {
 //    unreadCount = 0;
 //  }
-//  
+//
 //  private void incrementUnreadCount() {
 //    unreadCount++;
 //  }
-  
+
   private void restoreQuietSetting() {
     SharedPreferences prefs = context.getSharedPreferences("ChatService", Context.MODE_PRIVATE);
     quiet = prefs.getBoolean(QUIET_STATE, true);
   }
-  
+
   private void storeQuietSetting(
       boolean quiet) {
     Editor editor = context.getSharedPreferences("ChatService", Context.MODE_PRIVATE).edit();
     editor.putBoolean(QUIET_STATE, quiet);
     editor.commit();
   }
-  
+
 }

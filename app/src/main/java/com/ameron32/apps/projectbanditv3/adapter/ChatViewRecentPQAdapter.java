@@ -17,7 +17,7 @@ import com.ameron32.apps.projectbanditv3.parseui.ParseQueryAdapter.QueryFactory;
 public class ChatViewRecentPQAdapter extends AbsMessageAdapter {
 
 	public ChatViewRecentPQAdapter(Context context) {
-	  super(context, makeQuery(), R.layout.row_message_standard, R.layout.row_message_system, R.layout.row_message_game);
+	  super(context, makeQuery(), R.layout.row_message_standard, R.layout.row_message_system, R.layout.row_message_game, R.layout.row_message_secret);
 	}
 
 	private static QueryFactory<Message> makeQuery() {

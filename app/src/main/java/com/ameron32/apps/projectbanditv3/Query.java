@@ -11,9 +11,13 @@ import com.ameron32.apps.projectbanditv3.object.Character;
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class Query {
@@ -49,16 +53,27 @@ public class Query {
     }
 
     public static ParseQuery<Message> getRecentQuery() {
+      // messages to everyone
       final ParseQuery<Message> query = create();
-
-      withinCurrentGame_CurrentSession(query);
       withinCurrentChannel(query);
-      orderNewestFirst(query);
-      recentOnly(query);
-      setLimit(query, 50);
-      standardIncludes(query);
 
-      return query;
+      // messages sent to this user
+      final ParseQuery secretQuery = create();
+      secretMessagesToMyCharacter(secretQuery);
+
+      // combine regular recent query & secret messages query
+      List<ParseQuery<Message>> queries = new ArrayList<>();
+      queries.add(query);
+      queries.add(secretQuery);
+      ParseQuery<Message> combinedQuery = ParseQuery.or(queries);
+
+      withinCurrentGame_CurrentSession(combinedQuery);
+      orderNewestFirst(combinedQuery);
+      recentOnly(combinedQuery);
+      setLimit(combinedQuery, 50);
+      standardIncludes(combinedQuery);
+
+      return combinedQuery;
     }
 
     public static ParseQuery<Message> getOOCQuery() {
@@ -137,6 +152,12 @@ public class Query {
     private static void standardIncludes(
         ParseQuery<Message> query) {
       include(query, "user", "character", "actionO", "ofGame");
+    }
+
+    private static void secretMessagesToMyCharacter(
+        ParseQuery<Message> query) {
+      query.whereEqualTo("type", "Secret");
+      query.whereMatchesQuery("secretToCharacter", Query._Character.getChatCharacters());
     }
   }
 
