@@ -142,6 +142,8 @@ public class ContentManager extends AbsManager {
           TableTestFragment.create("Character", R.layout.section_)));
       items.add(new ContentItem("Database: CInventory", R.mipmap.ic_data,
           TableTestFragment.create("CInventory", R.layout.section_)));
+      items.add(new ContentItem("Database: Message", R.mipmap.ic_data,
+          TableTestFragment.create("Message", R.layout.section_)));
     }
 
     return items;

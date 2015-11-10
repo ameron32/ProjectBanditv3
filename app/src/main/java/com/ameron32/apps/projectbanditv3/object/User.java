@@ -9,11 +9,11 @@ import com.parse.SaveCallback;
 
 @ParseClassName("_User") public class User
     extends ParseUser {
-  
+
   protected static final String TAG = User.class.getSimpleName();
 
   public User() {}
-  
+
   public Character getLastChatCharacter() {
     Character lastChatCharacter = (Character) this.getParseObject("lastChatCharacter");
 //    if (lastChatCharacter == null) {
@@ -21,12 +21,12 @@ import com.parse.SaveCallback;
 //    }
     return lastChatCharacter;
   }
-  
+
   public void setLastChatCharacter(
       Character chatCharacter) {
     this.put("lastChatCharacter", chatCharacter);
     this.saveInBackground(new SaveCallback() {
-      
+
       @Override public void done(
           ParseException e) {
         if (e == null) {
@@ -37,23 +37,23 @@ import com.parse.SaveCallback;
       }
     });
   }
-  
+
   public CAction getLastCharacterAction() {
     CAction characterAction = (CAction) this.getParseObject("lastCharacterAction");
     return characterAction;
   }
-  
+
   public void setLastCharacterAction(
       CAction characterAction) {
     this.put("lastCharacterAction", characterAction);
     this.saveInBackground();
   }
-  
+
   private boolean isIdEquals(User user) {
     if (this.getObjectId().equalsIgnoreCase(user.getObjectId())) { return true; }
     return false;
   }
-  
+
   @Override public boolean equals(
       Object o) {
     if (o instanceof User) {
@@ -63,6 +63,10 @@ import com.parse.SaveCallback;
     }
   }
 
+  public String getName() {
+    return this.getString("username");
+  }
+
   public boolean isTester() {
     return this.getBoolean("isTester");
   }
@@ -70,7 +74,7 @@ import com.parse.SaveCallback;
   public boolean isDataAdmin() {
     return this.getBoolean("isDataAdmin");
   }
-  
+
   public boolean equals(
       User user) {
     return this.isIdEquals(user);

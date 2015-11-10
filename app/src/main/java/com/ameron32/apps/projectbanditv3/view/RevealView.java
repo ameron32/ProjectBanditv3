@@ -13,6 +13,8 @@ import android.view.ViewTreeObserver;
 
 import java.util.Random;
 
+import butterknife.InjectView;
+
 /**
  * Created by Micah on 11/6/2015.
  */
@@ -27,9 +29,9 @@ public class RevealView extends View implements View.OnClickListener {
   private int cellHeight;
   private Paint blackPaint;
   private Paint transparentPaint;
-  private float touchX;
-  private float touchY;
-  private Point touchedCell;
+//  private float touchX;
+//  private float touchY;
+//  private Point touchedCell;
 
   public RevealView(Context context) {
     super(context);
@@ -52,7 +54,7 @@ public class RevealView extends View implements View.OnClickListener {
   private void init() {
     visiblity = new boolean[rowCount][colCount];
 
-    touchedCell = new Point(-1, -1);
+//    touchedCell = new Point(-1, -1);
 
     blackPaint = new Paint();
     blackPaint.setColor(Color.BLACK);
@@ -105,6 +107,13 @@ public class RevealView extends View implements View.OnClickListener {
 
   }
 
+  public void setColor(int color, int transparency) {
+    blackPaint.setColor(color);
+    if (transparency >= 0) {
+      blackPaint.setAlpha(transparency);
+    }
+  }
+
   @Override
   public void onDraw(Canvas c) {
     Rect r = new Rect();
@@ -144,32 +153,53 @@ public class RevealView extends View implements View.OnClickListener {
 //    visiblity = newData;
   }
 
+  public void resetReveal() {
+    visiblity = new boolean[rowCount][colCount];
+  }
+
   /**
    * feed me a motionevent from the ScalingLayout onTouch and
    * @param e
    */
-  public void reveal(MotionEvent e, int additionalRadius) {
-    touchX = e.getX();
-    touchY = e.getY();
+  public void reveal(MotionEvent e, float scale, int additionalRadius) {
+    float touchX = (e.getX() / scale);
+    float touchY = (e.getY() / scale);
     int row = (int) touchX / cellWidth;
     int col = (int) touchY / cellHeight;
-    touchedCell.set(row, col);
+////    touchedCell.set(row, col);
 
     reveal(row, col, additionalRadius);
     invalidate();
   }
 
-  private void reveal(int row, int col, int additionalRadius) {
+  public void reveal(int row, int col, int additionalRadius) {
     final int radius = additionalRadius;
     visiblity[row][col] = true;
     for (int r = row - radius; r <= row + radius; r++) {
       for (int c = col - radius; c <= col + radius; c++) {
         try {
           visiblity[r][c] = true;
-        } catch (IndexOutOfBoundsException e) {}
+        } catch (IndexOutOfBoundsException e) {
+        }
       }
     }
+
+//    final int yc = col;
+//    final int xc = row;
+//    int x = 0;
+//    int y = 0;
+//    int R = radius;
+//    for (x = -R; x <= R; x++) {
+//      for (y = -R; y <= R; y++) {
+//        double r = Math.sqrt(x * x + y * y);
+//        double inv_rad = r <= R ? 1 / r : 0; // truncate outside radius R
+//        final double v = 1 - inv_rad;
+//        map[yc + y][xc + x] = 1 - inv_rad;
+//      }
+//    }
   }
+
+
 
   public void _randomizeVisiblity(boolean andColor, boolean withTransparency) {
     Random r = new Random();

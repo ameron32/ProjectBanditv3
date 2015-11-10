@@ -77,8 +77,8 @@ public abstract class AbsFrameRecyclerView
 
     mRecyclerView.setHasFixedSize(true);
 
-    mLayoutManager = new LinearLayoutManager(context);
-    mLayoutManager.setStackFromEnd(true);
+    mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true);
+//    mLayoutManager.setStackFromEnd(true);
     mRecyclerView.setLayoutManager(mLayoutManager);
 //    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -91,7 +91,7 @@ public abstract class AbsFrameRecyclerView
     if (mSwipeRefreshLayout != null) {
       mSwipeRefreshLayout.setRefreshing(false);
     }
-    mRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
+    mRecyclerView.scrollToPosition(0);
   }
 
   protected abstract AbsMessageAdapter createAdapter(

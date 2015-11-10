@@ -20,6 +20,17 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Util {
+  public static String listToString(char separator, List<String> list) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < list.size(); i++) {
+      if (i != 0) {
+        sb.append(separator);
+      }
+      sb.append(list.get(i));
+    }
+    return sb.toString();
+  }
+
   public static String displayAsList(char separator, List<? extends ParseObject> list, String useKey) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < list.size(); i++) {
@@ -27,7 +38,11 @@ public class Util {
         sb.append(separator);
       }
       ParseObject obj = list.get(i);
-      sb.append(obj.getString(useKey));
+      if (useKey.equalsIgnoreCase("objectId")) {
+        sb.append(obj.getObjectId());
+      } else {
+        sb.append(obj.getString(useKey));
+      }
     }
     return sb.toString();
   }

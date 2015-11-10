@@ -58,6 +58,7 @@ public class TableAdapter<T extends Object>
       int rowLayoutResource,
       int cellLayoutResource,
       int textViewResourceId) {
+    super();
     if (myDataset == null) { mDataset = new ArrayList<Columnable<T>>(); }
     else { mDataset = myDataset; }
     mRowLayoutResource = rowLayoutResource;
@@ -153,7 +154,6 @@ public class TableAdapter<T extends Object>
       if (object.isHeaderView()) {
         columnString = object.getColumnHeader(columnPosition);
       } else {
-
         columnString = object.getColumnHeader(columnPosition);
       }
       layout.populateColumnTextView(columnPosition, columnString, mTextViewResourceId);

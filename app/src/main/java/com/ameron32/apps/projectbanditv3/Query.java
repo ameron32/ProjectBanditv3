@@ -6,15 +6,18 @@ import com.ameron32.apps.projectbanditv3.manager.CharacterManager;
 import com.ameron32.apps.projectbanditv3.manager.GameManager;
 import com.ameron32.apps.projectbanditv3.manager.ObjectManager;
 import com.ameron32.apps.projectbanditv3.manager.UserManager;
-import com.ameron32.apps.projectbanditv3.object.*;
+import com.ameron32.apps.projectbanditv3.object.CAction;
+import com.ameron32.apps.projectbanditv3.object.CInventory;
 import com.ameron32.apps.projectbanditv3.object.Character;
+import com.ameron32.apps.projectbanditv3.object.Game;
+import com.ameron32.apps.projectbanditv3.object.Item;
+import com.ameron32.apps.projectbanditv3.object.Message;
+import com.ameron32.apps.projectbanditv3.object.User;
 import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -39,6 +42,10 @@ public class Query {
       FindCallback<Item> cCallback = (FindCallback<Item>) callback;
       // TODO: ItemManager().get().queryAllItems(cCallback); ?
       Query._Item.getFullItemQuery().findInBackground(cCallback);
+    } else
+    if (parseClassName.equalsIgnoreCase("Message")) {
+      FindCallback<Message> cCallback = (FindCallback<Message>) callback;
+      Query._Message.getFullMessageQuery().findInBackground(cCallback);
     } else {
       if (LOG) {
         final String eMessage = "getDefaultQuery(): parseClassName does not correspond to an appropriate default query";
@@ -50,6 +57,14 @@ public class Query {
   public static class _Message {
     private static ParseQuery<Message> create() {
       return new ParseQuery<Message>(Message.class);
+    }
+
+    public static ParseQuery<Message> getFullMessageQuery() {
+      final ParseQuery<Message> query = create();
+      orderDescendingDate(query);
+      setLimit(query, 100);
+      standardIncludes(query);
+      return query;
     }
 
     public static ParseQuery<Message> getRecentQuery() {
@@ -115,13 +130,26 @@ public class Query {
     public static ParseQuery<Message> getNotificationQuery() {
       final ParseQuery<Message> query = create();
 
-      withinCurrentGame_CurrentSession(query);
+//      withinCurrentGame_CurrentSession(query);
       orderNewestFirst(query);
       since(query, ChatService.getLastSystemTimeWhenAppOff());
       setLimit(query, 100);
       standardIncludes(query);
 
       return query;
+    }
+
+    private static void withinAllMyGames_AllSessions(
+        ParseQuery<Message> query) {
+      List<Game> games = UserManager.get().getStoredGamesOfCurrentUser();
+      if (games != null && !games.isEmpty()) {
+//        int currentSession = game.getCurrentSession();
+        query.whereMatchesQuery("ofGame", Query._Game.getCurrentGamesQuery());
+//        query.whereEqualTo("inSession", currentSession);
+//      } else {
+//        query.whereDoesNotExist("ofGame");
+//        query.whereDoesNotExist("isSession");
+      }
     }
 
     private static void withinCurrentGame_CurrentSession(
@@ -378,7 +406,13 @@ public class Query {
 
   private static void orderNewestFirst(
       ParseQuery<? extends ParseObject> query) {
-    query.orderByAscending("createdAt");
+//    query.orderByAscending("createdAt"); // todo check accuracy
+    query.orderByDescending("createdAt");
+  }
+
+  private static void orderDescendingDate(
+      ParseQuery<? extends ParseObject> query) {
+    query.orderByDescending("createdAt");
   }
 
   private static void recentOnly(

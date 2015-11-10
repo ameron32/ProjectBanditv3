@@ -133,17 +133,19 @@ public class Message
   }
 
   private static final AbsBanditObject.Column[] COLUMNS = {
-    new Column("action", DataType.String),
-    new Column("canon", DataType.Boolean),
-    new Column("channel", DataType.String),
-    new Column("inSession", DataType.Integer),
-    new Column("message", DataType.String),
-    new Column("type", DataType.String),
-    new Column("character", DataType.Pointer),
-    new Column("actionO", DataType.Pointer),
-    new Column("ofGame", DataType.Relation),
-    new Column("receivedBy", DataType.Relation),
-    new Column("user", DataType.Pointer)
+      new Column("message", DataType.String),
+      new Column("character", DataType.Pointer),
+      new Column("user", DataType.Pointer),
+      new Column("createdAt", DataType.Date),
+      new Column("canon", DataType.Boolean),
+      new Column("channel", DataType.String),
+      new Column("inSession", DataType.Integer),
+      new Column("type", DataType.String),
+      new Column("action", DataType.String),
+      new Column("actionO", DataType.Pointer),
+      new Column("ofGame", DataType.Relation),
+      new Column("receivedBy", DataType.Relation),
+      new Column("updatedAt", DataType.Date)
   };
 
   @Override public AbsBanditObject.Column get(

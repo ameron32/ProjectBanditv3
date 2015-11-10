@@ -3,6 +3,7 @@ package com.ameron32.apps.projectbanditv3.fragment;
 import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.GestureDetector;
@@ -85,8 +86,10 @@ public class TileViewFragment extends AbsContentFragment
           @Override public boolean onSingleTapUp(MotionEvent e) { return false; }
           @Override public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return false; }
           @Override public void onLongPress(MotionEvent e) {
-            fog.reveal(e, 1);
-            black.reveal(e, 2);
+            float scale = mTileView.getScalingLayout().getScale();
+            fog.resetReveal();
+            fog.reveal(e, scale, 1);
+            black.reveal(e, scale, 2);
           }
           @Override public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) { return false; }
         };
@@ -149,6 +152,7 @@ public class TileViewFragment extends AbsContentFragment
   private void drawFog() {
     final View fogLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, mTileView, false);
     fog = (RevealView) fogLayer.findViewById(R.id.reveal_view);
+    fog.setColor(Color.DKGRAY, 192);
     mTileView.addScalingViewGroup((ViewGroup) fogLayer);
   }
 
@@ -191,10 +195,9 @@ public class TileViewFragment extends AbsContentFragment
 
   @Override
   public void onDestroyView() {
-    super.onDestroy();
-    ButterKnife.reset(this);
     mTileView.destroy();
-    mTileView = null;
+    ButterKnife.reset(this);
+    super.onDestroy();
   }
 
   public TileView getTileView() {

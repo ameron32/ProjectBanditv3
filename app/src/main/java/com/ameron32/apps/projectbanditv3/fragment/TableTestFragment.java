@@ -102,7 +102,7 @@ public class TableTestFragment extends
 
     mRecyclerView.setHasFixedSize(true);
 
-    mLayoutManager = new TableLayoutManager(getActivity());
+    mLayoutManager = new TableLayoutManager(getActivity(), TableLayoutManager.VERTICAL, false);
     mRecyclerView.setLayoutManager(mLayoutManager);
 
     mAdapter = new TableAdapter<String>(null,
@@ -165,6 +165,7 @@ public class TableTestFragment extends
               int rowPosition,
               int columnPosition) {
             // implement logic
+            mAdapter.notifyDataSetChanged();
           }
         }));
 

@@ -217,7 +217,12 @@ public class Character
 //  }
 
   private static final AbsBanditObject.Column[] COLUMNS = {
-    new Column("name", DataType.String)
+    new Column("name", DataType.String),
+    new Column("isNPC", DataType.Boolean),
+    new Column("currentChannel", DataType.String),
+    new Column("ofGame", DataType.Relation),
+    new Column("owner", DataType.Relation),
+
   };
 
   @Override public String toString() {

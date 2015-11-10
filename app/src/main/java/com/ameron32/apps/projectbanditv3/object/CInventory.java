@@ -6,19 +6,19 @@ import com.parse.ParseRelation;
 
 import org.json.JSONArray;
 
-@ParseClassName("CInventory") 
+@ParseClassName("CInventory")
 public class CInventory
   extends AbsBanditObject<AbsBanditObject.Column>
 {
-  
+
   private int baseValue;
   private int currentDurability;
   private String name;
   private String type;
   private JSONArray characterOwners;
-  
+
   public CInventory() {}
-  
+
   public static CInventory assignItemToCharacter(
       ParseObject item,
       ParseObject character,
@@ -29,50 +29,50 @@ public class CInventory
     link.setQuantity(quantity);
     return link;
   }
-  
+
   public CInventory setQuantity(
       int quantity) {
     this.put("quantity", quantity);
     return this;
   }
-  
+
   public CInventory addOwner(
       ParseObject character) {
     ParseRelation<ParseObject> relation = this.getRelation("owner");
     relation.add(character);
-    
+
     String characterName = character.getString("name");
     characterOwners = this.getJSONArray("characterOwners");
     if (characterOwners == null) {
       characterOwners = new JSONArray();
     }
     characterOwners.put(characterName);
-    
+
     this.put("characterOwners", characterOwners);
     return this;
   }
-  
+
   public CInventory addItem(
       ParseObject item) {
     baseValue = item.getInt("baseValue");
     currentDurability = item.getInt("durabilityUses");
     name = item.getString("name");
     type = item.getString("type");
-    
+
     this.put("currentDurability", currentDurability);
     this.put("baseValue", baseValue);
     this.put("name", name);
     this.put("type", type);
-    
+
     this.put("item", item);
     return this;
   }
-  
+
 //  String[] columns = new String[] {
 //      "name", "quantity", "baseValue",
 //      "currentDurability",
 //      "characterOwners" };
-//  
+//
 //  @Override public String get(
 //      int columnPosition) {
 //    switch (columnPosition) {
@@ -86,12 +86,12 @@ public class CInventory
 //      return "N/A";
 //    }
 //  }
-//  
+//
 //  private boolean isHeader = false;
 //  @Override public void useAsHeaderView(boolean b) {
 //    isHeader = b;
 //  }
-//  
+//
 //  @Override public boolean isHeaderView() {
 //    return isHeader;
 //  }
@@ -104,16 +104,22 @@ public class CInventory
 //      int columnPosition) {
 //    return columns[columnPosition];
 //  }
-  
+
   private static final AbsBanditObject.Column[] COLUMNS = {
-    new Column("name", DataType.String)
+    new Column("name", DataType.String),
+    new Column("type", DataType.String),
+    new Column("baseValue", DataType.Integer),
+    new Column("quantity", DataType.Integer),
+    new Column("item", DataType.Pointer),
+    new Column("owner", DataType.Relation),
+    new Column("isEquipped", DataType.Boolean)
   };
-  
+
   @Override public AbsBanditObject.Column get(
       int columnPosition) {
     return COLUMNS[columnPosition];
   }
-  
+
   @Override public int getColumnCount() {
     return COLUMNS.length;
   }

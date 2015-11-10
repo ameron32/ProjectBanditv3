@@ -11,21 +11,28 @@
     <color name="chat_manager_page_indicator_selected">#FF880000</color>
     <color name="chat_manager_page_indicator_unselected">#FF888888</color>
     <color name="link_text_color">#000080</color>
-    <color name="game_text_bg">#FEE955</color>
+    <color name="game_text_bg">@color/colorAccent</color>
 
-    <color name="colorPrimary">#C3C3C3</color>
-    <color name="colorPrimaryDark">#030303</color>
-    <color name="myPrimaryColor">#3F51B5</color>
-    <color name="myPrimaryDarkColor">#3F51B5</color>
-    <color name="myAccentColor">#3F51B5</color>
-    <color name="myDrawerBackground">#F2F2F2</color>
-    <color name="myWindowBackground">#DEDEDE</color>
-    <color name="myTextPrimaryColor">#000000</color>
-    <color name="myTextPrimaryHintColor">#666666</color>
-    <color name="myNavigationColor">#000000</color>
-    <color name="selected_gray">#ffdbdbdb</color>
+  <color name="colorPrimary">#607D8B</color>
+  <color name="colorPrimaryDark">#455A64</color>
+  <color name="colorPrimaryLight">#CFD8DC</color>
+  <color name="colorAccent">#FEE955</color>
+  <color name="colorAccent80">#ccFEE955</color>
+  <color name="colorPrimaryText">#212121</color>
+  <color name="colorSecondaryText">#727272</color>
+  <color name="colorDivider">#B6B6B6</color>
 
-    <color name="character_toolbar_selected_outline">#FFD700</color>
+    <color name="myPrimaryColor">@color/colorPrimary</color>
+    <color name="myPrimaryDarkColor">@color/colorPrimaryDark</color>
+    <color name="myAccentColor">@color/colorAccent</color>
+    <color name="myDrawerBackground">@color/colorPrimaryLight</color>
+    <color name="myWindowBackground">@color/colorPrimaryLight</color>
+    <color name="myTextPrimaryColor">@color/colorPrimaryText</color>
+    <color name="myTextPrimaryHintColor">@color/colorSecondaryText</color>
+    <color name="myNavigationColor">@color/colorPrimaryText</color>
+    <color name="selected_gray">@color/colorAccent80</color>
+
+    <color name="character_toolbar_selected_outline">@color/colorAccent</color>
     <color name="background_transparent_overlay_navigation_drawer">#CCFFFFFF</color>
 
 
