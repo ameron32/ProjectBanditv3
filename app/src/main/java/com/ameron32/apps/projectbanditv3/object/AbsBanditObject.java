@@ -1,7 +1,18 @@
 package com.ameron32.apps.projectbanditv3.object;
 
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
+
 import com.ameron32.apps.projectbanditv3.adapter.TableAdapter.Columnable;
 import com.parse.ParseObject;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
+
+import java.util.Date;
+import java.util.Locale;
 
 public abstract class AbsBanditObject<T extends AbsBanditObject.Column>
   extends ParseObject
@@ -23,14 +34,29 @@ public abstract class AbsBanditObject<T extends AbsBanditObject.Column>
       case Boolean:
         final boolean b = this.getBoolean(c.key);
         return String.valueOf(b);
-
       case Array:
+        return "<<Array>>";
       case Date:
+        final Date d = this.getDate(c.key);
+        if (d == null) {
+          return "null";
+        }
+        return new DateTime(d).toString(DateTimeFormat.fullDateTime());
       case ListOfStrings:
+        return "<<a List of Strings>>";
       case Pointer:
+        ParseObject parseObject = this.getParseObject(c.key);
+        if (parseObject == null) {
+          return "null";
+        }
+        if (parseObject instanceof AbsBanditObject) {
+          return ((AbsBanditObject)parseObject).getName();
+        }
+        return "<<ParseObject [name]>>";
       case Relation:
+        return "<<relation>>";
       default:
-        return "unhandled";
+        return "<<unknown>>";
     }
   }
 
