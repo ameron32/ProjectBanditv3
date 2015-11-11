@@ -4,6 +4,7 @@ import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.GestureDetector;
@@ -21,6 +22,7 @@ import com.qozix.tileview.TileView;
 import com.qozix.tileview.markers.MarkerLayout;
 import com.qozix.tileview.widgets.ZoomPanLayout;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.util.Random;
@@ -36,8 +38,17 @@ public class TileViewFragment extends AbsContentFragment
   public TileViewFragment() {}
 
   MarkerLayout objectLayer;
-  MarkerLayout playerLayer;
   MarkerLayout npcLayer;
+  RevealView fog;
+  RevealView black;
+  MarkerLayout playerLayer;
+
+  private static final int imageWidthPx = 1920;
+  private static final int imageHeightPx = 1920;
+  private static final int tiles = 16;
+  private static final int subTiles = 6;
+
+  private static final String imageUrl = "https://i.imgur.com/OAbtGaM.jpg";
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -46,10 +57,12 @@ public class TileViewFragment extends AbsContentFragment
     setPadding(false);
 
     try {
-      Bitmap downsample = BitmapFactory.decodeStream(getActivity().getAssets().open("Basic.png"));
+//      Bitmap downsample;
+//      downsample = BitmapFactory.decodeStream(getActivity().getAssets().open("Basic.png"));
       final View downsampleLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_downsample_view, mTileView, false);
       final ImageView downsampleImageView = (ImageView) downsampleLayer.findViewById(R.id.downsample);
-      downsampleImageView.setImageBitmap(downsample);
+//      downsampleImageView.setImageBitmap(downsample);
+      Picasso.with(getContext()).load(imageUrl).into(downsampleImageView);
       mTileView.addScalingViewGroup((ViewGroup) downsampleLayer);
       mTileView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
         @Override
@@ -69,7 +82,7 @@ public class TileViewFragment extends AbsContentFragment
       });
 
       // size of original image at 100% mScale
-      mTileView.setSize(downsample.getWidth() * 8, downsample.getHeight() * 8);
+      mTileView.setSize(imageWidthPx * 8, imageHeightPx * 8);
       // allow scaling past original size
       mTileView.setScaleLimits(0, 2);
 
@@ -78,7 +91,6 @@ public class TileViewFragment extends AbsContentFragment
 
       mTileView.getScalingLayout().setOnTouchListener(new View.OnTouchListener() {
 
-        boolean wasMove = false;
         GestureDetector gestureDetector;
         final GestureDetector.OnGestureListener listener = new GestureDetector.OnGestureListener() {
           @Override public boolean onDown(MotionEvent e) { return false; }
@@ -100,11 +112,19 @@ public class TileViewFragment extends AbsContentFragment
             gestureDetector = new GestureDetector(v.getContext(), listener);
           }
           gestureDetector.onTouchEvent(event);
+
+          float scale = mTileView.getScalingLayout().getScale();
+//          if (event.getAction() == MotionEvent.AC) {
+//            black.squareRevealStart(event, scale);
+//          } else if(event.getAction() == MotionEvent.ACTION_POINTER_UP) {
+//            black.squareRevealEnd(event, scale);
+//            black.revealSquare();
+//          }
           return false;
         }
       });
-    } catch (IOException e) {
-      e.printStackTrace();
+    } finally {
+
     }
 
     drawObjectArcs();
@@ -148,18 +168,18 @@ public class TileViewFragment extends AbsContentFragment
     mTileView.addScalingViewGroup(npcLayer);
   }
 
-  RevealView fog;
   private void drawFog() {
     final View fogLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, mTileView, false);
     fog = (RevealView) fogLayer.findViewById(R.id.reveal_view);
+    fog.setTiling(tiles * subTiles, tiles * subTiles, true);
     fog.setColor(Color.DKGRAY, 192);
     mTileView.addScalingViewGroup((ViewGroup) fogLayer);
   }
 
-  RevealView black;
   private void drawBlack() {
     final View blackLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, mTileView, false);
     black = (RevealView) blackLayer.findViewById(R.id.reveal_view);
+    black.setTiling(tiles * subTiles, tiles * subTiles, true);
     mTileView.addScalingViewGroup((ViewGroup) blackLayer);
   }
   private void drawPlayerTokens() {

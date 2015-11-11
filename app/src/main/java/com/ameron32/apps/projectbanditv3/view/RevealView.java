@@ -3,35 +3,34 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
 import java.util.Random;
 
-import butterknife.InjectView;
-
 /**
  * Created by Micah on 11/6/2015.
  */
 public class RevealView extends View implements View.OnClickListener {
 
-  private boolean[][] visiblity;
-  private static final int rowCount = 36;
-  private static final int colCount = 36;
+  private boolean halfTileOffset = false;
+  private int tileRows = 1;
+  private int tileCols = 1;
+
+  private boolean[][] visibility = new boolean[1][1];
+
   private int viewWidth;
   private int viewHeight;
   private int cellWidth;
   private int cellHeight;
   private Paint blackPaint;
   private Paint transparentPaint;
-//  private float touchX;
-//  private float touchY;
-//  private Point touchedCell;
+
+  private int halfWidth = 0;
+  private int halfHeight= 0;
 
   public RevealView(Context context) {
     super(context);
@@ -52,7 +51,7 @@ public class RevealView extends View implements View.OnClickListener {
   }
 
   private void init() {
-    visiblity = new boolean[rowCount][colCount];
+    resetReveal();
 
 //    touchedCell = new Point(-1, -1);
 
@@ -91,20 +90,27 @@ public class RevealView extends View implements View.OnClickListener {
     }
 
     //testing...
-//    visiblity[0][0] = true;
-//    visiblity[0][1] = false;
-//    visiblity[0][2] = true;
+//    visibility[0][0] = true;
+//    visibility[0][1] = false;
+//    visibility[0][2] = true;
 //
-//    visiblity[1][0] = false;
-//    visiblity[1][1] = true;
-//    visiblity[1][2] = false;
+//    visibility[1][0] = false;
+//    visibility[1][1] = true;
+//    visibility[1][2] = false;
 //
-//    visiblity[2][0] = true;
-//    visiblity[2][1] = false;
-//    visiblity[2][2] = true;
+//    visibility[2][0] = true;
+//    visibility[2][1] = false;
+//    visibility[2][2] = true;
 
     //testing.
 
+  }
+
+  public void setTiling(int rows, int columns, boolean halfTileOffset) {
+    this.tileRows = rows;
+    this.tileCols = columns;
+    this.halfTileOffset = halfTileOffset;
+    resetReveal();
   }
 
   public void setColor(int color, int transparency) {
@@ -117,13 +123,13 @@ public class RevealView extends View implements View.OnClickListener {
   @Override
   public void onDraw(Canvas c) {
     Rect r = new Rect();
-    for (int x = 0; x < rowCount; x++) {
-      for (int y = 0; y < colCount; y++) {
-        r.left = x * cellWidth;
-        r.right = (x + 1) * cellWidth;
-        r.top = y * cellHeight;
-        r.bottom = (y + 1) * cellHeight;
-        if (visiblity[x][y]) {
+    for (int x = 0; x < getRowCount(); x++) {
+      for (int y = 0; y < getColCount(); y++) {
+        r.left = x * cellWidth - (halfTileOffset ? halfWidth : 0);
+        r.right = (x + 1) * cellWidth - (halfTileOffset ? halfHeight : 0);
+        r.top = y * cellHeight - (halfTileOffset ? halfWidth : 0);
+        r.bottom = (y + 1) * cellHeight - (halfTileOffset ? halfHeight : 0);
+        if (visibility[x][y]) {
           c.drawRect(r, transparentPaint);
         } else {
           c.drawRect(r, blackPaint);
@@ -135,26 +141,84 @@ public class RevealView extends View implements View.OnClickListener {
   private void readjustCellSizes() {
     viewWidth = getWidth();
     viewHeight = getHeight();
-    cellWidth = viewWidth / colCount;
-    cellHeight = viewHeight / rowCount;
+    cellWidth = viewWidth / tileCols;
+    cellHeight = viewHeight / tileRows;
+    halfWidth = cellWidth / 2;
+    halfHeight = cellHeight / 2;
+  }
+
+  private int getRowCount() {
+    return (halfTileOffset ? tileRows + 1 : tileRows);
+  }
+
+  private int getColCount() {
+    return (halfTileOffset ? tileCols + 1 : tileCols);
   }
 
   @Override
-  public void onClick(View v) {
-
-  }
+  public void onClick(View v) {}
 
   public void setVisiblityData(boolean[][] newData) {
     for (int i = 0; i < newData.length; i++) {
       for (int j = 0; j < newData[i].length; j++) {
-        visiblity[i][j] = newData[i][j];
+        try {
+          visibility[i][j] = newData[i][j];
+        } catch (IndexOutOfBoundsException e) {
+          // DO NOTHING
+        }
       }
     }
-//    visiblity = newData;
   }
 
   public void resetReveal() {
-    visiblity = new boolean[rowCount][colCount];
+    visibility = new boolean[getRowCount()][getColCount()];
+  }
+
+  int squareRevealStartRow = -1;
+  int squareRevealStartCol = -1;
+  int squareRevealEndRow = -1;
+  int squareRevealEndCol = -1;
+  public void squareRevealStart(MotionEvent e, float scale) {
+    float touchX = (e.getX() / scale);
+    float touchY = (e.getY() / scale);
+    int row = (int) touchX / cellWidth;
+    int col = (int) touchY / cellHeight;
+    squareRevealStartRow = row;
+    squareRevealStartCol = col;
+  }
+
+  public void squareRevealEnd(MotionEvent e, float scale) {
+    float touchX = (e.getX() / scale);
+    float touchY = (e.getY() / scale);
+    int row = (int) touchX / cellWidth;
+    int col = (int) touchY / cellHeight;
+    squareRevealEndRow = row;
+    squareRevealEndCol = col;
+  }
+
+  public void revealSquare() {
+    if (squareRevealStartRow < 0 || squareRevealEndRow < 0 ||
+        squareRevealStartCol < 0 || squareRevealEndCol < 0) {
+      return;
+    }
+
+    // should be positive if top left then bottom right
+    int distanceRow = squareRevealEndRow - squareRevealStartRow;
+    int distanceCol = squareRevealEndCol - squareRevealStartCol;
+
+    // TODO allow for non-standard (TL/BR)
+    for (int r = 0; r < distanceRow; r++) {
+      for (int c = 0; c < distanceCol; r++) {
+        // reveal each tile
+        reveal(r + squareRevealStartRow, c + squareRevealStartCol, 0);
+      }
+    }
+
+    // reset
+    squareRevealStartRow = -1;
+    squareRevealStartCol = -1;
+    squareRevealEndRow = -1;
+    squareRevealEndCol = -1;
   }
 
   /**
@@ -166,46 +230,56 @@ public class RevealView extends View implements View.OnClickListener {
     float touchY = (e.getY() / scale);
     int row = (int) touchX / cellWidth;
     int col = (int) touchY / cellHeight;
-////    touchedCell.set(row, col);
 
     reveal(row, col, additionalRadius);
     invalidate();
   }
 
   public void reveal(int row, int col, int additionalRadius) {
+    if (halfTileOffset) {
+      offsetReveal(row, col, additionalRadius);
+    } else {
+      standardReveal(row, col, additionalRadius);
+    }
+  }
+
+  private void offsetReveal(int row, int col, int additionalRadius) {
+    // reduce radius by 1
+    final int radius = (additionalRadius > 0 ? additionalRadius - 1 : 0);
+    // NE, NW, NE, SW
+    visibility[row][col] = true;
+    visibility[row+1][col] = true;
+    visibility[row][col+1] = true;
+    visibility[row+1][col+1] = true;
+
+    for (int r = row - radius; r <= row +1 + radius; r++) {
+      for (int c = col - radius; c <= col +1 + radius; c++) {
+        try {
+          visibility[r][c] = true;
+        } catch (IndexOutOfBoundsException e) {}
+      }
+    }
+  }
+
+  private void standardReveal(int row, int col, int additionalRadius) {
     final int radius = additionalRadius;
-    visiblity[row][col] = true;
+    visibility[row][col] = true;
     for (int r = row - radius; r <= row + radius; r++) {
       for (int c = col - radius; c <= col + radius; c++) {
         try {
-          visiblity[r][c] = true;
-        } catch (IndexOutOfBoundsException e) {
-        }
+          visibility[r][c] = true;
+        } catch (IndexOutOfBoundsException e) {}
       }
     }
-
-//    final int yc = col;
-//    final int xc = row;
-//    int x = 0;
-//    int y = 0;
-//    int R = radius;
-//    for (x = -R; x <= R; x++) {
-//      for (y = -R; y <= R; y++) {
-//        double r = Math.sqrt(x * x + y * y);
-//        double inv_rad = r <= R ? 1 / r : 0; // truncate outside radius R
-//        final double v = 1 - inv_rad;
-//        map[yc + y][xc + x] = 1 - inv_rad;
-//      }
-//    }
   }
 
 
 
   public void _randomizeVisiblity(boolean andColor, boolean withTransparency) {
     Random r = new Random();
-    for (int i = 0; i < colCount; i++) {
-      for (int j = 0; j < rowCount; j++) {
-        visiblity[i][j] = r.nextBoolean();
+    for (int i = 0; i < tileCols; i++) {
+      for (int j = 0; j < tileRows; j++) {
+        visibility[i][j] = r.nextBoolean();
       }
     }
 
