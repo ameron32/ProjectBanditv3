@@ -61,13 +61,14 @@ public class MapView extends TileView {
     String sampleDownsample = "https://i.imgur.com/OAbtGaM.jpg";
     String baseUrl250 = "https://dl.dropboxusercontent.com/u/949753/android/TileView/4corners/";
     int sdsWidth = 1920; int sdsHeight = 1920;
-    int tvSizeScale = 8;
-    int tvWidth = 1920*8; int tvHeight = 1920*8;
+    int percent = 250;
+    int tvSizeScale = 10;
+    int tvWidth = 1920*10; int tvHeight = 1920*10;
     int tileSizeSq = 300;
 
     setDefaults(16, 6);
     setDownsample(sampleDownsample);
-    setDetail(baseUrl250, 250, tileSizeSq);
+    setDetail(baseUrl250, percent, tileSizeSq);
     setTouchInterceptors();
     setMapSettings(sdsWidth, sdsHeight, tvSizeScale, 0.0f, 1.0f, true);
 
