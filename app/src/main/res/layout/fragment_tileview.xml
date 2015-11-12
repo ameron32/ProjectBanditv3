@@ -7,7 +7,13 @@
   <com.qozix.tileview.TileView
       android:id="@+id/tileview"
       android:layout_width="match_parent"
-      android:layout_height="match_parent" >
+      android:layout_height="match_parent"
+      android:visibility="gone">
   </com.qozix.tileview.TileView>
+
+  <com.ameron32.apps.projectbanditv3.view.MapView
+      android:id="@+id/mapview"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
 
 </RelativeLayout>

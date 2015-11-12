@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.view.MapView;
 import com.ameron32.apps.projectbanditv3.view.RevealView;
 import com.qozix.tileview.TileView;
 import com.qozix.tileview.markers.MarkerLayout;
@@ -29,11 +30,13 @@ import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.Optional;
 
 public class TileViewFragment extends AbsContentFragment
     implements View.OnTouchListener {
 
-  @InjectView(R.id.tileview) TileView mTileView;
+  @Optional @InjectView(R.id.tileview) TileView mTileView;
+  @Optional @InjectView(R.id.mapview) MapView mMapView;
 
   public TileViewFragment() {}
 
@@ -55,7 +58,10 @@ public class TileViewFragment extends AbsContentFragment
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.inject(this, view);
     setPadding(false);
+//    setDemoTileView();
+  }
 
+  private void setDemoTileView() {
     try {
 //      Bitmap downsample;
 //      downsample = BitmapFactory.decodeStream(getActivity().getAssets().open("Basic.png"));
@@ -98,6 +104,7 @@ public class TileViewFragment extends AbsContentFragment
           @Override public boolean onSingleTapUp(MotionEvent e) { return false; }
           @Override public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return false; }
           @Override public void onLongPress(MotionEvent e) {
+//            float scale = mTileView.getScale();
             float scale = mTileView.getScalingLayout().getScale();
             fog.resetReveal();
             fog.reveal(e, scale, 1);
@@ -182,6 +189,7 @@ public class TileViewFragment extends AbsContentFragment
     black.setTiling(tiles * subTiles, tiles * subTiles, true);
     mTileView.addScalingViewGroup((ViewGroup) blackLayer);
   }
+
   private void drawPlayerTokens() {
     playerLayer = new MarkerLayout(getContext());
     playerLayer.setAnchors(-0.5f, -0.5f);
@@ -204,7 +212,8 @@ public class TileViewFragment extends AbsContentFragment
 
   @Override
   public boolean onTouch(View v, MotionEvent event) {
-    mTileView.onTouchEvent(event);
+//    mTileView.onTouchEvent(event);
+    mMapView.onTouchEvent(event);
     return false;
   }
 

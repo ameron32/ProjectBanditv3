@@ -1,4 +1,5 @@
 package com.ameron32.apps.projectbanditv3.view;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,8 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import java.util.Random;
-
 /**
  * Created by Micah on 11/6/2015.
  */
@@ -20,6 +19,9 @@ public class RevealView extends View implements View.OnClickListener {
   private int tileRows = 1;
   private int tileCols = 1;
 
+  /**
+   * if offsetTiles visibility[tileRows + 1][tileCols + 1]
+   */
   private boolean[][] visibility = new boolean[1][1];
 
   private int viewWidth;
@@ -34,26 +36,21 @@ public class RevealView extends View implements View.OnClickListener {
 
   public RevealView(Context context) {
     super(context);
-    init();
-
+    initialize();
   }
 
   public RevealView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    init();
-
+    initialize();
   }
 
   public RevealView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    init();
-
+    initialize();
   }
 
-  private void init() {
+  private void initialize() {
     resetReveal();
-
-//    touchedCell = new Point(-1, -1);
 
     blackPaint = new Paint();
     blackPaint.setColor(Color.BLACK);
@@ -88,22 +85,6 @@ public class RevealView extends View implements View.OnClickListener {
 //
 //      setOnClickListener(this);
     }
-
-    //testing...
-//    visibility[0][0] = true;
-//    visibility[0][1] = false;
-//    visibility[0][2] = true;
-//
-//    visibility[1][0] = false;
-//    visibility[1][1] = true;
-//    visibility[1][2] = false;
-//
-//    visibility[2][0] = true;
-//    visibility[2][1] = false;
-//    visibility[2][2] = true;
-
-    //testing.
-
   }
 
   public void setTiling(int rows, int columns, boolean halfTileOffset) {
@@ -158,7 +139,7 @@ public class RevealView extends View implements View.OnClickListener {
   @Override
   public void onClick(View v) {}
 
-  public void setVisiblityData(boolean[][] newData) {
+  public void setVisibilityData(boolean[][] newData) {
     for (int i = 0; i < newData.length; i++) {
       for (int j = 0; j < newData[i].length; j++) {
         try {
@@ -196,23 +177,45 @@ public class RevealView extends View implements View.OnClickListener {
     squareRevealEndCol = col;
   }
 
-  public void revealSquare() {
-    if (squareRevealStartRow < 0 || squareRevealEndRow < 0 ||
-        squareRevealStartCol < 0 || squareRevealEndCol < 0) {
-      return;
+  public void revealSquare(int additionalRadius) {
+    int actualStartRow = (squareRevealStartRow < squareRevealEndRow ? squareRevealStartRow : squareRevealEndRow) - additionalRadius;
+    int actualEndRow = (squareRevealStartRow > squareRevealEndRow ? squareRevealStartRow : squareRevealEndRow) + additionalRadius;
+    int actualStartCol = (squareRevealStartCol < squareRevealEndCol ? squareRevealStartCol : squareRevealEndCol) - additionalRadius;
+    int actualEndCol = (squareRevealStartCol > squareRevealEndCol ? squareRevealStartCol : squareRevealEndCol) + additionalRadius;
+
+    if (actualStartRow < 0) {
+      actualStartRow = 0;
+    } else if (actualStartRow > getRowCount()) {
+      actualStartRow = getRowCount();
+    }
+    if (actualEndRow < 0) {
+      actualEndRow = 0;
+    } else if (actualEndRow > getRowCount()) {
+      actualEndRow = getRowCount();
+    }
+    if (actualStartCol < 0) {
+      actualStartCol = 0;
+    } else if (actualStartCol > getColCount()) {
+      actualStartCol = getColCount();
+    }
+    if (actualEndCol < 0) {
+      actualEndCol = 0;
+    } else if (actualEndCol > getColCount()) {
+      actualEndCol = getColCount();
     }
 
     // should be positive if top left then bottom right
-    int distanceRow = squareRevealEndRow - squareRevealStartRow;
-    int distanceCol = squareRevealEndCol - squareRevealStartCol;
+    int distanceRow = Math.abs(actualEndRow - actualStartRow);
+    int distanceCol = Math.abs(actualEndCol - actualStartCol);
 
     // TODO allow for non-standard (TL/BR)
-    for (int r = 0; r < distanceRow; r++) {
-      for (int c = 0; c < distanceCol; r++) {
+    for (int r = 0; r <= distanceRow; r++) {
+      for (int c = 0; c <= distanceCol; c++) {
         // reveal each tile
-        reveal(r + squareRevealStartRow, c + squareRevealStartCol, 0);
+        reveal(r + actualStartRow, c + actualStartCol, 0);
       }
     }
+    invalidate();
 
     // reset
     squareRevealStartRow = -1;
@@ -226,8 +229,10 @@ public class RevealView extends View implements View.OnClickListener {
    * @param e
    */
   public void reveal(MotionEvent e, float scale, int additionalRadius) {
-    float touchX = (e.getX() / scale);
-    float touchY = (e.getY() / scale);
+    float x = e.getX();
+    float y = e.getY();
+    float touchX = (x / scale);
+    float touchY = (y / scale);
     int row = (int) touchX / cellWidth;
     int col = (int) touchY / cellHeight;
 
@@ -247,11 +252,15 @@ public class RevealView extends View implements View.OnClickListener {
     // reduce radius by 1
     final int radius = (additionalRadius > 0 ? additionalRadius - 1 : 0);
     // NE, NW, NE, SW
-    visibility[row][col] = true;
-    visibility[row+1][col] = true;
-    visibility[row][col+1] = true;
-    visibility[row+1][col+1] = true;
-
+//    try {
+      visibility[row][col] = true;
+      visibility[row + 1][col] = true;
+      visibility[row][col + 1] = true;
+      visibility[row + 1][col + 1] = true;
+//    } catch (IndexOutOfBoundsException e) {}
+    if (additionalRadius == 0) {
+      return;
+    }
     for (int r = row - radius; r <= row +1 + radius; r++) {
       for (int c = col - radius; c <= col +1 + radius; c++) {
         try {
@@ -263,7 +272,12 @@ public class RevealView extends View implements View.OnClickListener {
 
   private void standardReveal(int row, int col, int additionalRadius) {
     final int radius = additionalRadius;
-    visibility[row][col] = true;
+//    try {
+      visibility[row][col] = true;
+//    } catch (IndexOutOfBoundsException e) {}
+    if (additionalRadius == 0) {
+      return;
+    }
     for (int r = row - radius; r <= row + radius; r++) {
       for (int c = col - radius; c <= col + radius; c++) {
         try {
@@ -275,26 +289,26 @@ public class RevealView extends View implements View.OnClickListener {
 
 
 
-  public void _randomizeVisiblity(boolean andColor, boolean withTransparency) {
-    Random r = new Random();
-    for (int i = 0; i < tileCols; i++) {
-      for (int j = 0; j < tileRows; j++) {
-        visibility[i][j] = r.nextBoolean();
-      }
-    }
-
-    if (andColor) {
-      switch(r.nextInt(4)) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-        default:
-          blackPaint.setColor(Color.DKGRAY);
-          if (withTransparency) {
-            blackPaint.setAlpha(192);
-          }
-      }
-    }
-  }
+//  public void _randomizeVisiblity(boolean andColor, boolean withTransparency) {
+//    Random r = new Random();
+//    for (int i = 0; i < tileCols; i++) {
+//      for (int j = 0; j < tileRows; j++) {
+//        visibility[i][j] = r.nextBoolean();
+//      }
+//    }
+//
+//    if (andColor) {
+//      switch(r.nextInt(4)) {
+//        case 0:
+//        case 1:
+//        case 2:
+//        case 3:
+//        default:
+//          blackPaint.setColor(Color.DKGRAY);
+//          if (withTransparency) {
+//            blackPaint.setAlpha(192);
+//          }
+//      }
+//    }
+//  }
 }
