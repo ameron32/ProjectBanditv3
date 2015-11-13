@@ -339,8 +339,9 @@ public class MapView extends TileView {
 
     token.move(tile.row, tile.col);
     final View marker = layer.findViewWithTag(token.tag);
-    layer.moveMarker(marker, (int) e.getX(), (int) e.getY());
+    layer.moveMarker(marker, (int) (e.getX() / getScale()), (int) (e.getY() / getScale()));
     applyImage(token, marker);
+    scrollToTileAndCenter(tile.row, tile.col);
     return token;
   }
 
