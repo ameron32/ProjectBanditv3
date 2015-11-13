@@ -14,15 +14,14 @@ import android.widget.ImageView;
 
 import com.ameron32.apps.projectbanditv3.R;
 import com.qozix.tileview.TileView;
+import com.qozix.tileview.geom.CoordinateTranslater;
 import com.qozix.tileview.graphics.BitmapProvider;
 import com.qozix.tileview.markers.MarkerLayout;
 import com.qozix.tileview.tiles.Tile;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by klemeilleur on 11/10/2015.
@@ -32,6 +31,7 @@ public class MapView extends TileView {
   int tiles;
   int subTiles;
 
+  CoordinateTranslater tileTranslater = new CoordinateTranslater();
   List<Token> objectTokens;
   MarkerLayout objectLayer;
   List<Token> npcTokens;
@@ -54,6 +54,10 @@ public class MapView extends TileView {
   public MapView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     initialize();
+  }
+
+  public View getView() {
+    return this;
   }
 
   private void initialize() {
@@ -86,13 +90,14 @@ public class MapView extends TileView {
   private void setDefaults(int tiles, int subTiles) {
     this.tiles = tiles;
     this.subTiles = subTiles;
-    defineBounds(0, 0, tiles * subTiles, tiles * subTiles);
   }
 
   private void setMapSettings(int imageWidthPx, int imageHeightPx, int sizeMultiplier,
       float scaleMin, float scaleMax, boolean centerMarkers) {
     // size of original image at 100% mScale
     setSize(imageWidthPx * sizeMultiplier, imageHeightPx * sizeMultiplier);
+    tileTranslater.setSize(imageWidthPx * sizeMultiplier, imageHeightPx * sizeMultiplier);
+    tileTranslater.setBounds(0, 0, tiles * subTiles, tiles * subTiles);
     // allow scaling past original size
     setScaleLimits(scaleMin, scaleMax);
     // lets center all markers both horizontally and vertically
@@ -118,7 +123,7 @@ public class MapView extends TileView {
       @Override
       public Bitmap getBitmap(Tile tile, Context context) {
         Object data = tile.getData();
-        if( data instanceof String ) {
+        if (data instanceof String) {
           String unformattedFileName = (String) tile.getData();
           String formattedFileName = String.format(unformattedFileName, tile.getColumn(), tile.getRow());
           try {
@@ -161,30 +166,35 @@ public class MapView extends TileView {
       final GestureDetector.OnGestureListener listener = new GestureDetector.OnGestureListener() {
         @Override
         public boolean onDown(MotionEvent e) {
-          return false;
+          switch (touchType) {
+            case MoveViewportTouch:
+              return false;
+            default:
+              return true;
+          }
         }
 
         @Override
         public void onShowPress(MotionEvent e) {
         }
 
-        boolean isStart = true;
-
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-          float scale = getScale();
-          if (isStart) {
-            fog.squareRevealStart(e, scale);
-            black.squareRevealStart(e, scale);
-          } else {
-            fog.squareRevealEnd(e, scale);
-            fog.resetReveal();
-            fog.revealSquare(0);
-            black.squareRevealEnd(e, scale);
-            black.revealSquare(1);
+          switch (touchType) {
+            case TokenTouch:
+              moveToken(e);
+              break;
+            case RevealTouch:
+              pointReveal(e);
+              break;
+            case SquareRevealTouch:
+              squareReveal(e);
+              break;
+            default:
+              // do nothing
+              break;
           }
-          isStart = !isStart;
-          return true;
+          return false;
         }
 
         @Override
@@ -194,10 +204,8 @@ public class MapView extends TileView {
 
         @Override
         public void onLongPress(MotionEvent e) {
-          float scale = getScale();
-          fog.resetReveal();
-          fog.reveal(e, scale, 1);
-          black.reveal(e, scale, 2);
+//          pointReveal(e);
+//          squareReveal(e);
         }
 
         @Override
@@ -214,6 +222,39 @@ public class MapView extends TileView {
         return gestureDetector.onTouchEvent(event);
       }
     });
+  }
+
+  private TouchType touchType = TouchType.TokenTouch;
+  public void setTouchType(TouchType type) {
+    this.touchType = type;
+  }
+
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    return super.onTouchEvent(event);
+  }
+
+  boolean isStart = true;
+  private void squareReveal(MotionEvent e) {
+    float scale = getScale();
+    if (isStart) {
+      fog.squareRevealStart(e, scale);
+      black.squareRevealStart(e, scale);
+    } else {
+      fog.squareRevealEnd(e, scale);
+      fog.resetReveal();
+      fog.revealSquare(0);
+      black.squareRevealEnd(e, scale);
+      black.revealSquare(1);
+    }
+    isStart = !isStart;
+  }
+
+  private void pointReveal(MotionEvent e) {
+    float scale = getScale();
+    fog.resetReveal();
+    fog.reveal(e, scale, 1);
+    black.reveal(e, scale, 2);
   }
 
   private void zoomIn(MotionEvent e) {
@@ -267,30 +308,111 @@ public class MapView extends TileView {
     addScalingViewGroup((ViewGroup) blackLayer);
   }
 
+  Token max;
   private void drawPlayerTokens() {
     playerLayer = new MarkerLayout(getContext());
     playerLayer.setAnchors(-0.5f, -0.5f);
     addScalingViewGroup(playerLayer);
-    placeMarker(objectLayer, "max2b.png", 1000, 1000);
-    placeMarker(playerLayer, "wizbang.png", 1300, 1000);
-    placeMarker(playerLayer, "shield.png", 1000, 1300);
-    scrollToAndCenter(1000, 1000);
+//    addToken(playerLayer)
+    max = addToken(playerLayer, Token.create("Max2b",
+        250, 250, "file:///android_asset/" + "max2b.png"));
+//    moveToken(playerLayer, max, 12, 12);
+//    placeMarker(objectLayer, "max2b.png", 12, 12);
+//    placeMarker(playerLayer, "wizbang.png", 1300, 1000);
+//    placeMarker(playerLayer, "shield.png", 13, 13);
+    scrollToTileAndCenter(12, 12);
   }
 
-  private void placeMarker(MarkerLayout layer,
-                           String path, int x, int y) {
+  private Token addToken(MarkerLayout layer, Token token) {
+    placeMarker(layer, token);
+    return token;
+  }
+
+  private void moveToken(MotionEvent e) {
+    // TODO demo only
+    moveToken(playerLayer, max, e);
+  }
+
+  private Token moveToken(MarkerLayout layer, Token token, MotionEvent e) {
+    RevealView.Tile tile = fog.getTileAt(e, getScale());
+    pointReveal(e);
+
+    token.move(tile.row, tile.col);
+    final View marker = layer.findViewWithTag(token.tag);
+    layer.moveMarker(marker, (int) e.getX(), (int) e.getY());
+    applyImage(token, marker);
+    return token;
+  }
+
+  private void placeMarker(MarkerLayout layer, Token token) {
     ImageView imageView = new ImageView(getContext());
+    imageView.setTag(token.tag);
+    final View marker = layer.addMarker(imageView,
+        tileTranslater.translateX(token.tileX),
+        tileTranslater.translateY(token.tileY), null, null);
+    applyImage(token, marker);
+  }
+
+  private void applyImage(Token token, View marker) {
+    ImageView imageView = (ImageView) marker;
     Picasso.with(getContext())
-        .load("file:///android_asset/" + path)
-        .resize(256, 256)
-        .rotate(90f * new Random().nextInt(4))
+        .load(token.url)
+        .resize(token.sizeX, token.sizeY)
+        .rotate(token.rotation)
         .into(imageView);
-    layer.addMarker(imageView, x, y, null, null);
+  }
+
+  public void scrollToTileAndCenter(int tileX, int tileY) {
+    scrollToAndCenter(
+        tileTranslater.translateAndScaleX(tileX, getScale()),
+        tileTranslater.translateAndScaleY(tileY, getScale())
+    );
   }
 
 
+
+  public enum TouchType {
+    MoveViewportTouch, TokenTouch, RevealTouch, SquareRevealTouch;
+  }
 
   public static class Token {
+    String tag;
+    int tileX;
+    int tileY;
+    int sizeX;
+    int sizeY;
+    String url;
+    float rotation;
 
+    static Token create(String tag, int sizeX, int sizeY, String url) {
+      Token t = new Token();
+      t.tag = tag;
+      t.sizeX = sizeX;
+      t.sizeY = sizeY;
+      t.url = url;
+      t.tileX = 0;
+      t.tileY = 0;
+      t.rotation = 0.0f;
+      return t;
+    }
+
+    public Token move(int tileX, int tileY) {
+      final int oldX = this.tileX;
+      final int oldY = this.tileY;
+      double theta = Math.atan2(tileY-oldY, tileX-oldX);
+      theta += Math.PI/2.0;
+      double angle = Math.toDegrees(theta);
+      if (angle < 0) {
+        angle += 360;
+      }
+      angle += 180;
+      if (angle < 0) {
+        angle += 360;
+      }
+      this.rotation = (float) angle;
+      this.tileX = tileX;
+      this.tileY = tileY;
+      return this;
+    }
   }
 }

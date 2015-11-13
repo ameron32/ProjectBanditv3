@@ -4,16 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <com.qozix.tileview.TileView
-      android:id="@+id/tileview"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:visibility="gone">
-  </com.qozix.tileview.TileView>
-
   <com.ameron32.apps.projectbanditv3.view.MapView
       android:id="@+id/mapview"
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_move_viewport"
+            android:src="@drawable/ic_move_arrows"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_reveal_one"
+            android:src="@drawable/ic_gm"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_reveal_square"
+            android:src="@drawable/ic_gm"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_move_token"
+            android:src="@drawable/ic_construction"/>
+    </LinearLayout>
 
 </RelativeLayout>

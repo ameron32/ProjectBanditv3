@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -71,7 +72,7 @@ public class RevealView extends View implements View.OnClickListener {
       });
 
 
-      //Set a touch listener to save the x and y coords so the onClick method can use them.
+      //Set a touch listener to save the tileX and tileY coords so the onClick method can use them.
 //      setOnTouchListener(new View.OnTouchListener() {
 //        @Override
 //        public boolean onTouch(View v, MotionEvent event) {
@@ -229,15 +230,19 @@ public class RevealView extends View implements View.OnClickListener {
    * @param e
    */
   public void reveal(MotionEvent e, float scale, int additionalRadius) {
+    Tile tile = getTileAt(e, scale);
+    reveal(tile.row, tile.col, additionalRadius);
+    invalidate();
+  }
+
+  public Tile getTileAt(MotionEvent e, float scale) {
     float x = e.getX();
     float y = e.getY();
     float touchX = (x / scale);
     float touchY = (y / scale);
     int row = (int) touchX / cellWidth;
     int col = (int) touchY / cellHeight;
-
-    reveal(row, col, additionalRadius);
-    invalidate();
+    return new Tile(row, col);
   }
 
   public void reveal(int row, int col, int additionalRadius) {
@@ -252,12 +257,12 @@ public class RevealView extends View implements View.OnClickListener {
     // reduce radius by 1
     final int radius = (additionalRadius > 0 ? additionalRadius - 1 : 0);
     // NE, NW, NE, SW
-//    try {
-      visibility[row][col] = true;
+    visibility[row][col] = true;
+    try {
       visibility[row + 1][col] = true;
       visibility[row][col + 1] = true;
       visibility[row + 1][col + 1] = true;
-//    } catch (IndexOutOfBoundsException e) {}
+    } catch (IndexOutOfBoundsException e) {}
     if (additionalRadius == 0) {
       return;
     }
@@ -289,26 +294,12 @@ public class RevealView extends View implements View.OnClickListener {
 
 
 
-//  public void _randomizeVisiblity(boolean andColor, boolean withTransparency) {
-//    Random r = new Random();
-//    for (int i = 0; i < tileCols; i++) {
-//      for (int j = 0; j < tileRows; j++) {
-//        visibility[i][j] = r.nextBoolean();
-//      }
-//    }
-//
-//    if (andColor) {
-//      switch(r.nextInt(4)) {
-//        case 0:
-//        case 1:
-//        case 2:
-//        case 3:
-//        default:
-//          blackPaint.setColor(Color.DKGRAY);
-//          if (withTransparency) {
-//            blackPaint.setAlpha(192);
-//          }
-//      }
-//    }
-//  }
+  public class Tile {
+    int row;
+    int col;
+    public Tile(int row, int col) {
+      this.row = row;
+      this.col = col;
+    }
+  }
 }
