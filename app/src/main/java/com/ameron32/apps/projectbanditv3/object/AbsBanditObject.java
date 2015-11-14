@@ -71,7 +71,7 @@ public abstract class AbsBanditObject<T extends AbsBanditObject.Column>
         } else if (parseObject instanceof User) {
           return ((User) parseObject).getName();
         } else {
-          return "<<ParseObject [name]>>";
+          return parseObject.getObjectId();
         }
       case Relation:
         try {

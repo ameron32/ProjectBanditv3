@@ -1,8 +1,16 @@
 package com.ameron32.apps.projectbanditv3.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.InputDevice;
@@ -10,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.ameron32.apps.projectbanditv3.R;
@@ -19,6 +28,8 @@ import com.qozix.tileview.graphics.BitmapProvider;
 import com.qozix.tileview.markers.MarkerLayout;
 import com.qozix.tileview.tiles.Tile;
 import com.squareup.picasso.Picasso;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.List;
@@ -63,18 +74,35 @@ public class MapView extends TileView {
   private void initialize() {
     // sample settings
     String sampleDownsample = "https://i.imgur.com/OAbtGaM.jpg";
-    String baseUrl250 = "https://dl.dropboxusercontent.com/u/949753/android/TileView/4corners/";
+    String baseUrl = "https://dl.dropboxusercontent.com/u/949753/android/TileView/4corners/";
     int sdsWidth = 1920; int sdsHeight = 1920;
-    int percent = 250;
     int tvSizeScale = 10;
     int tvWidth = 1920*10; int tvHeight = 1920*10;
-    int tileSizeSq = 300;
 
     setDefaults(16, 6);
     setDownsample(sampleDownsample);
-    setDetail(baseUrl250, percent, tileSizeSq);
+    setBitmapProvider(new BitmapProvider() {
+      @Override
+      public Bitmap getBitmap(Tile tile, Context context) {
+        Object data = tile.getData();
+        if (data instanceof String) {
+          String unformattedFileName = (String) tile.getData();
+          String formattedFileName = String.format(unformattedFileName, tile.getColumn(), tile.getRow());
+          try {
+            return Picasso.with(getContext())
+                .load(formattedFileName)
+                .get();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+        return null;
+      }
+    });
+    setDetail(baseUrl, 100, 120);
+    setDetail(baseUrl, 250, 300);
     setTouchInterceptors();
-    setMapSettings(sdsWidth, sdsHeight, tvSizeScale, 0.0f, 1.0f, true);
+    setMapSettings(sdsWidth, sdsHeight, tvSizeScale, 0.4f, 1.0f, true);
 
     drawObjectArcs();
     drawNPCArcs();
@@ -99,6 +127,7 @@ public class MapView extends TileView {
     tileTranslater.setSize(imageWidthPx * sizeMultiplier, imageHeightPx * sizeMultiplier);
     tileTranslater.setBounds(0, 0, tiles * subTiles, tiles * subTiles);
     // allow scaling past original size
+    setShouldScaleToFit(false);
     setScaleLimits(scaleMin, scaleMax);
     // lets center all markers both horizontally and vertically
     if (centerMarkers) {
@@ -119,25 +148,7 @@ public class MapView extends TileView {
 
 
   private void setDetail(String baseUrl, int size, int tileSize) {
-    setBitmapProvider(new BitmapProvider() {
-      @Override
-      public Bitmap getBitmap(Tile tile, Context context) {
-        Object data = tile.getData();
-        if (data instanceof String) {
-          String unformattedFileName = (String) tile.getData();
-          String formattedFileName = String.format(unformattedFileName, tile.getColumn(), tile.getRow());
-          try {
-            return Picasso.with(getContext())
-                .load(formattedFileName)
-                .get();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-        return null;
-      }
-    });
-    addDetailLevel(0.25f, baseUrl + size + "/%d_%d.png", tileSize, tileSize);
+    addDetailLevel(((float)size / 1000.0f), baseUrl + size + "/%d_%d.png", tileSize, tileSize);
   }
 
   private void setTouchInterceptors() {
@@ -314,7 +325,7 @@ public class MapView extends TileView {
     playerLayer.setAnchors(-0.5f, -0.5f);
     addScalingViewGroup(playerLayer);
 //    addToken(playerLayer)
-    max = addToken(playerLayer, Token.create("Max2b",
+    max = addToken(playerLayer, Token.create("Max2b", R.color.yellow,
         250, 250, "file:///android_asset/" + "max2b.png"));
 //    moveToken(playerLayer, max, 12, 12);
 //    placeMarker(objectLayer, "max2b.png", 12, 12);
@@ -336,7 +347,6 @@ public class MapView extends TileView {
   private Token moveToken(MarkerLayout layer, Token token, MotionEvent e) {
     RevealView.Tile tile = fog.getTileAt(e, getScale());
     pointReveal(e);
-
     token.move(tile.row, tile.col);
     final View marker = layer.findViewWithTag(token.tag);
     layer.moveMarker(marker, (int) (e.getX() / getScale()), (int) (e.getY() / getScale()));
@@ -348,6 +358,9 @@ public class MapView extends TileView {
   private void placeMarker(MarkerLayout layer, Token token) {
     ImageView imageView = new ImageView(getContext());
     imageView.setTag(token.tag);
+    final Drawable tokenBottom = ContextCompat.getDrawable(getContext(), R.drawable.circle_token);
+    tokenBottom.setColorFilter(ContextCompat.getColor(getContext(), token.color), PorterDuff.Mode.DST);
+    imageView.setBackground(tokenBottom);
     final View marker = layer.addMarker(imageView,
         tileTranslater.translateX(token.tileX),
         tileTranslater.translateY(token.tileY), null, null);
@@ -378,6 +391,7 @@ public class MapView extends TileView {
 
   public static class Token {
     String tag;
+    @ColorRes int color;
     int tileX;
     int tileY;
     int sizeX;
@@ -385,7 +399,7 @@ public class MapView extends TileView {
     String url;
     float rotation;
 
-    static Token create(String tag, int sizeX, int sizeY, String url) {
+    static Token create(String tag, @ColorRes int color, int sizeX, int sizeY, String url) {
       Token t = new Token();
       t.tag = tag;
       t.sizeX = sizeX;
@@ -393,6 +407,7 @@ public class MapView extends TileView {
       t.url = url;
       t.tileX = 0;
       t.tileY = 0;
+      t.color = color;
       t.rotation = 0.0f;
       return t;
     }
