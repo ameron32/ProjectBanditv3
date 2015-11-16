@@ -10,6 +10,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.support.annotation.ColorRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -37,7 +38,8 @@ import java.util.List;
 /**
  * Created by klemeilleur on 11/10/2015.
  */
-public class MapView extends TileView {
+public class MapView extends TileView
+    implements MarkerLayout.MarkerTapListener {
 
   int tiles;
   int subTiles;
@@ -51,6 +53,7 @@ public class MapView extends TileView {
   RevealView black;
   List<Token> playerTokens;
   MarkerLayout playerLayer;
+  Token currentToken;
 
   public MapView(Context context) {
     super(context);
@@ -99,9 +102,10 @@ public class MapView extends TileView {
         return null;
       }
     });
-    setDetail(baseUrl, 100, 120);
+//    setDetail(baseUrl, 100, 120);
     setDetail(baseUrl, 250, 300);
-    setTouchInterceptors();
+    setDetail(baseUrl, 500, 300);
+    setDetail(baseUrl, 1000, 300);
     setMapSettings(sdsWidth, sdsHeight, tvSizeScale, 0.4f, 1.0f, true);
 
     drawObjectArcs();
@@ -110,9 +114,21 @@ public class MapView extends TileView {
 
     drawObjects();
     drawNPCs();
-      drawFog(true);
-      drawBlack(true);
+    drawFog(true);
+    drawBlack(true);
     drawPlayerTokens();
+
+    setTouchInterceptors();
+  }
+
+  @Override
+  public boolean onSingleTapConfirmed(MotionEvent event) {
+    int x = (int) (getScrollX() + event.getX());
+    int y = (int) (getScrollY() + event.getY());
+    objectLayer.processHit(x, y);
+    npcLayer.processHit(x, y);
+    playerLayer.processHit(x, y);
+    return super.onSingleTapConfirmed(event);
   }
 
   private void setDefaults(int tiles, int subTiles) {
@@ -172,9 +188,15 @@ public class MapView extends TileView {
     });
 
     getScalingLayout().setOnTouchListener(new View.OnTouchListener() {
-
       GestureDetector gestureDetector;
-      final GestureDetector.OnGestureListener listener = new GestureDetector.OnGestureListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        if (gestureDetector == null) {
+          gestureDetector = new GestureDetector(v.getContext(), listener);
+        }
+        return gestureDetector.onTouchEvent(event);
+      }
+      final GestureDetector.SimpleOnGestureListener listener = new GestureDetector.SimpleOnGestureListener() {
         @Override
         public boolean onDown(MotionEvent e) {
           switch (touchType) {
@@ -183,10 +205,6 @@ public class MapView extends TileView {
             default:
               return true;
           }
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
         }
 
         @Override
@@ -207,32 +225,12 @@ public class MapView extends TileView {
           }
           return false;
         }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-          return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-//          pointReveal(e);
-//          squareReveal(e);
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-          return false;
-        }
       };
-
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-        if (gestureDetector == null) {
-          gestureDetector = new GestureDetector(v.getContext(), listener);
-        }
-        return gestureDetector.onTouchEvent(event);
-      }
     });
+
+    objectLayer.setMarkerTapListener(this);
+    npcLayer.setMarkerTapListener(this);
+    playerLayer.setMarkerTapListener(this);
   }
 
   private TouchType touchType = TouchType.TokenTouch;
@@ -319,14 +317,11 @@ public class MapView extends TileView {
     addScalingViewGroup((ViewGroup) blackLayer);
   }
 
-  Token max;
   private void drawPlayerTokens() {
     playerLayer = new MarkerLayout(getContext());
     playerLayer.setAnchors(-0.5f, -0.5f);
     addScalingViewGroup(playerLayer);
 //    addToken(playerLayer)
-    max = addToken(playerLayer, Token.create("Max2b", R.color.yellow,
-        250, 250, "file:///android_asset/" + "max2b.png"));
 //    moveToken(playerLayer, max, 12, 12);
 //    placeMarker(objectLayer, "max2b.png", 12, 12);
 //    placeMarker(playerLayer, "wizbang.png", 1300, 1000);
@@ -334,21 +329,38 @@ public class MapView extends TileView {
     scrollToTileAndCenter(12, 12);
   }
 
-  private Token addToken(MarkerLayout layer, Token token) {
-    placeMarker(layer, token);
+  public Token addToken(TokenLayer layer, Token token) {
+    MarkerLayout markerLayout;
+    switch(layer) {
+      case Object:
+        markerLayout = objectLayer;
+        break;
+      case NPC:
+        markerLayout = npcLayer;
+        break;
+      case Player:
+      default:
+        markerLayout = playerLayer;
+        break;
+    }
+    placeMarker(markerLayout, token);
     return token;
+  }
+
+  public void setCurrentToken(Token token) {
+    this.currentToken = token;
   }
 
   private void moveToken(MotionEvent e) {
     // TODO demo only
-    moveToken(playerLayer, max, e);
+    moveToken(playerLayer, currentToken, e);
   }
 
   private Token moveToken(MarkerLayout layer, Token token, MotionEvent e) {
     RevealView.Tile tile = fog.getTileAt(e, getScale());
     pointReveal(e);
     token.move(tile.row, tile.col);
-    final View marker = layer.findViewWithTag(token.tag);
+    final View marker = token.findMarkerIn(layer);
     layer.moveMarker(marker, (int) (e.getX() / getScale()), (int) (e.getY() / getScale()));
     applyImage(token, marker);
     scrollToTileAndCenter(tile.row, tile.col);
@@ -356,19 +368,22 @@ public class MapView extends TileView {
   }
 
   private void placeMarker(MarkerLayout layer, Token token) {
-    ImageView imageView = new ImageView(getContext());
-    imageView.setTag(token.tag);
+    ViewGroup tokenView = (ViewGroup) LayoutInflater.from(layer.getContext()).inflate(R.layout.token, layer, false);
+    token.attachTo(tokenView);
+//    ImageView imageView = (ImageView) tokenView.findViewById(R.id.imageview_token_image);
     final Drawable tokenBottom = ContextCompat.getDrawable(getContext(), R.drawable.circle_token);
-    tokenBottom.setColorFilter(ContextCompat.getColor(getContext(), token.color), PorterDuff.Mode.DST);
-    imageView.setBackground(tokenBottom);
-    final View marker = layer.addMarker(imageView,
+    tokenBottom.mutate().setColorFilter(ContextCompat.getColor(getContext(), token.color), PorterDuff.Mode.ADD);
+//    imageView.setBackground(tokenBottom);
+    ImageView baseView = (ImageView) tokenView.findViewById(R.id.imageview_token_base);
+    baseView.setImageDrawable(tokenBottom);
+    layer.addMarker(tokenView,
         tileTranslater.translateX(token.tileX),
         tileTranslater.translateY(token.tileY), null, null);
-    applyImage(token, marker);
+    applyImage(token, tokenView);
   }
 
   private void applyImage(Token token, View marker) {
-    ImageView imageView = (ImageView) marker;
+    ImageView imageView = (ImageView) marker.findViewById(R.id.imageview_token_image);
     Picasso.with(getContext())
         .load(token.url)
         .resize(token.sizeX, token.sizeY)
@@ -383,14 +398,39 @@ public class MapView extends TileView {
     );
   }
 
+  public void onMarkerTap(View v, int x, int y) {
+    Token token = Token.fromView(v);
+    if (token != null) {
+      // TODO token pressed
+      Snackbar.make(v, "Token: " + token.tag, Snackbar.LENGTH_SHORT).show();
+    }
+  }
+
 
 
   public enum TouchType {
     MoveViewportTouch, TokenTouch, RevealTouch, SquareRevealTouch;
   }
 
+  public enum TokenLayer {
+    Object, NPC, Player;
+  }
+
   public static class Token {
+
+    private static final int TAG_KEY = R.id.token_key;
+
+    public static Token fromView(View host) {
+      try {
+        return (Token) host.getTag(TAG_KEY);
+      } catch (ClassCastException e) {
+        e.printStackTrace();
+      }
+      return null;
+    }
+
     String tag;
+    int hostViewId;
     @ColorRes int color;
     int tileX;
     int tileY;
@@ -399,7 +439,7 @@ public class MapView extends TileView {
     String url;
     float rotation;
 
-    static Token create(String tag, @ColorRes int color, int sizeX, int sizeY, String url) {
+    public static Token create(String tag, @ColorRes int color, int sizeX, int sizeY, String url) {
       Token t = new Token();
       t.tag = tag;
       t.sizeX = sizeX;
@@ -429,6 +469,23 @@ public class MapView extends TileView {
       this.tileX = tileX;
       this.tileY = tileY;
       return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (o instanceof Token) {
+        return ((Token) o).tag == this.tag;
+      }
+      return false;
+    }
+
+    private void attachTo(View host) {
+      host.setTag(TAG_KEY, this);
+      this.hostViewId = host.getId();
+    }
+
+    private View findMarkerIn(View host) {
+      return host.findViewById(this.hostViewId);
     }
   }
 }

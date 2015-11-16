@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.manager.CharacterManager;
+import com.ameron32.apps.projectbanditv3.object.Character;
+import com.ameron32.apps.projectbanditv3.object.*;
 import com.ameron32.apps.projectbanditv3.view.MapView;
 import com.ameron32.apps.projectbanditv3.view.RevealView;
 import com.qozix.tileview.TileView;
@@ -40,27 +43,37 @@ public class TileViewFragment extends AbsContentFragment {
 
   public TileViewFragment() {}
 
+  MapView.Token max;
+
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.inject(this, view);
     setPadding(false);
+
+    final Character currentCharacter = CharacterManager.get().getCurrentCharacter();
+    final Token token;
+
+    max = getMapView().addToken(MapView.TokenLayer.Player,
+        MapView.Token.create("Max2b", R.color.yellow,
+        200, 200, "https://i.imgur.com/n5cM7gh.png"));
+    getMapView().setCurrentToken(max);
   }
 
   @OnClick(R.id.button_reveal_one) void clickReveal() {
-    mMapView.setTouchType(MapView.TouchType.RevealTouch);
+    getMapView().setTouchType(MapView.TouchType.RevealTouch);
   }
 
   @OnClick(R.id.button_reveal_square) void clickSquareReveal() {
-    mMapView.setTouchType(MapView.TouchType.SquareRevealTouch);
+    getMapView().setTouchType(MapView.TouchType.SquareRevealTouch);
   }
 
   @OnClick(R.id.button_move_token) void clickToken() {
-    mMapView.setTouchType(MapView.TouchType.TokenTouch);
+    getMapView().setTouchType(MapView.TouchType.TokenTouch);
   }
 
   @OnClick(R.id.button_move_viewport) void clickMoveView() {
-    mMapView.setTouchType(MapView.TouchType.MoveViewportTouch);
+    getMapView().setTouchType(MapView.TouchType.MoveViewportTouch);
   }
 
   @Override
@@ -70,7 +83,7 @@ public class TileViewFragment extends AbsContentFragment {
 
   @Override
   public void onDestroyView() {
-    mMapView.destroy();
+    getMapView().destroy();
     ButterKnife.reset(this);
     super.onDestroy();
   }

@@ -10,7 +10,9 @@ import com.ameron32.apps.projectbanditv3.object.Game;
 import com.ameron32.apps.projectbanditv3.object.Item;
 import com.ameron32.apps.projectbanditv3.object.Message;
 import com.ameron32.apps.projectbanditv3.object.Skill;
+import com.ameron32.apps.projectbanditv3.object.Token;
 import com.ameron32.apps.projectbanditv3.object.User;
+import com.ameron32.apps.projectbanditv3.object.Character;
 import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -74,17 +76,18 @@ public class ParseApplication extends
   }
 
     private void registerSubclasses() {
-        // Add your initialization code here
-        ParseObject.registerSubclass(CAction.class);
-        ParseObject.registerSubclass(com.ameron32.apps.projectbanditv3.object.Character.class);
-        ParseObject.registerSubclass(CInventory.class);
-        ParseObject.registerSubclass(Game.class);
-        ParseObject.registerSubclass(Message.class);
-        ParseObject.registerSubclass(Item.class);
-        ParseObject.registerSubclass(Advantage.class);
-        ParseObject.registerSubclass(Skill.class);
+      // Add your initialization code here
+      ParseObject.registerSubclass(CAction.class);
+      ParseObject.registerSubclass(Character.class);
+      ParseObject.registerSubclass(CInventory.class);
+      ParseObject.registerSubclass(Game.class);
+      ParseObject.registerSubclass(Message.class);
+      ParseObject.registerSubclass(Item.class);
+      ParseObject.registerSubclass(Advantage.class);
+      ParseObject.registerSubclass(Skill.class);
+      ParseObject.registerSubclass(Token.class);
 
-        ParseObject.registerSubclass(User.class);
+      ParseObject.registerSubclass(User.class);
     }
 
     private void plantTimberLogging() {
