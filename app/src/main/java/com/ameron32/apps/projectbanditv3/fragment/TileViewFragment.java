@@ -54,6 +54,24 @@ public class TileViewFragment extends AbsContentFragment {
     final Character currentCharacter = CharacterManager.get().getCurrentCharacter();
     final Token token;
 
+    // TODO import maps from Parse
+    getMapView().setDownsample("https://i.imgur.com/OAbtGaM.jpg");
+    getMapView().setDownsampleSize(1920, 1920);
+    getMapView().setTilesSq(16, 6);
+    getMapView().setFullSizeMultiplier(10);
+    getMapView().setMinMaxScale(0.4f, 1.0f);
+    getMapView().setBaseUrl("https://dl.dropboxusercontent.com/u/949753/android/TileView/4corners/");
+    getMapView().addDetailLevel(0.25f, 300);
+    getMapView().addDetailLevel(0.50f, 300);
+    getMapView().addDetailLevel(1.00f, 300);
+    getMapView().start();
+//    getMapView().setDownsample("https://i.imgur.com/lMz7mcq.png");
+//    getMapView().setDownsampleSize(803, 719);
+//    getMapView().setTiles(57, 51, 1);
+//    getMapView().setFullSizeMultiplier(15);
+//    getMapView().setMinMaxScale(0.1f, 1.0f);
+//    getMapView().start();
+
     max = getMapView().addToken(MapView.TokenLayer.Player,
         MapView.Token.create("Max2b", R.color.yellow,
         200, 200, "https://i.imgur.com/n5cM7gh.png"));
@@ -79,6 +97,18 @@ public class TileViewFragment extends AbsContentFragment {
   @Override
   protected int getCustomLayoutResource() {
     return R.layout.fragment_tileview;
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    getMapView().pause();
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    getMapView().resume();
   }
 
   @Override

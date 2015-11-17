@@ -94,9 +94,9 @@ public class TableRowLayout extends LinearLayoutCompat {
 	    int roX = oX + rx;
 	    int roY = oY + ry;
 
-//	    Log.i("isViewContains", c(rx, tileX, w, ry, tileY, h));
-//	    Log.i("isViewContains", c("<", tileX, roX, tileX + w));
-//	    Log.i("isViewContains", c("<", tileY, roY, tileY + h));
+//	    Log.i("isViewContains", c(rx, tileCol, w, ry, tileRow, h));
+//	    Log.i("isViewContains", c("<", tileCol, roX, tileCol + w));
+//	    Log.i("isViewContains", c("<", tileRow, roY, tileRow + h));
 
 	    if (roX < x || roX > x + w || roY < y || roY > y + h) {
 	        return false;
