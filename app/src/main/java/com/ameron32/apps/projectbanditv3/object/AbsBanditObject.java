@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,9 @@ public abstract class AbsBanditObject<T extends AbsBanditObject.Column>
       case Integer:
         final int i = this.getInt(c.key);
         return String.valueOf(i);
+      case Float:
+        final float f = this.getNumber(c.key).floatValue();
+        return String.valueOf(f);
       case String:
         final String s = this.getString(c.key);
         return s;
@@ -73,6 +77,9 @@ public abstract class AbsBanditObject<T extends AbsBanditObject.Column>
         } else {
           return parseObject.getObjectId();
         }
+      case JSONObject:
+        final JSONObject jso = this.getJSONObject(c.key);
+        return jso.toString();
       case Relation:
         try {
           final List<ParseObject> parseObjects = this.getRelation(c.key).getQuery().fromLocalDatastore().find();

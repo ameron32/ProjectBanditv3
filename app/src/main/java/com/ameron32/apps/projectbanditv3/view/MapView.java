@@ -1,5 +1,15 @@
 package com.ameron32.apps.projectbanditv3.view;
 
+import com.ameron32.apps.projectbanditv3.R;
+import com.qozix.tileview.TileView;
+import com.qozix.tileview.graphics.BitmapProvider;
+import com.qozix.tileview.markers.MarkerLayout;
+import com.qozix.tileview.tiles.Tile;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -17,13 +27,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.ameron32.apps.projectbanditv3.R;
-import com.qozix.tileview.TileView;
-import com.qozix.tileview.graphics.BitmapProvider;
-import com.qozix.tileview.markers.MarkerLayout;
-import com.qozix.tileview.tiles.Tile;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -104,8 +107,8 @@ public class MapView extends TileView
     this.baseUrl = baseUrl;
   }
 
-  public void addDetailLevel(float scale, int tilePxSq) {
-    details.append(Math.round(scale * 1000), tilePxSq);
+  public void addDetailLevel(int scale1000, int tilePxSq) {
+    details.append(scale1000, tilePxSq);
   }
 
   public void start() {
@@ -200,7 +203,6 @@ public class MapView extends TileView
 //    addScalingViewGroup((ViewGroup) downsampleLayer);
     addView(downsampleImageView, 0);
   }
-
 
   private void setDetail(String baseUrl, int size, int tileSize) {
     addDetailLevel(((float) size / 1000.0f), baseUrl + size + "/%d_%d.png", tileSize, tileSize);
@@ -493,6 +495,73 @@ public class MapView extends TileView
 
     private View findMarkerIn(View host) {
       return host.findViewById(this.hostViewId);
+    }
+  }
+
+  public static class DetailLevels extends JSONObject {
+    public static final String DETAIL_LEVEL = "DETAIL_LEVEL";
+
+    public DetailLevels put(DetailLevel... detailLevels) throws JSONException {
+      for (int i = 0, detailLevelsLength = detailLevels.length; i < detailLevelsLength; i++) {
+        DetailLevel level = detailLevels[i];
+        put(i + "_" + DetailLevels.DETAIL_LEVEL, level);
+      }
+      return this;
+    }
+
+    public int getLevelsCount() {
+      return this.length();
+    }
+
+    public DetailLevel get(int index) throws JSONException {
+      if (index >= getLevelsCount()) {
+        return null;
+      }
+      return (DetailLevel) this.getJSONObject(index + "_" + DETAIL_LEVEL);
+    }
+  }
+
+  public static class DetailLevel extends JSONObject {
+    public static final String BASE_URL = "BASE_URL";
+    public static final String SCALE_1000 = "SCALE_1000";
+    public static final String TILE_SIZE_X = "TILE_SIZE_X";
+    public static final String TILE_SIZE_Y = "TILE_SIZE_Y";
+    public static final String PATTERN = "PATTERN";
+    public static final String FILE_EXTENSION = "FILE_EXTENSION";
+
+    public DetailLevel put(String baseUrl, int scale1000, int tileSizeX,
+            int tileSizeY, String pattern, String fileExtension) throws JSONException {
+      put(DetailLevel.BASE_URL, baseUrl);
+      put(DetailLevel.SCALE_1000, scale1000);
+      put(DetailLevel.TILE_SIZE_X, tileSizeX);
+      put(DetailLevel.TILE_SIZE_Y, tileSizeY);
+      put(DetailLevel.PATTERN, pattern);
+      put(DetailLevel.FILE_EXTENSION, fileExtension);
+      return this;
+    }
+
+    public String getBaseUrl() throws JSONException {
+      return getString(BASE_URL);
+    }
+
+    public int getScale1000() throws JSONException {
+      return getInt(SCALE_1000);
+    }
+
+    public int getTileSizeX() throws JSONException {
+      return getInt(TILE_SIZE_X);
+    }
+
+    public int getTileSizeY() throws JSONException {
+      return getInt(TILE_SIZE_Y);
+    }
+
+    public String getPattern() throws JSONException {
+      return getString(PATTERN);
+    }
+
+    public String getFileExtension() throws JSONException {
+      return getString(FILE_EXTENSION);
     }
   }
 

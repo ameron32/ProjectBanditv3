@@ -10,6 +10,7 @@ import com.ameron32.apps.projectbanditv3.object.Game;
 import com.ameron32.apps.projectbanditv3.object.Item;
 import com.ameron32.apps.projectbanditv3.object.Message;
 import com.ameron32.apps.projectbanditv3.object.Skill;
+import com.ameron32.apps.projectbanditv3.object.TileMap;
 import com.ameron32.apps.projectbanditv3.object.Token;
 import com.ameron32.apps.projectbanditv3.object.User;
 import com.ameron32.apps.projectbanditv3.object.Character;
@@ -86,6 +87,7 @@ public class ParseApplication extends
       ParseObject.registerSubclass(Advantage.class);
       ParseObject.registerSubclass(Skill.class);
       ParseObject.registerSubclass(Token.class);
+      ParseObject.registerSubclass(TileMap.class);
 
       ParseObject.registerSubclass(User.class);
     }
