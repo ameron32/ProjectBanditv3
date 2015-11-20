@@ -425,6 +425,7 @@ public class MapView extends TileView
     Object, NPC, Player;
   }
 
+  // TODO move to object.Token
   public static class Token {
 
     private static final int TAG_KEY = R.id.token_key;
