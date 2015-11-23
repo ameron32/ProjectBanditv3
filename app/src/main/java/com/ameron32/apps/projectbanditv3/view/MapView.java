@@ -1,6 +1,8 @@
 package com.ameron32.apps.projectbanditv3.view;
 
 import com.ameron32.apps.projectbanditv3.R;
+import com.ameron32.apps.projectbanditv3.object.TileMap;
+import com.ameron32.apps.projectbanditv3.object.Token;
 import com.qozix.tileview.TileView;
 import com.qozix.tileview.graphics.BitmapProvider;
 import com.qozix.tileview.markers.MarkerLayout;
@@ -50,6 +52,9 @@ public class MapView extends TileView
   List<Token> playerTokens;
   MarkerLayout playerLayer;
   Token currentToken;
+  TileMap hostTileMap;
+
+  boolean gmView;
 
   public MapView(Context context) {
     super(context);
@@ -68,6 +73,46 @@ public class MapView extends TileView
 
   private void initialize() {
     // nothing
+  }
+
+  public void applyTileMap(TileMap currentTileMap) {
+    this.hostTileMap = currentTileMap;
+    this.setDownsample(currentTileMap.getDownsampleUrl());
+    this.setDownsampleSize(currentTileMap.getDownsampleWidth(),
+        currentTileMap.getDownsampleHeight());
+    this.setTiles(currentTileMap.getTilesWidth(), currentTileMap.getTilesHeight(),
+        currentTileMap.getSubTiles());
+    this.setFullSizeMultiplier(currentTileMap.getFullSizeMultiplier());
+    this.setMinMaxScale(currentTileMap.getMinScale(), currentTileMap.getMaxScale());
+    final JSONObject detailLevels = currentTileMap.getDetailLevels();
+    if (detailLevels != null) {
+      for (int i = 0; i < detailLevels.length(); i++) {
+        try {
+          final JSONObject detailLevel = detailLevels.getJSONObject(
+              i + "_" + MapView.DetailLevels.DETAIL_LEVEL);
+          this.setBaseUrl(detailLevel.getString(MapView.DetailLevel.BASE_URL));
+          final int tilePxX = detailLevel.getInt(MapView.DetailLevel.TILE_SIZE_X);
+          final int tilePxY = detailLevel.getInt(MapView.DetailLevel.TILE_SIZE_Y);
+          if (tilePxX != tilePxY) {
+            throw new IllegalStateException("Cannot use non-square tiles yet.");
+          }
+          final int tilePxSq = tilePxY; // TODO make rect tiles?
+          this.addDetailLevel(detailLevel.getInt(MapView.DetailLevel.SCALE_1000), tilePxSq);
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    this.start();
+  }
+
+  public void setGMView(boolean gmView) {
+    this.gmView = gmView;
+    if (gmView) {
+      this.black.setColor(Color.BLACK, 64);
+    } else {
+      this.black.setColor(Color.BLACK, 0);
+    }
   }
 
 
@@ -280,7 +325,7 @@ public class MapView extends TileView
     Token token = Token.fromView(v);
     if (token != null) {
       // TODO token pressed
-      Snackbar.make(v, "Token: " + token.tag, Snackbar.LENGTH_SHORT).show();
+      Snackbar.make(v, "Token: " + token.getTag(), Snackbar.LENGTH_SHORT).show();
     }
   }
 
@@ -358,6 +403,11 @@ public class MapView extends TileView
     final View blackLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, this, false);
     black = (RevealView) blackLayer.findViewById(R.id.reveal_view);
     black.setTiling(tileCols * subTiles, tileRows * subTiles, halfTileOffset);
+    if (gmView) {
+      black.setColor(Color.BLACK, 64);
+    } else {
+      black.setColor(Color.BLACK, 0);
+    }
     addScalingViewGroup((ViewGroup) blackLayer);
   }
 
@@ -375,7 +425,7 @@ public class MapView extends TileView
 
   private void moveToken(MotionEvent e) {
     // TODO demo only
-    moveToken(playerLayer, currentToken, e);
+    moveToken(playerLayer, currentToken, e).thenSave();
   }
 
   private Token moveToken(MarkerLayout layer, Token token, MotionEvent e) {
@@ -393,25 +443,27 @@ public class MapView extends TileView
 
   private void placeMarker(MarkerLayout layer, Token token) {
     ViewGroup tokenView = (ViewGroup) LayoutInflater.from(layer.getContext()).inflate(R.layout.token, layer, false);
+    token.includeInTileMap(hostTileMap);
     token.attachTo(tokenView);
 //    ImageView imageView = (ImageView) tokenView.findViewById(R.id.imageview_token_image);
     final Drawable tokenBottom = ContextCompat.getDrawable(getContext(), R.drawable.circle_token);
-    tokenBottom.mutate().setColorFilter(ContextCompat.getColor(getContext(), token.color), PorterDuff.Mode.ADD);
+    tokenBottom.mutate().setColorFilter(ContextCompat.getColor(getContext(), token.getColor()), PorterDuff.Mode.ADD);
 //    imageView.setBackground(tokenBottom);
     ImageView baseView = (ImageView) tokenView.findViewById(R.id.imageview_token_base);
     baseView.setImageDrawable(tokenBottom);
     layer.addMarker(tokenView,
-        getCoordinateTranslater().translateX(token.tileCol),
-        getCoordinateTranslater().translateY(token.tileRow), null, null);
+        getCoordinateTranslater().translateX(token.getTileCol()),
+        getCoordinateTranslater().translateY(token.getTileRow()), null, null);
     applyImage(token, tokenView);
+    token.thenSave();
   }
 
   private void applyImage(Token token, View marker) {
     ImageView imageView = (ImageView) marker.findViewById(R.id.imageview_token_image);
     Picasso.with(getContext())
-        .load(token.url)
-        .resize(token.sizeX, token.sizeY)
-        .rotate(token.rotation)
+        .load(token.getUrl())
+        .resize(token.getSizeX(), token.getSizeY())
+        .rotate(token.getRotation())
         .into(imageView);
   }
 
@@ -423,80 +475,6 @@ public class MapView extends TileView
 
   public enum TokenLayer {
     Object, NPC, Player;
-  }
-
-  // TODO move to object.Token
-  public static class Token {
-
-    private static final int TAG_KEY = R.id.token_key;
-
-    public static Token fromView(View host) {
-      try {
-        return (Token) host.getTag(TAG_KEY);
-      } catch (ClassCastException e) {
-        e.printStackTrace();
-      }
-      return null;
-    }
-
-    String tag;
-    int hostViewId;
-    @ColorRes int color;
-    private int tileRow;
-    private int tileCol;
-    int sizeX;
-    int sizeY;
-    String url;
-    float rotation;
-
-    public static Token create(String tag, @ColorRes int color, int sizeX, int sizeY, String url) {
-      Token t = new Token();
-      t.tag = tag;
-      t.sizeX = sizeX;
-      t.sizeY = sizeY;
-      t.url = url;
-      t.tileCol = 0;
-      t.tileRow = 0;
-      t.color = color;
-      t.rotation = 0.0f;
-      return t;
-    }
-
-    public Token move(int tileCol, int tileRow) {
-      final int oldCol = this.tileCol;
-      final int oldRow = this.tileRow;
-      double theta = Math.atan2(tileRow-oldRow, tileCol-oldCol);
-      theta += Math.PI/2.0;
-      double angle = Math.toDegrees(theta);
-      if (angle < 0) {
-        angle += 360;
-      }
-      angle += 180;
-      if (angle < 0) {
-        angle += 360;
-      }
-      this.rotation = (float) angle;
-      this.tileCol = tileCol;
-      this.tileRow = tileRow;
-      return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (o instanceof Token) {
-        return ((Token) o).tag == this.tag;
-      }
-      return false;
-    }
-
-    private void attachTo(View host) {
-      host.setTag(TAG_KEY, this);
-      this.hostViewId = host.getId();
-    }
-
-    private View findMarkerIn(View host) {
-      return host.findViewById(this.hostViewId);
-    }
   }
 
   public static class DetailLevels extends JSONObject {

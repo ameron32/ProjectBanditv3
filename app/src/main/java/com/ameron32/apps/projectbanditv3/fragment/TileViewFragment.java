@@ -3,6 +3,7 @@ package com.ameron32.apps.projectbanditv3.fragment;
 import com.ameron32.apps.projectbanditv3.R;
 import com.ameron32.apps.projectbanditv3.manager.CharacterManager;
 import com.ameron32.apps.projectbanditv3.manager.GameManager;
+import com.ameron32.apps.projectbanditv3.manager.UserManager;
 import com.ameron32.apps.projectbanditv3.object.Character;
 import com.ameron32.apps.projectbanditv3.object.Game;
 import com.ameron32.apps.projectbanditv3.object.TileMap;
@@ -32,7 +33,7 @@ public class TileViewFragment extends AbsContentFragment {
 
   public TileViewFragment() {}
 
-  MapView.Token max;
+  Token max;
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -115,33 +116,34 @@ public class TileViewFragment extends AbsContentFragment {
     final TileMap currentTileMap = GameManager.get().getCurrentMap();
     final Token token;
 
-    getMapView().setDownsample(currentTileMap.getDownsampleUrl());
-    getMapView().setDownsampleSize(currentTileMap.getDownsampleWidth(),
-            currentTileMap.getDownsampleHeight());
-    getMapView().setTiles(currentTileMap.getTilesWidth(), currentTileMap.getTilesHeight(),
-            currentTileMap.getSubTiles());
-    getMapView().setFullSizeMultiplier(currentTileMap.getFullSizeMultiplier());
-    getMapView().setMinMaxScale(currentTileMap.getMinScale(), currentTileMap.getMaxScale());
-      final JSONObject detailLevels = currentTileMap.getDetailLevels();
-      if (detailLevels != null) {
-          for (int i = 0; i < detailLevels.length(); i++) {
-              try {
-                  final JSONObject detailLevel = detailLevels.getJSONObject(
-                          i + "_" + MapView.DetailLevels.DETAIL_LEVEL);
-                  getMapView().setBaseUrl(detailLevel.getString(MapView.DetailLevel.BASE_URL));
-                  final int tilePxX = detailLevel.getInt(MapView.DetailLevel.TILE_SIZE_X);
-                  final int tilePxY = detailLevel.getInt(MapView.DetailLevel.TILE_SIZE_Y);
-                  if (tilePxX != tilePxY) {
-                      throw new IllegalStateException("Cannot use non-square tiles yet.");
-                  }
-                  final int tilePxSq = tilePxY; // TODO make rect tiles?
-                  getMapView().addDetailLevel(detailLevel.getInt(MapView.DetailLevel.SCALE_1000), tilePxSq);
-              } catch (JSONException e) {
-                  e.printStackTrace();
-              }
-          }
-      }
-      getMapView().start();
+    getMapView().applyTileMap(currentTileMap);
+//    getMapView().setDownsample(currentTileMap.getDownsampleUrl());
+//    getMapView().setDownsampleSize(currentTileMap.getDownsampleWidth(),
+//            currentTileMap.getDownsampleHeight());
+//    getMapView().setTiles(currentTileMap.getTilesWidth(), currentTileMap.getTilesHeight(),
+//            currentTileMap.getSubTiles());
+//    getMapView().setFullSizeMultiplier(currentTileMap.getFullSizeMultiplier());
+//    getMapView().setMinMaxScale(currentTileMap.getMinScale(), currentTileMap.getMaxScale());
+//      final JSONObject detailLevels = currentTileMap.getDetailLevels();
+//      if (detailLevels != null) {
+//          for (int i = 0; i < detailLevels.length(); i++) {
+//              try {
+//                  final JSONObject detailLevel = detailLevels.getJSONObject(
+//                          i + "_" + MapView.DetailLevels.DETAIL_LEVEL);
+//                  getMapView().setBaseUrl(detailLevel.getString(MapView.DetailLevel.BASE_URL));
+//                  final int tilePxX = detailLevel.getInt(MapView.DetailLevel.TILE_SIZE_X);
+//                  final int tilePxY = detailLevel.getInt(MapView.DetailLevel.TILE_SIZE_Y);
+//                  if (tilePxX != tilePxY) {
+//                      throw new IllegalStateException("Cannot use non-square tiles yet.");
+//                  }
+//                  final int tilePxSq = tilePxY; // TODO make rect tiles?
+//                  getMapView().addDetailLevel(detailLevel.getInt(MapView.DetailLevel.SCALE_1000), tilePxSq);
+//              } catch (JSONException e) {
+//                  e.printStackTrace();
+//              }
+//          }
+//      }
+//      getMapView().start();
 
     // TODO import maps from Parse
 //    getMapView().setDownsample("https://i.imgur.com/OAbtGaM.jpg");
@@ -165,9 +167,16 @@ public class TileViewFragment extends AbsContentFragment {
 
 
 //    max = getMapView().addToken(MapView.TokenLayer.Player,
-//        MapView.Token.create("Max2b", R.color.yellow,
+//        Token.create("max", "max", R.color.yellow,
 //        200, 200, "https://i.imgur.com/n5cM7gh.png"));
-//    getMapView().setCurrentToken(max);
+    try {
+      max = getMapView().addToken(MapView.TokenLayer.Player,
+          ParseQuery.getQuery(Token.class).get("X4eOdtXB0J"));
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    getMapView().setCurrentToken(max);
+    getMapView().setGMView(GameManager.get().isCurrentUserGM());
   }
 
   @OnClick(R.id.button_reveal_one) void clickReveal() {
