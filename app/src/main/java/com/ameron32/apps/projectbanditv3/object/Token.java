@@ -26,15 +26,8 @@ public class Token extends AbsBanditObject<AbsBanditObject.Column> {
     return null;
   }
 
-//  String tag;
-//  int hostViewId;
-//  @ColorRes int color;
-//  private int tileRow;
-//  private int tileCol;
-//  int sizeX;
-//  int sizeY;
-//  String url;
-//  float rotation;
+  @ColorRes int colorRes;
+  int hostViewId;
 
   public static Token create(String tag, String name, @ColorRes int color, int sizeX, int sizeY, String url) {
     Token t = new Token();
@@ -99,8 +92,6 @@ public class Token extends AbsBanditObject<AbsBanditObject.Column> {
     return host.findViewById(this.getHostViewId());
   }
 
-
-
   public String getTag() {
     return this.getString("tag");
   }
@@ -110,19 +101,19 @@ public class Token extends AbsBanditObject<AbsBanditObject.Column> {
   }
 
   public int getHostViewId() {
-    return this.getInt("hostViewId");
+    return hostViewId;
   }
 
   public void setHostViewId(int hostViewId) {
-    this.put("hostViewId", hostViewId);
+    this.hostViewId = hostViewId;
   }
 
   public int getColor() {
-    return this.getInt("colorRes");
+    return colorRes;
   }
 
   public void setColor(int color) {
-    this.put("colorRes", color);
+    colorRes = color;
   }
 
   public int getTileRow() {

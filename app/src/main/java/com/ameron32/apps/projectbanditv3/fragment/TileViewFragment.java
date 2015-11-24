@@ -29,11 +29,31 @@ import butterknife.Optional;
 
 public class TileViewFragment extends AbsContentFragment {
 
+  public static final String GM_SCREEN_KEY = "gmScreen";
+
   @Optional @InjectView(R.id.mapview) MapView mMapView;
+
+  public static TileViewFragment create(boolean gmScreen) {
+    TileViewFragment f = new TileViewFragment();
+    Bundle b = new Bundle();
+    b.putBoolean(GM_SCREEN_KEY, gmScreen);
+    f.setArguments(b);
+    return f;
+  }
 
   public TileViewFragment() {}
 
   Token max;
+  boolean isGMScreen;
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Bundle b = getArguments();
+    if (b != null) {
+      isGMScreen = b.getBoolean(GM_SCREEN_KEY);
+    }
+  }
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -176,7 +196,7 @@ public class TileViewFragment extends AbsContentFragment {
       e.printStackTrace();
     }
     getMapView().setCurrentToken(max);
-    getMapView().setGMView(GameManager.get().isCurrentUserGM());
+    getMapView().setGMView(isGMScreen);
   }
 
   @OnClick(R.id.button_reveal_one) void clickReveal() {

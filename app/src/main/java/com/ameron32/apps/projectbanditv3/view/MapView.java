@@ -43,14 +43,23 @@ public class MapView extends TileView
   int subTiles;
   SparseArray<Integer> details = new SparseArray<>();
 
+  // Object tokens hide in the black, but remain visible in the fog. They never move.
   List<Token> objectTokens;
   MarkerLayout objectLayer;
+
+  // NPC tokens hide in the black and the fog. They
   List<Token> npcTokens;
   MarkerLayout npcLayer;
+  boolean isFogOffset;
+  float revealMultiplier;
   RevealView fog;
   RevealView black;
+
+  // Player Tokens should always correspond to characters that are always visible
   List<Token> playerTokens;
   MarkerLayout playerLayer;
+
+
   Token currentToken;
   TileMap hostTileMap;
 
@@ -80,6 +89,8 @@ public class MapView extends TileView
     this.setDownsample(currentTileMap.getDownsampleUrl());
     this.setDownsampleSize(currentTileMap.getDownsampleWidth(),
         currentTileMap.getDownsampleHeight());
+    this.isFogOffset = currentTileMap.isFogOffset();
+    this.revealMultiplier = currentTileMap.getRevealMultiplier();
     this.setTiles(currentTileMap.getTilesWidth(), currentTileMap.getTilesHeight(),
         currentTileMap.getSubTiles());
     this.setFullSizeMultiplier(currentTileMap.getFullSizeMultiplier());
@@ -111,7 +122,7 @@ public class MapView extends TileView
     if (gmView) {
       this.black.setColor(Color.BLACK, 64);
     } else {
-      this.black.setColor(Color.BLACK, 0);
+      this.black.setColor(Color.BLACK, 255);
     }
   }
 
@@ -186,8 +197,8 @@ public class MapView extends TileView
 
     drawObjects();
     drawNPCs();
-    drawFog(true);
-    drawBlack(true);
+    drawFog(isFogOffset);
+    drawBlack(isFogOffset);
     drawPlayerTokens();
 
     setTouchInterceptors();
@@ -352,19 +363,17 @@ public class MapView extends TileView
       black.squareRevealStart(e, scale);
     } else {
       fog.squareRevealEnd(e, scale);
-      fog.resetReveal();
-      fog.revealSquare(0);
+      fog.revealSquare(Math.round(0.0f * revealMultiplier));
       black.squareRevealEnd(e, scale);
-      black.revealSquare(1);
+      black.revealSquare(Math.round(0.5f * revealMultiplier));
     }
     isStart = !isStart;
   }
 
   private void pointReveal(MotionEvent e) {
     float scale = getScale();
-    fog.resetReveal();
-    fog.reveal(e, scale, 1);
-    black.reveal(e, scale, 2);
+    fog.reveal(e, scale, Math.round(1.0f * revealMultiplier));
+    black.reveal(e, scale, Math.round(1.5f * revealMultiplier));
   }
 
   private void zoomIn(MotionEvent e) {
@@ -425,19 +434,17 @@ public class MapView extends TileView
 
   private void moveToken(MotionEvent e) {
     // TODO demo only
+    fog.resetReveal();
     moveToken(playerLayer, currentToken, e).thenSave();
   }
 
   private Token moveToken(MarkerLayout layer, Token token, MotionEvent e) {
     RevealView.Tile tile = fog.getTileAt(e, getScale());
     pointReveal(e);
-    token.move(tile.col, tile.row);
+    token.move(tile.column(), tile.row());
     final View marker = token.findMarkerIn(layer);
     layer.moveMarker(marker, (int) (e.getX() / getScale()), (int) (e.getY() / getScale()));
     applyImage(token, marker);
-
-//    slideToAndCenter(e.getX(), e.getY());
-
     return token;
   }
 
@@ -445,10 +452,8 @@ public class MapView extends TileView
     ViewGroup tokenView = (ViewGroup) LayoutInflater.from(layer.getContext()).inflate(R.layout.token, layer, false);
     token.includeInTileMap(hostTileMap);
     token.attachTo(tokenView);
-//    ImageView imageView = (ImageView) tokenView.findViewById(R.id.imageview_token_image);
     final Drawable tokenBottom = ContextCompat.getDrawable(getContext(), R.drawable.circle_token);
-    tokenBottom.mutate().setColorFilter(ContextCompat.getColor(getContext(), token.getColor()), PorterDuff.Mode.ADD);
-//    imageView.setBackground(tokenBottom);
+    tokenBottom.mutate().setColorFilter(ContextCompat.getColor(getContext(), R.color.yellow), PorterDuff.Mode.ADD);
     ImageView baseView = (ImageView) tokenView.findViewById(R.id.imageview_token_base);
     baseView.setImageDrawable(tokenBottom);
     layer.addMarker(tokenView,

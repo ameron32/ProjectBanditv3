@@ -3,7 +3,7 @@
     package="com.ameron32.apps.projectbanditv3" > <!-- to receive push messages, update all locations needed to projectbanditV3 -->
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="23" />
 
     <!-- [start] *** REQUIRED FOR PARSE PUSH NOTIFICATIONS *** -->
     <!-- [start] *** CRASHLYTICS *** -->

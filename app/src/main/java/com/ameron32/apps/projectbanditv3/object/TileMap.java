@@ -50,6 +50,10 @@ public class TileMap extends AbsBanditObject<AbsBanditObject.Column> {
         return getInt("subTiles");
     }
 
+    public boolean isFogOffset() {
+        return getBoolean("isFogOffset");
+    }
+
     public int getTilesHeight() {
         return getInt("tilesHeight");
     }
@@ -92,5 +96,9 @@ public class TileMap extends AbsBanditObject<AbsBanditObject.Column> {
     @Override public AbsBanditObject.Column get(
             int columnPosition) {
         return COLUMNS[columnPosition];
+    }
+
+    public float getRevealMultiplier() {
+        return getNumber("revealMultiplier").floatValue();
     }
 }

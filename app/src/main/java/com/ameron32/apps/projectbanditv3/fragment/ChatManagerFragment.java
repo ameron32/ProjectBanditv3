@@ -333,6 +333,7 @@ public class ChatManagerFragment
     super.onViewCreated(view, savedInstanceState);
     mRootView = view;
     ButterKnife.inject(this, mRootView);
+    setPadding(false);
   }
 
   @Override public void onDestroyView() {

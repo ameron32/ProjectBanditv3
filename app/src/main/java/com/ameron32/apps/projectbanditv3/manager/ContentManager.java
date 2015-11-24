@@ -90,7 +90,12 @@ public class ContentManager extends AbsManager {
       items.add(new ContentItem("Inventory2", R.drawable.ic_bandit_clear,
           SectionContainerTestFragment.newInstance(InventoryTestFragment.class, R.layout.section_character_inventory)).alpha(0.3f));
       items.add(new ContentItem("Tiles", R.drawable.ic_bandit_clear,
-          new TileViewFragment()).alpha(0.3f));
+          TileViewFragment.create(false)).alpha(0.3f));
+
+      if (GameManager.get().isCurrentUserGM()) {
+        items.add(new ContentItem("GM: Tiles", R.drawable.ic_gm,
+            TileViewFragment.create(true)).alpha(0.3f));
+      }
     }
 
     if (GameManager.get().isCurrentUserGM()) {

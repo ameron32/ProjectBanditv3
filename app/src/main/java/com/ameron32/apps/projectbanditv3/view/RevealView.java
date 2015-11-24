@@ -50,9 +50,6 @@ public class RevealView extends View implements View.OnClickListener {
   }
 
   private void initialize() {
-//    grid = new Grid(getRowCount(), getColCount());
-//    resetReveal();
-
     blackPaint = new Paint();
     blackPaint.setColor(Color.BLACK);
     transparentPaint = new Paint();
@@ -70,21 +67,6 @@ public class RevealView extends View implements View.OnClickListener {
           readjustCellSizes();
         }
       });
-
-
-      //Set a touch listener to save the tileCol and tileRow coords so the onClick method can use them.
-//      setOnTouchListener(new View.OnTouchListener() {
-//        @Override
-//        public boolean onTouch(View v, MotionEvent event) {
-//          if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            touchX = event.getX();
-//            touchY = event.getY();
-//          }
-//          return false;
-//        }
-//      });
-//
-//      setOnClickListener(this);
     }
   }
 
@@ -98,9 +80,7 @@ public class RevealView extends View implements View.OnClickListener {
 
   public void setColor(int color, int transparency) {
     blackPaint.setColor(color);
-    if (transparency >= 0) {
-      blackPaint.setAlpha(transparency);
-    }
+    blackPaint.setAlpha(transparency);
   }
 
   @Override
@@ -118,7 +98,6 @@ public class RevealView extends View implements View.OnClickListener {
         rect.top = row * cellHeight - (halfTileOffset ? halfHeight : 0);
         rect.bottom = (row + 1) * cellHeight - (halfTileOffset ? halfHeight : 0);
         if (grid.isShown(row, col)) {
-//        if (visibility[row][col]) {
           c.drawRect(rect, transparentPaint);
         } else {
           c.drawRect(rect, blackPaint);
@@ -151,18 +130,12 @@ public class RevealView extends View implements View.OnClickListener {
     for (int row = 0; row < newData.length; row++) {
       for (int col = 0; col < newData[row].length; col++) {
         grid.set(row, col, newData[row][col]);
-//        try {
-//          visibility[i][j] = newData[i][j];
-//        } catch (IndexOutOfBoundsException e) {
-//          // DO NOTHING
-//        }
       }
     }
   }
 
   public void resetReveal() {
     grid.reset();
-//    visibility = new boolean[getRowCount()][getColCount()];
   }
 
   int squareRevealStartRow = -1;
@@ -188,44 +161,9 @@ public class RevealView extends View implements View.OnClickListener {
   }
 
   public void revealSquare(int additionalRadius) {
-    grid.showRange(squareRevealStartRow, squareRevealStartCol, squareRevealEndRow, squareRevealEndCol, additionalRadius);
-//    int actualStartRow = (squareRevealStartRow < squareRevealEndRow ? squareRevealStartRow : squareRevealEndRow) - additionalRadius;
-//    int actualEndRow = (squareRevealStartRow > squareRevealEndRow ? squareRevealStartRow : squareRevealEndRow) + additionalRadius;
-//    int actualStartCol = (squareRevealStartCol < squareRevealEndCol ? squareRevealStartCol : squareRevealEndCol) - additionalRadius;
-//    int actualEndCol = (squareRevealStartCol > squareRevealEndCol ? squareRevealStartCol : squareRevealEndCol) + additionalRadius;
-//
-//    if (actualStartRow < 0) {
-//      actualStartRow = 0;
-//    } else if (actualStartRow > getRowCount()) {
-//      actualStartRow = getRowCount();
-//    }
-//    if (actualEndRow < 0) {
-//      actualEndRow = 0;
-//    } else if (actualEndRow > getRowCount()) {
-//      actualEndRow = getRowCount();
-//    }
-//    if (actualStartCol < 0) {
-//      actualStartCol = 0;
-//    } else if (actualStartCol > getColCount()) {
-//      actualStartCol = getColCount();
-//    }
-//    if (actualEndCol < 0) {
-//      actualEndCol = 0;
-//    } else if (actualEndCol > getColCount()) {
-//      actualEndCol = getColCount();
-//    }
-//
-//    // should be positive if top left then bottom right
-//    int distanceRow = Math.abs(actualEndRow - actualStartRow);
-//    int distanceCol = Math.abs(actualEndCol - actualStartCol);
-//
-//    // TODO allow for non-standard (TL/BR)
-//    for (int r = 0; r <= distanceRow; r++) {
-//      for (int c = 0; c <= distanceCol; c++) {
-//        // reveal each tile
-//        reveal(r + actualStartRow, c + actualStartCol, 0);
-//      }
-//    }
+    grid.showRange(squareRevealStartRow, squareRevealStartCol,
+        squareRevealEndRow, squareRevealEndCol,
+        additionalRadius);
     invalidate();
 
     // reset
@@ -263,28 +201,13 @@ public class RevealView extends View implements View.OnClickListener {
     }
   }
 
+  /**
+   * IF there is a tileOffset, our modification
+   */
   private void offsetReveal(int row, int col, int additionalRadius) {
     // reduce radius by 1
     final int radius = (additionalRadius > 0 ? additionalRadius - 1 : 0);
-    grid.showRange(row, col, row + 1, col + 1, radius);
-
-    // NE, NW, NE, SW
-//    visibility[row][col] = true;
-//    try {
-//      visibility[row + 1][col] = true;
-//      visibility[row][col + 1] = true;
-//      visibility[row + 1][col + 1] = true;
-//    } catch (IndexOutOfBoundsException e) {}
-//    if (additionalRadius == 0) {
-//      return;
-//    }
-//    for (int r = row - radius; r <= row +1 + radius; r++) {
-//      for (int c = col - radius; c <= col +1 + radius; c++) {
-//        try {
-//          visibility[r][c] = true;
-//        } catch (IndexOutOfBoundsException e) {}
-//      }
-//    }
+    grid.showRange(row, col, row, col, radius);
   }
 
   private void standardReveal(int row, int col, int additionalRadius) {
@@ -294,31 +217,23 @@ public class RevealView extends View implements View.OnClickListener {
     } else {
       grid.show(row, col);
     }
-//    final int radius = additionalRadius;
-////    try {
-//      visibility[row][col] = true;
-////    } catch (IndexOutOfBoundsException e) {}
-//    if (additionalRadius == 0) {
-//      return;
-//    }
-//    for (int r = row - radius; r <= row + radius; r++) {
-//      for (int c = col - radius; c <= col + radius; c++) {
-//        try {
-//          visibility[r][c] = true;
-//        } catch (IndexOutOfBoundsException e) {}
-//      }
-//    }
   }
 
 
-
+  /**
+   * STORAGE CLASS of Row/Column data
+   */
   public class Tile {
-    int row;
-    int col;
+    private int row;
+    private int col;
+
     public Tile(int row, int col) {
       this.row = row;
       this.col = col;
     }
+
+    public int row() { return row; }
+    public int column() { return col; }
   }
 
   public class Grid {
@@ -368,6 +283,10 @@ public class RevealView extends View implements View.OnClickListener {
       int actualEndRow = (startRow > endRow ? startRow : endRow) + radius;
       int actualStartCol = (startCol < endCol ? startCol : endCol) - radius;
       int actualEndCol = (startCol > endCol ? startCol : endCol) + radius;
+      if (halfTileOffset) {
+        actualEndRow++;
+        actualEndCol++;
+      }
 
       if (actualStartRow < 0) {
         actualStartRow = 0;
