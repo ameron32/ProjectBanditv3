@@ -27,16 +27,14 @@ public class RevealView extends View implements View.OnClickListener {
   private Grid grid;
 
   private Rect rect;
-
-  private int viewWidth = 0;
-  private int viewHeight = 0;
-  private int cellWidth = 0;
-  private int cellHeight = 0;
   private Paint blackPaint;
   private Paint transparentPaint;
-
-  private int halfWidth = 0;
-  private int halfHeight= 0;
+  private int viewWidth;
+  private int viewHeight;
+  private int cellWidth;
+  private int cellHeight;
+  private int halfWidth;
+  private int halfHeight;
 
   public RevealView(Context context) {
     super(context);
