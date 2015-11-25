@@ -2,6 +2,7 @@ package com.ameron32.apps.projectbanditv3.object;
 
 import com.ameron32.apps.projectbanditv3.R;
 import com.ameron32.apps.projectbanditv3.Util;
+import com.ameron32.apps.projectbanditv3.view.RevealView;
 import com.parse.ParseClassName;
 
 import android.support.annotation.ColorRes;
@@ -164,6 +165,9 @@ public class Token extends AbsBanditObject<AbsBanditObject.Column> {
     this.put("rotation", rotation);
   }
 
+  public RevealView.Tile getTile() {
+    return new RevealView.Tile(getTileRow(), getTileCol());
+  }
 
 
 

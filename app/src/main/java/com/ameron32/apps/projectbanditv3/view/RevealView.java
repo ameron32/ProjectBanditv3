@@ -11,7 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Micah on 11/6/2015.
@@ -23,6 +25,8 @@ public class RevealView extends View implements View.OnClickListener {
   private int tileCols = 1; // default
 
   private Grid grid;
+
+  private Rect rect;
 
   private int viewWidth = 0;
   private int viewHeight = 0;
@@ -54,6 +58,7 @@ public class RevealView extends View implements View.OnClickListener {
     blackPaint.setColor(Color.BLACK);
     transparentPaint = new Paint();
     transparentPaint.setColor(Color.TRANSPARENT);
+    rect = new Rect();
 
     //Set an observer to call and update the size of the view correctly, and then calculate the sizes of the "cells" based
     //on the row and column counts.
@@ -90,7 +95,6 @@ public class RevealView extends View implements View.OnClickListener {
       return;
     }
 
-    Rect rect = new Rect();
     for (int row = 0; row < getRowCount(); row++) {
       for (int col = 0; col < getColCount(); col++) {
         rect.left = col * cellWidth - (halfTileOffset ? halfWidth : 0);
@@ -134,8 +138,13 @@ public class RevealView extends View implements View.OnClickListener {
     }
   }
 
+  public boolean isShown(Tile tile) {
+    return grid.isShown(tile);
+  }
+
   public void resetReveal() {
     grid.reset();
+    invalidate();
   }
 
   int squareRevealStartRow = -1;
@@ -223,7 +232,7 @@ public class RevealView extends View implements View.OnClickListener {
   /**
    * STORAGE CLASS of Row/Column data
    */
-  public class Tile {
+  public static class Tile {
     private int row;
     private int col;
 
@@ -314,6 +323,10 @@ public class RevealView extends View implements View.OnClickListener {
           set(row, col, state);
         }
       }
+    }
+
+    public boolean isShown(Tile tile) {
+      return isShown(tile.row(), tile.column());
     }
 
     public boolean isShown(int row, int col) {

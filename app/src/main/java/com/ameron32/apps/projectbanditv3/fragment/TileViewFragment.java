@@ -190,7 +190,7 @@ public class TileViewFragment extends AbsContentFragment {
 //        Token.create("max", "max", R.color.yellow,
 //        200, 200, "https://i.imgur.com/n5cM7gh.png"));
     try {
-      max = getMapView().addToken(MapView.TokenLayer.Player,
+      max = getMapView().addToken(MapView.TokenLayer.NPC,
           ParseQuery.getQuery(Token.class).get("X4eOdtXB0J"));
     } catch (ParseException e) {
       e.printStackTrace();

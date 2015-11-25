@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +42,8 @@ public class MapView extends TileView
 
   int tileCols, tileRows;
   int subTiles;
+  boolean isFogOffset;
+  float revealMultiplier;
   SparseArray<Integer> details = new SparseArray<>();
 
   // Object tokens hide in the black, but remain visible in the fog. They never move.
@@ -50,8 +53,8 @@ public class MapView extends TileView
   // NPC tokens hide in the black and the fog. They
   List<Token> npcTokens;
   MarkerLayout npcLayer;
-  boolean isFogOffset;
-  float revealMultiplier;
+
+  // primary fog/black channel
   RevealView fog;
   RevealView black;
 
@@ -82,6 +85,9 @@ public class MapView extends TileView
 
   private void initialize() {
     // nothing
+    objectTokens = new ArrayList<>();
+    npcTokens = new ArrayList<>();
+    playerTokens = new ArrayList<>();
   }
 
   public void applyTileMap(TileMap currentTileMap) {
@@ -206,19 +212,24 @@ public class MapView extends TileView
 
   public Token addToken(TokenLayer layer, Token token) {
     MarkerLayout markerLayout;
+    List<Token> tokenList;
     switch(layer) {
       case Object:
         markerLayout = objectLayer;
+        tokenList = objectTokens;
         break;
       case NPC:
         markerLayout = npcLayer;
+        tokenList = npcTokens;
         break;
       case Player:
       default:
         markerLayout = playerLayer;
+        tokenList = playerTokens;
         break;
     }
     placeMarker(markerLayout, token);
+    tokenList.add(token);
     return token;
   }
 
@@ -366,6 +377,7 @@ public class MapView extends TileView
       fog.revealSquare(Math.round(0.0f * revealMultiplier));
       black.squareRevealEnd(e, scale);
       black.revealSquare(Math.round(0.5f * revealMultiplier));
+      revealNPCs();
     }
     isStart = !isStart;
   }
@@ -374,6 +386,7 @@ public class MapView extends TileView
     float scale = getScale();
     fog.reveal(e, scale, Math.round(1.0f * revealMultiplier));
     black.reveal(e, scale, Math.round(1.5f * revealMultiplier));
+    revealNPCs();
   }
 
   private void zoomIn(MotionEvent e) {
@@ -424,23 +437,37 @@ public class MapView extends TileView
     playerLayer = new MarkerLayout(getContext());
     playerLayer.setAnchors(-0.5f, -0.5f);
     addScalingViewGroup(playerLayer);
-//    addToken(playerLayer)
-//    moveToken(playerLayer, maxScale, 12, 12);
-//    placeMarker(objectLayer, "max2b.png", 12, 12);
-//    placeMarker(playerLayer, "wizbang.png", 1300, 1000);
-//    placeMarker(playerLayer, "shield.png", 13, 13);
-//    scrollToTileAndCenter(12, 12);
   }
 
   private void moveToken(MotionEvent e) {
     // TODO demo only
     fog.resetReveal();
-    moveToken(playerLayer, currentToken, e).thenSave();
+    hideNPCs();
+    Token token = moveToken(npcLayer, currentToken, e);
+    revealNPCs();
+    token.thenSave();
+  }
+
+  private void hideNPCs() {
+    for (Token npc : npcTokens) {
+      View marker = npc.findMarkerIn(npcLayer);
+      marker.setVisibility(INVISIBLE);
+    }
+  }
+
+  private void revealNPCs() {
+    for (Token npc : npcTokens) {
+      RevealView.Tile npcTileLocation = npc.getTile();
+      if (fog.isShown(npcTileLocation) || gmView) {
+        View marker = npc.findMarkerIn(npcLayer);
+        marker.setVisibility(VISIBLE);
+      }
+    }
   }
 
   private Token moveToken(MarkerLayout layer, Token token, MotionEvent e) {
     RevealView.Tile tile = fog.getTileAt(e, getScale());
-    pointReveal(e);
+//    pointReveal(e);
     token.move(tile.column(), tile.row());
     final View marker = token.findMarkerIn(layer);
     layer.moveMarker(marker, (int) (e.getX() / getScale()), (int) (e.getY() / getScale()));
