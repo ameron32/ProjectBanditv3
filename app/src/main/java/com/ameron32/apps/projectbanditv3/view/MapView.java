@@ -8,6 +8,7 @@ import com.qozix.tileview.graphics.BitmapProvider;
 import com.qozix.tileview.markers.MarkerLayout;
 import com.qozix.tileview.tiles.Tile;
 import com.squareup.picasso.Picasso;
+import com.wingjay.blurimageviewlib.BlurImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -261,14 +262,20 @@ public class MapView extends TileView
   }
 
   private void applyDownsample(String imageUrl) {
-//    final View downsampleLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_downsample_view, this, false);
-//    final ImageView downsampleImageView = (ImageView) downsampleLayer.findViewById(R.id.downsample);
-    final ImageView downsampleImageView = new ImageView(getContext());
-    Picasso.with(getContext())
-        .load(imageUrl)
-        .into(downsampleImageView);
-//    addScalingViewGroup((ViewGroup) downsampleLayer);
-    addView(downsampleImageView, 0);
+    if (hostTileMap.hasDownsampleBlur()) {
+      // load the blur view
+      final BlurImageView downsampleImageView = new BlurImageView(getContext());
+      addView(downsampleImageView, 0);
+      downsampleImageView.setBlurFactor(BlurImageView.DEFAULT_BLUR_FACTOR);
+      downsampleImageView.setBlurImageByUrl(imageUrl);
+    } else {
+      // load a standard imageview
+      final ImageView downsampleImageView = new ImageView(getContext());
+      addView(downsampleImageView, 0);
+      Picasso.with(getContext())
+          .load(imageUrl)
+          .into(downsampleImageView);
+    }
   }
 
   private void setDetail(String baseUrl, int size, int tileSize) {
@@ -414,23 +421,33 @@ public class MapView extends TileView
   }
 
   private void drawFog(boolean halfTileOffset) {
-    final View fogLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, this, false);
-    fog = (RevealView) fogLayer.findViewById(R.id.reveal_view);
-    fog.setTiling(tileCols * subTiles, tileRows * subTiles, halfTileOffset);
-    fog.setColor(Color.DKGRAY, 192);
-    addScalingViewGroup((ViewGroup) fogLayer);
+    if (hostTileMap.hasFog()) {
+      final View fogLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, this, false);
+      fog = (RevealView) fogLayer.findViewById(R.id.reveal_view);
+      fog.setTiling(tileCols * subTiles, tileRows * subTiles, halfTileOffset);
+      fog.setColor(Color.DKGRAY, 192);
+      addScalingViewGroup((ViewGroup) fogLayer);
+    } else {
+      // NO FOG
+      fog = null;
+    }
   }
 
   private void drawBlack(boolean halfTileOffset) {
-    final View blackLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, this, false);
-    black = (RevealView) blackLayer.findViewById(R.id.reveal_view);
-    black.setTiling(tileCols * subTiles, tileRows * subTiles, halfTileOffset);
-    if (gmView) {
-      black.setColor(Color.BLACK, 64);
+    if (hostTileMap.hasBlack()) {
+      final View blackLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, this, false);
+      black = (RevealView) blackLayer.findViewById(R.id.reveal_view);
+      black.setTiling(tileCols * subTiles, tileRows * subTiles, halfTileOffset);
+      if (gmView) {
+        black.setColor(Color.BLACK, 64);
+      } else {
+        black.setColor(Color.BLACK, 0);
+      }
+      addScalingViewGroup((ViewGroup) blackLayer);
     } else {
-      black.setColor(Color.BLACK, 0);
+       // NO BLACK
+      black = null;
     }
-    addScalingViewGroup((ViewGroup) blackLayer);
   }
 
   private void drawPlayerTokens() {

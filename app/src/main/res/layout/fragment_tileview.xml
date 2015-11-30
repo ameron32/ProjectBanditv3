@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
   <com.ameron32.apps.projectbanditv3.view.MapView
       android:id="@+id/mapview"
@@ -12,7 +13,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout">
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -38,5 +40,16 @@
             android:id="@+id/button_move_token"
             android:src="@drawable/ic_construction"/>
     </LinearLayout>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:text="Scale: 25%"
+      android:id="@+id/textview_tileview_ui_map_scale"
+      android:textColor="@color/white"
+      android:layout_below="@+id/linearLayout"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:paddingLeft="8dp"/>
 
 </RelativeLayout>

@@ -54,6 +54,18 @@ public class TileMap extends AbsBanditObject<AbsBanditObject.Column> {
         return getBoolean("isFogOffset");
     }
 
+    public boolean hasFog() {
+        return getBoolean("hasFog");
+    }
+
+    public boolean hasBlack() {
+        return getBoolean("hasBlack");
+    }
+
+    public boolean hasDownsampleBlur() {
+        return getBoolean("hasDownsampleBlur");
+    }
+
     public int getTilesHeight() {
         return getInt("tilesHeight");
     }

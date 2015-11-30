@@ -103,4 +103,7 @@ dependencies {
 
   // JodaTimeAndroid
   compile 'net.danlew:android.joda:2.9.0'
+
+  // blurimageview
+  compile 'com.wingjay:blurimageviewlib:1.0.+'
 }

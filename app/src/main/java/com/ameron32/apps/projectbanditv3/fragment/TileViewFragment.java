@@ -12,6 +12,7 @@ import com.ameron32.apps.projectbanditv3.view.MapView;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.qozix.tileview.widgets.ZoomPanLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,17 +22,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.Optional;
 
-public class TileViewFragment extends AbsContentFragment {
+public class TileViewFragment extends AbsContentFragment
+    implements ZoomPanLayout.ZoomPanListener {
 
   public static final String GM_SCREEN_KEY = "gmScreen";
 
   @Optional @InjectView(R.id.mapview) MapView mMapView;
+  @Optional @InjectView(R.id.textview_tileview_ui_map_scale) TextView textView;
 
   public static TileViewFragment create(boolean gmScreen) {
     TileViewFragment f = new TileViewFragment();
@@ -137,6 +141,8 @@ public class TileViewFragment extends AbsContentFragment {
     final Token token;
 
     getMapView().applyTileMap(currentTileMap);
+    updateScaleText(getMapView().getScale());
+    getMapView().addZoomPanListener(this);
 //    getMapView().setDownsample(currentTileMap.getDownsampleUrl());
 //    getMapView().setDownsampleSize(currentTileMap.getDownsampleWidth(),
 //            currentTileMap.getDownsampleHeight());
@@ -199,6 +205,12 @@ public class TileViewFragment extends AbsContentFragment {
     getMapView().setGMView(isGMScreen);
   }
 
+  private void updateScaleText(float scale) {
+    if (textView != null) {
+      textView.setText("Scale: " + scale);
+    }
+  }
+
   @OnClick(R.id.button_reveal_one) void clickReveal() {
     getMapView().setTouchType(MapView.TouchType.RevealTouch);
   }
@@ -241,5 +253,25 @@ public class TileViewFragment extends AbsContentFragment {
 
   public MapView getMapView() {
     return mMapView;
+  }
+
+  @Override
+  public void onPanBegin(int x, int y, Origination origin) {}
+
+  @Override
+  public void onPanUpdate(int x, int y, Origination origin) {}
+
+  @Override
+  public void onPanEnd(int x, int y, Origination origin) {}
+
+  @Override
+  public void onZoomBegin(float scale, Origination origin) {}
+
+  @Override
+  public void onZoomUpdate(float scale, Origination origin) {}
+
+  @Override
+  public void onZoomEnd(float scale, Origination origin) {
+    updateScaleText(scale);
   }
 }
