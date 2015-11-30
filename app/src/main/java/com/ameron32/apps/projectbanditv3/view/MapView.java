@@ -18,7 +18,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorRes;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -56,8 +56,8 @@ public class MapView extends TileView
   MarkerLayout npcLayer;
 
   // primary fog/black channel
-  RevealView fog;
-  RevealView black;
+  @Nullable RevealView fog;
+  @Nullable RevealView black;
 
   // Player Tokens should always correspond to characters that are always visible
   List<Token> playerTokens;
@@ -202,11 +202,11 @@ public class MapView extends TileView
     }
     applyMapSettings(sdsWidth, sdsHeight, tvSizeScale, minScale, maxScale, true);
 
-    drawObjects();
-    drawNPCs();
-    drawFog(isFogOffset);
-    drawBlack(isFogOffset);
-    drawPlayerTokens();
+    prepareObjects();
+    prepareNPCs();
+    prepareFog(isFogOffset);
+    prepareBlack(isFogOffset);
+    preparePlayerTokens();
 
     setTouchInterceptors();
   }
@@ -249,8 +249,6 @@ public class MapView extends TileView
       float scaleMin, float scaleMax, boolean centerMarkers) {
     // size of original image at 100% mScale
     setSize(imageWidthPx * sizeMultiplier, imageHeightPx * sizeMultiplier);
-//    tileTranslater.setSize(imageWidthPx * sizeMultiplier, imageHeightPx * sizeMultiplier);
-//    tileTranslater.setBounds(0, 0, tileCols * subTiles, tileRows * subTiles);
     defineBounds(0, 0, tileCols * subTiles, tileRows * subTiles);
     // allow scaling past original size
     setShouldScaleToFit(false);
@@ -266,7 +264,7 @@ public class MapView extends TileView
       // load the blur view
       final BlurImageView downsampleImageView = new BlurImageView(getContext());
       addView(downsampleImageView, 0);
-      downsampleImageView.setBlurFactor(BlurImageView.DEFAULT_BLUR_FACTOR);
+      downsampleImageView.setBlurFactor(3);
       downsampleImageView.setBlurImageByUrl(imageUrl);
     } else {
       // load a standard imageview
@@ -408,19 +406,19 @@ public class MapView extends TileView
 
 
 
-  private void drawObjects() {
+  private void prepareObjects() {
     objectLayer = new MarkerLayout(getContext());
     objectLayer.setAnchors(-0.5f, -0.5f);
     addScalingViewGroup(objectLayer);
   }
 
-  private void drawNPCs() {
+  private void prepareNPCs() {
     npcLayer = new MarkerLayout(getContext());
     npcLayer.setAnchors(-0.5f, -0.5f);
     addScalingViewGroup(npcLayer);
   }
 
-  private void drawFog(boolean halfTileOffset) {
+  private void prepareFog(boolean halfTileOffset) {
     if (hostTileMap.hasFog()) {
       final View fogLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, this, false);
       fog = (RevealView) fogLayer.findViewById(R.id.reveal_view);
@@ -433,7 +431,7 @@ public class MapView extends TileView
     }
   }
 
-  private void drawBlack(boolean halfTileOffset) {
+  private void prepareBlack(boolean halfTileOffset) {
     if (hostTileMap.hasBlack()) {
       final View blackLayer = LayoutInflater.from(getContext()).inflate(R.layout.merg_reveal_frame, this, false);
       black = (RevealView) blackLayer.findViewById(R.id.reveal_view);
@@ -450,7 +448,7 @@ public class MapView extends TileView
     }
   }
 
-  private void drawPlayerTokens() {
+  private void preparePlayerTokens() {
     playerLayer = new MarkerLayout(getContext());
     playerLayer.setAnchors(-0.5f, -0.5f);
     addScalingViewGroup(playerLayer);
@@ -484,7 +482,6 @@ public class MapView extends TileView
 
   private Token moveToken(MarkerLayout layer, Token token, MotionEvent e) {
     RevealView.Tile tile = fog.getTileAt(e, getScale());
-//    pointReveal(e);
     token.move(tile.column(), tile.row());
     final View marker = token.findMarkerIn(layer);
     layer.moveMarker(marker, (int) (e.getX() / getScale()), (int) (e.getY() / getScale()));
