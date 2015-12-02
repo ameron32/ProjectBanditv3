@@ -7,6 +7,7 @@ import com.ameron32.apps.projectbanditv3.fragment.AdvantageCheckerFragment;
 import com.ameron32.apps.projectbanditv3.fragment.ChatManagerFragment;
 import com.ameron32.apps.projectbanditv3.adapter.ContentAdapter;
 import com.ameron32.apps.projectbanditv3.fragment.CreateItemFragment;
+import com.ameron32.apps.projectbanditv3.fragment.CreateNoteFragment;
 import com.ameron32.apps.projectbanditv3.fragment.CreateSetItemsFragment;
 import com.ameron32.apps.projectbanditv3.fragment.DEMORxJavaFragment;
 import com.ameron32.apps.projectbanditv3.fragment.EquipmentRecyclerTestFragment;
@@ -99,6 +100,8 @@ public class ContentManager extends AbsManager {
     }
 
     if (GameManager.get().isCurrentUserGM()) {
+
+      items.add(new ContentItem("GM: Note", R.drawable.ic_gm, new CreateNoteFragment()));
       items.add(new ContentItem("GM: Add Players", R.drawable.ic_gm, new AddPlayersFragment()));
       items.add(new ContentItem("GM: Add Characters", R.drawable.ic_gm, new AddCharactersFragment()));
       items.add(new ContentItem("GM: Create Item", R.drawable.ic_gm, new CreateItemFragment()));
